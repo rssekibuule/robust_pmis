@@ -122,6 +122,12 @@ class KeyPerformanceIndicator(models.Model):
         help="Directorate responsible for this KPI"
     )
 
+    weight = fields.Float(
+        string='Weight',
+        default=1.0,
+        help="Weight of this KPI in calculations"
+    )
+
     # Strategic-Programme Linkage Fields
     thematic_area = fields.Selection([
         ('infrastructure', 'Infrastructure & Transport'),

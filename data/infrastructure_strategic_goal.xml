@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Infrastructure Strategic Goal -->
+        <record id="strategic_goal_improve_urban_infrastructure" model="strategic.goal">
+            <field name="name">Improve Urban Infrastructure</field>
+            <field name="description">
+                <![CDATA[
+                <p>Enhance and develop Kampala's urban infrastructure to support sustainable growth and improve quality of life for all residents.</p>
+                
+                <p>This strategic goal focuses on:</p>
+                <ul>
+                    <li>Transport infrastructure development and maintenance</li>
+                    <li>Water and sanitation systems</li>
+                    <li>Housing and settlement improvement</li>
+                    <li>Smart city infrastructure</li>
+                    <li>Digital infrastructure and connectivity</li>
+                </ul>
+                ]]>
+            </field>
+            <field name="sequence">2</field>
+            <field name="active">True</field>
+            <field name="color">3</field>
+        </record>
+        
+        <!-- Infrastructure Development Strategic Objective -->
+        <record id="strategic_objective_infrastructure_development_main" model="strategic.objective">
+            <field name="name">Infrastructure Development</field>
+            <field name="description">Develop and maintain critical infrastructure to support urban growth and improve service delivery</field>
+            <field name="strategic_goal_id" ref="strategic_goal_improve_urban_infrastructure"/>
+            <field name="sequence">1</field>
+        </record>
+        
+    </data>
+</odoo>

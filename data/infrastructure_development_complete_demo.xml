@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- ========================================= -->
+        <!-- INFRASTRUCTURE DEVELOPMENT DEMO DATA -->
+        <!-- ========================================= -->
+        
+        <!-- First, ensure we have the strategic objective -->
+        <record id="strategic_objective_infrastructure_development_complete" model="strategic.objective">
+            <field name="name">Infrastructure Development</field>
+            <field name="description">Develop and maintain robust infrastructure systems including transport, housing, utilities, and digital infrastructure to support sustainable urban development</field>
+            <field name="strategic_goal_id" ref="strategic_goal_improve_urban_infrastructure"/>
+            <field name="sequence">10</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 1: Transport Infrastructure Development -->
+        <record id="kra_transport_infrastructure_complete" model="key.result.area">
+            <field name="name">Transport Infrastructure Development</field>
+            <field name="description">Develop and maintain efficient transport infrastructure including roads, bridges, and public transit systems</field>
+            <field name="sequence">10</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KPIs for Transport Infrastructure -->
+        <record id="kpi_roads_constructed" model="key.performance.indicator">
+            <field name="name">Kilometers of New Roads Constructed</field>
+            <field name="description">Total kilometers of new roads constructed annually</field>
+            <field name="kra_id" ref="kra_transport_infrastructure_complete"/>
+            <field name="measurement_unit">Km</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">50</field>
+            <field name="current_value">32</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_roads_rehabilitated" model="key.performance.indicator">
+            <field name="name">Kilometers of Roads Rehabilitated</field>
+            <field name="description">Total kilometers of existing roads rehabilitated and upgraded</field>
+            <field name="kra_id" ref="kra_transport_infrastructure_complete"/>
+            <field name="measurement_unit">Km</field>
+            <field name="baseline_value">15</field>
+            <field name="target_value">100</field>
+            <field name="current_value">78</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_bridges_constructed" model="key.performance.indicator">
+            <field name="name">Number of Bridges Constructed/Rehabilitated</field>
+            <field name="description">Total number of bridges constructed or rehabilitated</field>
+            <field name="kra_id" ref="kra_transport_infrastructure_complete"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">2</field>
+            <field name="target_value">8</field>
+            <field name="current_value">5</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_public_transport_coverage" model="key.performance.indicator">
+            <field name="name">Public Transport Coverage</field>
+            <field name="description">Percentage of city areas covered by public transport services</field>
+            <field name="kra_id" ref="kra_transport_infrastructure_complete"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">45</field>
+            <field name="target_value">80</field>
+            <field name="current_value">68</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="sequence">40</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 2: Urban Housing Development -->
+        <record id="kra_urban_housing_complete" model="key.result.area">
+            <field name="name">Urban Housing Development</field>
+            <field name="description">Promote sustainable housing development and improve informal settlements</field>
+            <field name="sequence">20</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KPIs for Urban Housing -->
+        <record id="kpi_affordable_housing_units" model="key.performance.indicator">
+            <field name="name">Affordable Housing Units Delivered</field>
+            <field name="description">Number of affordable housing units constructed annually</field>
+            <field name="kra_id" ref="kra_urban_housing_complete"/>
+            <field name="measurement_unit">Units</field>
+            <field name="baseline_value">100</field>
+            <field name="target_value">500</field>
+            <field name="current_value">320</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_slum_upgrading" model="key.performance.indicator">
+            <field name="name">Slum Areas Upgraded</field>
+            <field name="description">Number of slum/informal settlement areas upgraded with basic services</field>
+            <field name="kra_id" ref="kra_urban_housing_complete"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">2</field>
+            <field name="target_value">10</field>
+            <field name="current_value">6</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_housing_permits" model="key.performance.indicator">
+            <field name="name">Housing Development Permits Processed</field>
+            <field name="description">Number of housing development permits processed and approved</field>
+            <field name="kra_id" ref="kra_urban_housing_complete"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">150</field>
+            <field name="target_value">300</field>
+            <field name="current_value">240</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 3: Water and Sanitation Infrastructure -->
+        <record id="kra_water_sanitation_complete" model="key.result.area">
+            <field name="name">Water and Sanitation Infrastructure</field>
+            <field name="description">Develop and maintain water supply and sanitation infrastructure systems</field>
+            <field name="sequence">30</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KPIs for Water and Sanitation -->
+        <record id="kpi_water_supply_coverage" model="key.performance.indicator">
+            <field name="name">Water Supply Coverage</field>
+            <field name="description">Percentage of city population with access to clean water supply</field>
+            <field name="kra_id" ref="kra_water_sanitation_complete"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">65</field>
+            <field name="target_value">90</field>
+            <field name="current_value">78</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="sequence">10</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_sewerage_coverage" model="key.performance.indicator">
+            <field name="name">Sewerage System Coverage</field>
+            <field name="description">Percentage of city areas connected to sewerage system</field>
+            <field name="kra_id" ref="kra_water_sanitation_complete"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">35</field>
+            <field name="target_value">70</field>
+            <field name="current_value">52</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="sequence">20</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_drainage_systems" model="key.performance.indicator">
+            <field name="name">Drainage Systems Upgraded</field>
+            <field name="description">Kilometers of drainage systems upgraded or newly constructed</field>
+            <field name="kra_id" ref="kra_water_sanitation_complete"/>
+            <field name="measurement_unit">Km</field>
+            <field name="baseline_value">20</field>
+            <field name="target_value">60</field>
+            <field name="current_value">45</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 4: Digital Infrastructure -->
+        <record id="kra_digital_infrastructure_complete" model="key.result.area">
+            <field name="name">Digital Infrastructure</field>
+            <field name="description">Develop ICT and digital infrastructure for smart city initiatives</field>
+            <field name="sequence">40</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KPIs for Digital Infrastructure -->
+        <record id="kpi_fiber_optic_coverage" model="key.performance.indicator">
+            <field name="name">Fiber Optic Network Coverage</field>
+            <field name="description">Percentage of city areas covered by fiber optic network</field>
+            <field name="kra_id" ref="kra_digital_infrastructure_complete"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">25</field>
+            <field name="target_value">75</field>
+            <field name="current_value">48</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="sequence">10</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_wifi_hotspots" model="key.performance.indicator">
+            <field name="name">Public WiFi Hotspots Installed</field>
+            <field name="description">Number of public WiFi hotspots installed in strategic locations</field>
+            <field name="kra_id" ref="kra_digital_infrastructure_complete"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">10</field>
+            <field name="target_value">50</field>
+            <field name="current_value">32</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_smart_traffic_lights" model="key.performance.indicator">
+            <field name="name">Smart Traffic Management Systems</field>
+            <field name="description">Number of smart traffic lights and management systems installed</field>
+            <field name="kra_id" ref="kra_digital_infrastructure_complete"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">5</field>
+            <field name="target_value">25</field>
+            <field name="current_value">18</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 5: Energy Infrastructure -->
+        <record id="kra_energy_infrastructure_complete" model="key.result.area">
+            <field name="name">Energy Infrastructure</field>
+            <field name="description">Develop sustainable energy infrastructure and improve energy efficiency</field>
+            <field name="sequence">50</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KPIs for Energy Infrastructure -->
+        <record id="kpi_street_lighting_coverage" model="key.performance.indicator">
+            <field name="name">Street Lighting Coverage</field>
+            <field name="description">Percentage of city streets with functional street lighting</field>
+            <field name="kra_id" ref="kra_energy_infrastructure_complete"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">60</field>
+            <field name="target_value">95</field>
+            <field name="current_value">82</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="sequence">10</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_led_streetlights" model="key.performance.indicator">
+            <field name="name">LED Streetlights Installed</field>
+            <field name="description">Number of energy-efficient LED streetlights installed</field>
+            <field name="kra_id" ref="kra_energy_infrastructure_complete"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">500</field>
+            <field name="target_value">2000</field>
+            <field name="current_value">1350</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="kpi_solar_installations" model="key.performance.indicator">
+            <field name="name">Solar Energy Installations</field>
+            <field name="description">Number of solar energy installations in public buildings</field>
+            <field name="kra_id" ref="kra_energy_infrastructure_complete"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">3</field>
+            <field name="target_value">15</field>
+            <field name="current_value">9</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+            <field name="weight">1.0</field>
+            <field name="active">True</field>
+        </record>
+
+    </data>
+</odoo>

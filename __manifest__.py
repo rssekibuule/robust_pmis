@@ -64,9 +64,15 @@ Hierarchical Structure:
         'data/kpi_thematic_classification.xml',
         'data/sample_kpi_linkages.xml',
 
+        # Infrastructure strategic goal and objective
+        'data/infrastructure_strategic_goal.xml',
+        
         # Demo data for Infrastructure Development objective
         'data/strategic_objective_infrastructure.xml',
         'data/demo_infrastructure_kra_kpi.xml',
+        'data/infrastructure_demo_data.xml',
+        'data/infrastructure_development_complete_demo.xml',
+        'data/infrastructure_development_demo_data.xml',
 
         # Views - Strategic Management
         'views/strategic_goal_views.xml',

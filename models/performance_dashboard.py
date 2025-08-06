@@ -59,31 +59,3 @@ class PerformanceDashboard(models.Model):
                 rec.avg_division_performance = sum(divisions.mapped('overall_performance')) / rec.total_divisions
             else:
                 rec.avg_division_performance = 0.0
-
-
-class KeyPerformanceIndicator(models.Model):
-    _name = 'key.performance.indicator'
-    _description = 'Key Performance Indicator'
-
-    name = fields.Char(string='KPI Name', required=True)
-    kra_id = fields.Many2one('key.result.area', string='Key Result Area', required=True)
-    description = fields.Text(string='Description')
-    frequency = fields.Selection([
-        ('daily', 'Daily'),
-        ('weekly', 'Weekly'),
-        ('monthly', 'Monthly'),
-        ('quarterly', 'Quarterly'),
-        ('annual', 'Annual')
-    ], string='Frequency', default='annual')
-    active = fields.Boolean(string='Active', default=True)
-    target_value = fields.Float(string='Target Value', help='The target value for this KPI.')
-    current_value = fields.Float(string='Current Value', help='The current value achieved for this KPI.')
-    achievement_percentage = fields.Float(string='Achievement Percentage', compute='_compute_achievement_percentage', store=True)
-
-    @api.depends('target_value', 'current_value')
-    def _compute_achievement_percentage(self):
-        for rec in self:
-            if rec.target_value:
-                rec.achievement_percentage = (rec.current_value / rec.target_value) * 100
-            else:
-                rec.achievement_percentage = 0.0
