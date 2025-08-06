@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Programme-Directorate Relationship Tree View -->
+        <record id="view_programme_directorate_rel_tree" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.tree</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <list string="Programme-Directorate Relationships"
+                      decoration-info="implementation_role=='primary'"
+                      decoration-muted="not active"
+                      default_order="programme_sequence,directorate_sequence">
+                    <field name="programme_name" string="Programme" width="300px"/>
+                    <field name="directorate_name" string="Implementing Directorate" width="200px"/>
+                    <field name="implementation_role" string="Role" width="100px"/>
+                    <field name="responsibility_percentage" string="Responsibility %" width="120px"/>
+                    <field name="strategic_objective_name" string="Strategic Objective" optional="hide" width="250px"/>
+                    <field name="master_table_row" string="Master Table Row" optional="hide" width="80px"/>
+                    <field name="active" string="Active" width="80px"/>
+                    <field name="programme_sequence" invisible="1"/>
+                    <field name="directorate_sequence" invisible="1"/>
+                    <field name="programme_id" invisible="1"/>
+                    <field name="directorate_id" invisible="1"/>
+                    <field name="strategic_objective_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Programme-Directorate Relationship Form View -->
+        <record id="view_programme_directorate_rel_form" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.form</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <form string="Programme-Directorate Relationship">
+                    <header>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_performance_indicators"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-tachometer"
+                                    invisible="performance_indicator_count == 0">
+                                <field name="performance_indicator_count" widget="statinfo" string="Performance Indicators"/>
+                            </button>
+
+                            <button name="action_view_piap_actions"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-tasks"
+                                    invisible="piap_action_count == 0">
+                                <field name="piap_action_count" widget="statinfo" string="PIAP Actions"/>
+                            </button>
+
+                            <button name="action_view_outputs"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-cube"
+                                    invisible="output_count == 0">
+                                <field name="output_count" widget="statinfo" string="Outputs"/>
+                            </button>
+
+                            <button name="action_view_interventions"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-cogs"
+                                    invisible="intervention_count == 0">
+                                <field name="intervention_count" widget="statinfo" string="Interventions"/>
+                            </button>
+
+                            <button name="action_view_intermediate_outcomes"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-bullseye"
+                                    invisible="intermediate_outcome_count == 0">
+                                <field name="intermediate_outcome_count" widget="statinfo" string="Intermediate Outcomes"/>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group name="relationship_info" string="Relationship Information">
+                                <field name="programme_id" options="{'no_create': True}"/>
+                                <field name="directorate_id" options="{'no_create': True}"/>
+                                <field name="strategic_objective_id" options="{'no_create': True}"/>
+                                <field name="master_table_row"/>
+                            </group>
+                            
+                            <group name="implementation_details" string="Implementation Details">
+                                <field name="implementation_role"/>
+                                <field name="responsibility_percentage"/>
+                            </group>
+                        </group>
+                        
+                        <group name="computed_fields" string="Computed Information">
+                            <group>
+                                <field name="programme_name" readonly="1"/>
+                                <field name="directorate_name" readonly="1"/>
+                                <field name="strategic_objective_name" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="programme_sequence" readonly="1"/>
+                                <field name="directorate_sequence" readonly="1"/>
+                                <field name="strategic_objective_sequence" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Programme-Directorate Relationship Kanban View -->
+        <record id="view_programme_directorate_rel_kanban" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.kanban</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="directorate_name" class="o_kanban_small_column">
+                    <field name="programme_name"/>
+                    <field name="directorate_name"/>
+                    <field name="implementation_role"/>
+                    <field name="responsibility_percentage"/>
+                    <field name="strategic_objective_name"/>
+                    <field name="active"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click #{!record.active.raw_value ? 'o_kanban_color_2' : ''}">
+                                <div class="o_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="programme_name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_body">
+                                            <div>
+                                                <i class="fa fa-building-o" title="Implementing Directorate"/> <field name="directorate_name"/>
+                                            </div>
+                                            <div t-if="record.implementation_role.raw_value">
+                                                <i class="fa fa-user" title="Implementation Role"/> <field name="implementation_role"/>
+                                            </div>
+                                            <div t-if="record.responsibility_percentage.raw_value">
+                                                <i class="fa fa-percent" title="Responsibility Percentage"/> <field name="responsibility_percentage"/>%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Programme-Directorate Relationship Search View -->
+        <record id="view_programme_directorate_rel_search" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.search</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <search string="Programme-Directorate Relationships">
+                    <field name="programme_id" string="Programme"/>
+                    <field name="directorate_id" string="Directorate"/>
+                    <field name="strategic_objective_id" string="Strategic Objective"/>
+                    <field name="implementation_role" string="Role"/>
+                    
+                    <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                    <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                    
+                    <separator/>
+                    <filter name="primary_implementer" string="Primary Implementer" 
+                            domain="[('implementation_role', '=', 'primary')]"/>
+                    <filter name="supporting_implementer" string="Supporting Implementer" 
+                            domain="[('implementation_role', '=', 'supporting')]"/>
+                    <filter name="coordinating_role" string="Coordinating Role" 
+                            domain="[('implementation_role', '=', 'coordinating')]"/>
+                    <filter name="monitoring_role" string="Monitoring Role" 
+                            domain="[('implementation_role', '=', 'monitoring')]"/>
+                    
+                    <separator/>
+                    <filter name="row_1" string="Row 1" domain="[('master_table_row', '=', 1)]"/>
+                    <filter name="row_2" string="Row 2" domain="[('master_table_row', '=', 2)]"/>
+                    <filter name="row_3" string="Row 3" domain="[('master_table_row', '=', 3)]"/>
+                    <filter name="row_4" string="Row 4" domain="[('master_table_row', '=', 4)]"/>
+                    <filter name="row_5" string="Row 5" domain="[('master_table_row', '=', 5)]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_master_table_row" string="Master Table Row" 
+                                context="{'group_by': 'master_table_row'}"/>
+                        <filter name="group_by_programme" string="Programme" 
+                                context="{'group_by': 'programme_id'}"/>
+                        <filter name="group_by_directorate" string="Directorate" 
+                                context="{'group_by': 'directorate_id'}"/>
+                        <filter name="group_by_strategic_objective" string="Strategic Objective" 
+                                context="{'group_by': 'strategic_objective_id'}"/>
+                        <filter name="group_by_implementation_role" string="Implementation Role" 
+                                context="{'group_by': 'implementation_role'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Programme-Directorate Relationship Action -->
+        <record id="action_programme_directorate_rel" model="ir.actions.act_window">
+            <field name="name">Programme-Directorate Relationships</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="search_view_id" ref="view_programme_directorate_rel_search"/>
+            <field name="context">{
+                'search_default_active': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Programme-Directorate Relationship
+                </p>
+                <p>
+                    Programme-Directorate relationships define which directorates are responsible
+                    for implementing specific programmes according to the master table structure.
+                </p>
+            </field>
+        </record>
+
+        <!-- Directorate Programme Performance Action -->
+        <record id="action_directorate_programme_performance" model="ir.actions.act_window">
+            <field name="name">Directorate Programme Performance</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="search_view_id" ref="view_programme_directorate_rel_search"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_directorate': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Track Directorate Programme Performance
+                </p>
+                <p>
+                    Monitor and evaluate the performance of programmes implemented by each directorate.
+                </p>
+            </field>
+        </record>
+
+        <!-- Strategic Objective Dashboard Views -->
+        <record id="view_strategic_objective_dashboard" model="ir.ui.view">
+            <field name="name">strategic.objective.dashboard</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard" default_group_by="strategic_objective_id">
+                    <field name="strategic_objective_id"/>
+                    <field name="strategic_objective_name"/>
+                    <field name="programme_id"/>
+                    <field name="programme_name"/>
+                    <field name="directorate_id"/>
+                    <field name="directorate_name"/>
+                    <field name="implementation_role"/>
+                    <field name="master_table_row"/>
+                    <field name="active"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click" style="margin: 5px; border-left: 4px solid #007cba;">
+                                <div class="o_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title" style="color: #007cba; font-size: 14px;">
+                                                <field name="programme_name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_body" style="margin-top: 8px;">
+                                            <div style="margin-bottom: 4px;">
+                                                <span title="Implementing Directorate" style="color: #6c757d;">🏢</span>
+                                                <span style="font-weight: 500;"><field name="directorate_name"/></span>
+                                            </div>
+                                            <div t-if="record.implementation_role.raw_value" style="margin-bottom: 4px;">
+                                                <span title="Implementation Role" style="color: #6c757d;">👤</span>
+                                                <span class="badge badge-info" style="font-size: 11px;"><field name="implementation_role"/></span>
+                                            </div>
+                                            <div style="font-size: 11px; color: #6c757d;">
+                                                <span title="Master Table Row">📋 Row </span><field name="master_table_row"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Strategic Objective List View -->
+        <record id="view_strategic_objective_list" model="ir.ui.view">
+            <field name="name">strategic.objective.list</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <list string="Strategic Implementation Overview" default_group_by="strategic_objective_id">
+                    <field name="strategic_objective_name" string="Strategic Objective"/>
+                    <field name="programme_name" string="Programme"/>
+                    <field name="directorate_name" string="Implementing Directorate"/>
+                    <field name="implementation_role" string="Role"/>
+                    <field name="master_table_row" string="Row" optional="hide"/>
+                    <field name="active" string="Active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Strategic Objective Dashboard Action -->
+        <record id="action_strategic_objective_dashboard" model="ir.actions.act_window">
+            <field name="name">Strategic Objective Dashboard</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">kanban,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_strategic_objective_dashboard')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_strategic_objective_list')})]"/>
+            <field name="search_view_id" ref="view_programme_directorate_rel_search"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_strategic_objective': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Strategic Implementation Overview
+                </p>
+                <p>
+                    This dashboard shows how programmes are organized under strategic objectives
+                    and which directorates are responsible for implementing each programme.
+                    Clear, intuitive grouping by strategic objective makes it easy to understand
+                    the implementation structure.
+                </p>
+            </field>
+        </record>
+
+        <!-- Keep the old action for backward compatibility but redirect to new one -->
+        <record id="action_master_table_dashboard" model="ir.actions.act_window">
+            <field name="name">Master Table Dashboard</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">kanban,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_strategic_objective_dashboard')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_strategic_objective_list')})]"/>
+            <field name="search_view_id" ref="view_programme_directorate_rel_search"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_strategic_objective': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Strategic Implementation Overview
+                </p>
+                <p>
+                    This dashboard shows how programmes are organized under strategic objectives
+                    and which directorates are responsible for implementing each programme.
+                </p>
+            </field>
+        </record>
+
+        <!-- Additional Views for Strategic Implementation Analysis -->
+        <record id="view_programme_directorate_rel_pivot" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.pivot</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <pivot string="Strategic Implementation Analysis">
+                    <field name="strategic_objective_name" type="row"/>
+                    <field name="directorate_name" type="col"/>
+                    <field name="id" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_programme_directorate_rel_graph_strategic" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.graph.strategic</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <graph string="Implementation by Strategic Objective" type="bar">
+                    <field name="strategic_objective_name" type="row"/>
+                    <field name="id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Strategic Implementation Analysis Action -->
+        <record id="action_strategic_implementation_analysis" model="ir.actions.act_window">
+            <field name="name">Strategic Implementation Analysis</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">pivot,graph,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_strategic')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_strategic_objective_list')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_strategic_objective': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Strategic Implementation Analysis
+                </p>
+                <p>
+                    Analyze how programmes are distributed across strategic objectives and
+                    which directorates are responsible for implementing each strategic area.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

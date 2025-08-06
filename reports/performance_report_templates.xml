@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Strategic Goal Performance Report Template -->
+        <template id="report_strategic_goal_performance">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="goal">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Strategic Goal Performance Report</h2>
+                                    <h3 t-field="goal.name"/>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <strong>Overall Progress:</strong>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             t-attf-style="width: #{goal.progress}%"
+                                             t-attf-aria-valuenow="#{goal.progress}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            <t t-esc="goal.progress"/>%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>Strategic Objectives:</strong> <span t-field="goal.objective_count"/></p>
+                                    <p><strong>Key Result Areas:</strong> <span t-field="goal.kra_count"/></p>
+                                    <p><strong>Key Performance Indicators:</strong> <span t-field="goal.kpi_count"/></p>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4>Description</h4>
+                                    <div t-field="goal.description"/>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4>Strategic Objectives</h4>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Objective</th>
+                                                <th>KRAs</th>
+                                                <th>Progress</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="goal.strategic_objective_ids" t-as="objective">
+                                                <td t-field="objective.name"/>
+                                                <td t-field="objective.kra_count"/>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             t-attf-style="width: #{objective.progress}%">
+                                                            <t t-esc="objective.progress"/>%
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- KPI Performance Report Template -->
+        <template id="report_kpi_performance">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="kpi">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>KPI Performance Report</h2>
+                                    <h3 t-field="kpi.name"/>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-4">
+                                    <p><strong>KRA:</strong> <span t-field="kpi.kra_id.name"/></p>
+                                    <p><strong>Directorate:</strong> <span t-field="kpi.directorate_id.name"/></p>
+                                    <p><strong>Responsible:</strong> <span t-field="kpi.responsible_user_id.name"/></p>
+                                </div>
+                                <div class="col-4">
+                                    <p><strong>Current Value:</strong> <span t-field="kpi.current_value"/> <span t-field="kpi.measurement_unit"/></p>
+                                    <p><strong>Target Value:</strong> <span t-field="kpi.target_value"/> <span t-field="kpi.measurement_unit"/></p>
+                                    <p><strong>Baseline:</strong> <span t-field="kpi.baseline_value"/> <span t-field="kpi.measurement_unit"/></p>
+                                </div>
+                                <div class="col-4">
+                                    <p><strong>Achievement:</strong></p>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             t-attf-style="width: #{kpi.achievement_percentage}%">
+                                            <t t-esc="kpi.achievement_percentage"/>%
+                                        </div>
+                                    </div>
+                                    <p><strong>Status:</strong> <span t-field="kpi.status"/></p>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4>Description</h4>
+                                    <div t-field="kpi.description"/>
+                                </div>
+                            </div>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

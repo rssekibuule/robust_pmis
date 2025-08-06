@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Division Performance Menu Structure -->
+        
+        <!-- Main Division Performance Menu (defined in main menu file) -->
+        
+        <!-- Division Management Submenu -->
+        <menuitem id="menu_division_management" 
+                  name="Division Management" 
+                  parent="menu_division_performance" 
+                  sequence="10"/>
+        
+        <!-- KCCA Divisions Menu Item -->
+        <menuitem id="menu_kcca_divisions" 
+                  name="KCCA Divisions" 
+                  parent="menu_division_management" 
+                  action="action_kcca_division" 
+                  sequence="10"/>
+        
+        <!-- Division Programme Performance Menu Item -->
+        <menuitem id="menu_division_programme_performance" 
+                  name="Programme Performance" 
+                  parent="menu_division_management" 
+                  action="action_division_programme_performance" 
+                  sequence="20"/>
+        
+        <!-- Performance Analytics Submenu -->
+        <menuitem id="menu_division_analytics" 
+                  name="Performance Analytics" 
+                  parent="menu_division_performance" 
+                  sequence="20"/>
+        
+        <!-- Division Performance Dashboard Menu Item -->
+        <menuitem id="menu_division_performance_dashboard" 
+                  name="Performance Dashboard" 
+                  parent="menu_division_analytics" 
+                  action="action_division_performance_dashboard" 
+                  sequence="10"/>
+        
+        <!-- Division Performance Analytics Menu Item -->
+        <menuitem id="menu_division_performance_analytics" 
+                  name="Advanced Analytics" 
+                  parent="menu_division_analytics" 
+                  action="action_division_performance_analytics" 
+                  sequence="20"/>
+        
+        <!-- Budget Performance Menu Item -->
+        <menuitem id="menu_division_budget_performance" 
+                  name="Budget Performance" 
+                  parent="menu_division_analytics" 
+                  action="action_division_budget_performance" 
+                  sequence="30"/>
+        
+        <!-- Beneficiary Impact Menu Item -->
+        <menuitem id="menu_division_beneficiary_impact" 
+                  name="Beneficiary Impact" 
+                  parent="menu_division_analytics" 
+                  action="action_division_beneficiary_impact" 
+                  sequence="40"/>
+        
+        <!-- Reports Submenu -->
+        <menuitem id="menu_division_reports" 
+                  name="Reports" 
+                  parent="menu_division_performance" 
+                  sequence="30"/>
+        
+        <!-- Division Performance Report Action -->
+        <record id="action_division_performance_report" model="ir.actions.act_window">
+            <field name="name">Division Performance Report</field>
+            <field name="res_model">division.programme.rel</field>
+            <field name="view_mode">pivot,graph,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_division_programme_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_division_programme_rel_graph_performance')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_division_programme_rel_list')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_division': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Generate Division Performance Reports
+                </p>
+                <p>
+                    Create comprehensive reports on division performance across programmes 
+                    with detailed analytics and comparative metrics.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Division Comparison Report Action -->
+        <record id="action_division_comparison_report" model="ir.actions.act_window">
+            <field name="name">Division Comparison Report</field>
+            <field name="res_model">division.programme.rel</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_division_programme_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_division_programme_rel_graph_performance')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'pivot_measures': ['performance_score', 'completion_percentage', 'budget_utilization', 'beneficiary_achievement'],
+                'pivot_row_groupby': ['division_id'],
+                'pivot_col_groupby': ['programme_id']
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Compare Division Performance
+                </p>
+                <p>
+                    Compare performance across divisions and programmes to identify 
+                    best practices and areas for improvement.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Programme Implementation Status Report Action -->
+        <record id="action_programme_implementation_status_report" model="ir.actions.act_window">
+            <field name="name">Programme Implementation Status</field>
+            <field name="res_model">division.programme.rel</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_division_programme_rel_graph_status')}),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_division_programme_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_division_programme_rel_list')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_status': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Track Programme Implementation
+                </p>
+                <p>
+                    Monitor the implementation status of programmes across all divisions 
+                    to ensure timely delivery and identify bottlenecks.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Division Performance Report Menu Item -->
+        <menuitem id="menu_division_performance_report" 
+                  name="Performance Report" 
+                  parent="menu_division_reports" 
+                  action="action_division_performance_report" 
+                  sequence="10"/>
+        
+        <!-- Division Comparison Report Menu Item -->
+        <menuitem id="menu_division_comparison_report" 
+                  name="Division Comparison" 
+                  parent="menu_division_reports" 
+                  action="action_division_comparison_report" 
+                  sequence="20"/>
+        
+        <!-- Programme Implementation Status Report Menu Item -->
+        <menuitem id="menu_programme_implementation_status_report" 
+                  name="Implementation Status" 
+                  parent="menu_division_reports" 
+                  action="action_programme_implementation_status_report" 
+                  sequence="30"/>
+        
+        <!-- Quick Access Menu Items in Main Menu -->
+
+        <!-- Add Division Performance to Reports Menu -->
+        <menuitem id="menu_division_performance_main_reports"
+                  name="Division Performance"
+                  parent="menu_analytics_reports"
+                  action="action_division_performance_dashboard"
+                  sequence="60"/>
+        
+    </data>
+</odoo>

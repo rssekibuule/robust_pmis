@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- KCCA Territorial Divisions -->
+        <!-- These are the 5 main territorial divisions of KCCA that implement all programmes -->
+        
+        <!-- Create a special directorate for territorial divisions -->
+        <record id="directorate_territorial_divisions" model="kcca.directorate">
+            <field name="name">Territorial Divisions</field>
+            <field name="code">TD</field>
+            <field name="description">
+                <![CDATA[
+                <p>KCCA Territorial Divisions are the five main administrative divisions that implement all KCCA programmes within their respective geographical areas:</p>
+                <ul>
+                    <li><strong>Central Division</strong> - Covers the central business district and surrounding areas</li>
+                    <li><strong>Kawempe Division</strong> - Covers the northern part of Kampala</li>
+                    <li><strong>Lubaga Division</strong> - Covers the western part of Kampala</li>
+                    <li><strong>Makindye Division</strong> - Covers the southern part of Kampala</li>
+                    <li><strong>Nakawa Division</strong> - Covers the eastern part of Kampala</li>
+                </ul>
+                <p>Each division implements all 13 KCCA programmes within their territorial boundaries.</p>
+                ]]>
+            </field>
+            <field name="sequence">1</field>
+            <field name="active">True</field>
+            <field name="color">#2E8B57</field>
+        </record>
+        
+        <!-- Central Division -->
+        <record id="division_central" model="kcca.division">
+            <field name="name">Central Division</field>
+            <field name="code">CD</field>
+            <field name="description">
+                <![CDATA[
+                <p><strong>Central Division</strong> is the heart of Kampala, covering the central business district and surrounding areas.</p>
+                <h4>Key Areas:</h4>
+                <ul>
+                    <li>Central Business District (CBD)</li>
+                    <li>Nakasero</li>
+                    <li>Kololo</li>
+                    <li>Kamwokya</li>
+                    <li>Industrial Area</li>
+                </ul>
+                <h4>Key Responsibilities:</h4>
+                <ul>
+                    <li>Commercial and business district management</li>
+                    <li>Tourism and hospitality services</li>
+                    <li>Traffic and transport coordination</li>
+                    <li>Urban planning and development</li>
+                </ul>
+                ]]>
+            </field>
+            <field name="directorate_id" ref="directorate_territorial_divisions"/>
+            <field name="sequence">1</field>
+            <field name="active">True</field>
+            <field name="email">central@kcca.go.ug</field>
+            <field name="phone">+256-414-231-000</field>
+            <field name="office_location">City Hall, Central Division</field>
+        </record>
+        
+        <!-- Kawempe Division -->
+        <record id="division_kawempe" model="kcca.division">
+            <field name="name">Kawempe Division</field>
+            <field name="code">KD</field>
+            <field name="description">
+                <![CDATA[
+                <p><strong>Kawempe Division</strong> covers the northern part of Kampala with a mix of residential, commercial, and industrial areas.</p>
+                <h4>Key Areas:</h4>
+                <ul>
+                    <li>Kawempe</li>
+                    <li>Kyebando</li>
+                    <li>Mulago</li>
+                    <li>Makerere</li>
+                    <li>Wandegeya</li>
+                    <li>Bwaise</li>
+                </ul>
+                <h4>Key Responsibilities:</h4>
+                <ul>
+                    <li>Healthcare services coordination (Mulago Hospital area)</li>
+                    <li>Education services (Makerere University area)</li>
+                    <li>Informal settlement management</li>
+                    <li>Market and trade center management</li>
+                </ul>
+                ]]>
+            </field>
+            <field name="directorate_id" ref="directorate_territorial_divisions"/>
+            <field name="sequence">2</field>
+            <field name="active">True</field>
+            <field name="email">kawempe@kcca.go.ug</field>
+            <field name="phone">+256-414-232-000</field>
+            <field name="office_location">Kawempe Division Headquarters</field>
+        </record>
+        
+        <!-- Lubaga Division -->
+        <record id="division_lubaga" model="kcca.division">
+            <field name="name">Lubaga Division</field>
+            <field name="code">LD</field>
+            <field name="description">
+                <![CDATA[
+                <p><strong>Lubaga Division</strong> covers the western part of Kampala, including historical and cultural sites.</p>
+                <h4>Key Areas:</h4>
+                <ul>
+                    <li>Lubaga</li>
+                    <li>Mengo</li>
+                    <li>Ndeeba</li>
+                    <li>Lungujja</li>
+                    <li>Busega</li>
+                    <li>Nakulabye</li>
+                </ul>
+                <h4>Key Responsibilities:</h4>
+                <ul>
+                    <li>Cultural heritage preservation</li>
+                    <li>Religious sites management</li>
+                    <li>Residential area development</li>
+                    <li>Community services delivery</li>
+                </ul>
+                ]]>
+            </field>
+            <field name="directorate_id" ref="directorate_territorial_divisions"/>
+            <field name="sequence">3</field>
+            <field name="active">True</field>
+            <field name="email">lubaga@kcca.go.ug</field>
+            <field name="phone">+256-414-233-000</field>
+            <field name="office_location">Lubaga Division Headquarters</field>
+        </record>
+        
+        <!-- Makindye Division -->
+        <record id="division_makindye" model="kcca.division">
+            <field name="name">Makindye Division</field>
+            <field name="code">MD</field>
+            <field name="description">
+                <![CDATA[
+                <p><strong>Makindye Division</strong> covers the southern part of Kampala with diverse residential and commercial areas.</p>
+                <h4>Key Areas:</h4>
+                <ul>
+                    <li>Makindye</li>
+                    <li>Kansanga</li>
+                    <li>Kabalagala</li>
+                    <li>Kibuli</li>
+                    <li>Katwe</li>
+                    <li>Nsambya</li>
+                </ul>
+                <h4>Key Responsibilities:</h4>
+                <ul>
+                    <li>Industrial area management</li>
+                    <li>Market and commercial center oversight</li>
+                    <li>Residential development planning</li>
+                    <li>Transport and infrastructure development</li>
+                </ul>
+                ]]>
+            </field>
+            <field name="directorate_id" ref="directorate_territorial_divisions"/>
+            <field name="sequence">4</field>
+            <field name="active">True</field>
+            <field name="email">makindye@kcca.go.ug</field>
+            <field name="phone">+256-414-234-000</field>
+            <field name="office_location">Makindye Division Headquarters</field>
+        </record>
+        
+        <!-- Nakawa Division -->
+        <record id="division_nakawa" model="kcca.division">
+            <field name="name">Nakawa Division</field>
+            <field name="code">ND</field>
+            <field name="description">
+                <![CDATA[
+                <p><strong>Nakawa Division</strong> covers the eastern part of Kampala with significant industrial and educational facilities.</p>
+                <h4>Key Areas:</h4>
+                <ul>
+                    <li>Nakawa</li>
+                    <li>Ntinda</li>
+                    <li>Naguru</li>
+                    <li>Bukoto</li>
+                    <li>Kisasi</li>
+                    <li>Kyanja</li>
+                </ul>
+                <h4>Key Responsibilities:</h4>
+                <ul>
+                    <li>Industrial zone management</li>
+                    <li>Educational institutions coordination</li>
+                    <li>Technology and innovation hubs</li>
+                    <li>Residential and commercial development</li>
+                </ul>
+                ]]>
+            </field>
+            <field name="directorate_id" ref="directorate_territorial_divisions"/>
+            <field name="sequence">5</field>
+            <field name="active">True</field>
+            <field name="email">nakawa@kcca.go.ug</field>
+            <field name="phone">+256-414-235-000</field>
+            <field name="office_location">Nakawa Division Headquarters</field>
+        </record>
+        
+    </data>
+</odoo>

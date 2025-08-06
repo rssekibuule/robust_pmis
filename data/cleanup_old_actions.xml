@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Delete old conflicting action -->
+        <delete model="ir.actions.client" search="[('tag', '=', 'kcca_pmis_dashboard')]"/>
+        <delete model="ir.actions.client" search="[('name', '=', 'Performance Dashboard')]"/>
+    </data>
+</odoo>

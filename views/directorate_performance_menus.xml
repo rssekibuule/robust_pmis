@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Directorate Performance Menu Structure -->
+
+        <!-- Directorate Management Submenu -->
+        <menuitem id="menu_directorate_management"
+                  name="Directorate Management"
+                  parent="menu_directorate_performance"
+                  sequence="10"/>
+        
+        <!-- KCCA Directorates Menu Item -->
+        <menuitem id="menu_kcca_directorates" 
+                  name="KCCA Directorates" 
+                  parent="menu_directorate_management" 
+                  action="action_kcca_directorate" 
+                  sequence="10"/>
+        
+        <!-- Directorate Programme Performance Menu Item -->
+        <menuitem id="menu_directorate_programme_performance" 
+                  name="Programme Performance" 
+                  parent="menu_directorate_management" 
+                  action="action_directorate_programme_performance" 
+                  sequence="20"/>
+        
+        <!-- Performance Analytics Submenu -->
+        <menuitem id="menu_directorate_analytics"
+                  name="Performance Analytics"
+                  parent="menu_directorate_performance"
+                  sequence="20"/>
+        
+        <!-- Directorate Performance Dashboard Menu Item -->
+        <menuitem id="menu_directorate_performance_dashboard" 
+                  name="Performance Dashboard" 
+                  parent="menu_directorate_analytics" 
+                  action="action_directorate_performance_dashboard" 
+                  sequence="10"/>
+        
+        <!-- Directorate Performance Analytics Menu Item -->
+        <menuitem id="menu_directorate_performance_analytics" 
+                  name="Advanced Analytics" 
+                  parent="menu_directorate_analytics" 
+                  action="action_directorate_performance_analytics" 
+                  sequence="20"/>
+        
+        <!-- Budget Performance Menu Item -->
+        <menuitem id="menu_directorate_budget_performance" 
+                  name="Budget Performance" 
+                  parent="menu_directorate_analytics" 
+                  action="action_directorate_budget_performance" 
+                  sequence="30"/>
+        
+        <!-- Impact Analysis Menu Item -->
+        <menuitem id="menu_directorate_impact_analysis" 
+                  name="Impact Analysis" 
+                  parent="menu_directorate_analytics" 
+                  action="action_directorate_impact_analysis" 
+                  sequence="40"/>
+        
+        <!-- Reports Submenu -->
+        <menuitem id="menu_directorate_reports"
+                  name="Reports"
+                  parent="menu_directorate_performance"
+                  sequence="30"/>
+        
+        <!-- Directorate Performance Report Action -->
+        <record id="action_directorate_performance_report" model="ir.actions.act_window">
+            <field name="name">Directorate Performance Report</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">pivot,graph,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_performance')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_programme_directorate_rel_tree')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_directorate': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Directorate Performance Report
+                </p>
+                <p>
+                    Generate comprehensive performance reports for directorates showing 
+                    programme implementation status, responsibility allocation, and key metrics.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Directorate Comparison Report Action -->
+        <record id="action_directorate_comparison_report" model="ir.actions.act_window">
+            <field name="name">Directorate Comparison Report</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_performance')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'pivot_measures': ['responsibility_percentage'],
+                'pivot_row_groupby': ['directorate_id'],
+                'pivot_col_groupby': ['programme_id']
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Compare Directorate Performance
+                </p>
+                <p>
+                    Compare performance across directorates and programmes to identify 
+                    best practices and areas for improvement.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Implementation Role Analysis Report Action -->
+        <record id="action_implementation_role_analysis_report" model="ir.actions.act_window">
+            <field name="name">Implementation Role Analysis</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_status')}),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_programme_directorate_rel_tree')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_implementation_role': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Track Implementation Roles
+                </p>
+                <p>
+                    Monitor the implementation roles of directorates across programmes 
+                    to ensure proper coordination and accountability.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Directorate Performance Report Menu Item -->
+        <menuitem id="menu_directorate_performance_report" 
+                  name="Performance Report" 
+                  parent="menu_directorate_reports" 
+                  action="action_directorate_performance_report" 
+                  sequence="10"/>
+        
+        <!-- Directorate Comparison Report Menu Item -->
+        <menuitem id="menu_directorate_comparison_report" 
+                  name="Directorate Comparison" 
+                  parent="menu_directorate_reports" 
+                  action="action_directorate_comparison_report" 
+                  sequence="20"/>
+        
+        <!-- Implementation Role Analysis Report Menu Item -->
+        <menuitem id="menu_implementation_role_analysis_report" 
+                  name="Implementation Role Analysis" 
+                  parent="menu_directorate_reports" 
+                  action="action_implementation_role_analysis_report" 
+                  sequence="30"/>
+        
+        <!-- Quick Access Menu Items in Main Menu -->
+
+        <!-- Add Directorate Performance to Reports Menu -->
+        <menuitem id="menu_directorate_performance_main_reports"
+                  name="Directorate Performance"
+                  parent="menu_analytics_reports"
+                  action="action_directorate_performance_dashboard"
+                  sequence="50"/>
+        
+    </data>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Remove any remaining dashboard action references -->
+        <delete model="ir.actions.act_window" search="[('name', 'ilike', 'dashboard')]"/>
+        <delete model="ir.actions.client" search="[('tag', '=', 'kcca_dashboard')]"/>
+        <delete model="ir.actions.client" search="[('tag', '=', 'kcca_pmis_dashboard')]"/>
+        <delete model="ir.actions.client" search="[('name', 'ilike', 'kcca dashboard')]"/>
+        <delete model="ir.actions.client" search="[('name', 'ilike', 'strategic performance dashboard')]"/>
+        <delete model="ir.actions.client" search="[('name', 'ilike', 'performance dashboard')]"/>
+
+        <!-- Remove any problematic menu items -->
+        <delete model="ir.ui.menu" search="[('name', '=', '📊 Strategic Performance Dashboard')]"/>
+        <delete model="ir.ui.menu" search="[('name', '=', 'Strategic Performance Dashboard')]"/>
+        <delete model="ir.ui.menu" search="[('name', 'ilike', 'strategic performance dashboard')]"/>
+        <delete model="ir.ui.menu" search="[('name', 'ilike', 'kcca dashboard')]"/>
+
+        <!-- Remove any web app references -->
+        <delete model="ir.actions.client" search="[('tag', 'ilike', 'dashboard')]"/>
+
+        <!-- Removed invalid clear_caches function calls causing errors -->
+
+        <!-- Remove specific problematic actions -->
+        <delete model="ir.actions.client" search="[('tag', '=', 'strategic_programme_dashboard')]"/>
+        <delete model="ir.ui.menu" search="[('name', '=', 'Strategic-Programme Dashboard')]"/>
+
+        <!-- Clear template cache -->
+        <delete model="ir.ui.view" search="[('name', 'ilike', 'dashboard'), ('type', '=', 'qweb')]"/>
+
+        <!-- Clean up user action references -->
+        <record id="base.user_admin" model="res.users">
+            <field name="action_id" eval="False"/>
+        </record>
+
+        <record id="user_kcca_demo" model="res.users">
+            <field name="action_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

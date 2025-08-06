@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Programme-Directorate Relationships based on Master Table -->
+        <!-- This file implements the correct many-to-many relationships -->
+        
+        <!-- ROW 1: Strategic Objective 1 - 8 programmes → 5 directorates -->
+        
+        <!-- Agro-Industrialization → 5 directorates -->
+        <record id="rel_agro_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_agro_industrialization"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_agro_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_agro_industrialization"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_agro_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_agro_industrialization"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_agro_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_agro_industrialization"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_agro_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_agro_industrialization"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <!-- Private Sector Development → 5 directorates -->
+        <record id="rel_private_sector_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_private_sector_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_private_sector_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_private_sector_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_private_sector_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <!-- Integrated Transport Infrastructure and Services → 5 directorates -->
+        <record id="rel_transport_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_transport_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_transport_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_transport_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_transport_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Development Plan Implementation → 5 directorates (Row 1) -->
+        <record id="rel_dev_plan_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_dev_plan_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_dev_plan_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_dev_plan_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_dev_plan_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Tourism Development → 5 directorates -->
+        <record id="rel_tourism_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_tourism_development"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_tourism_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_tourism_development"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_tourism_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_tourism_development"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_tourism_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_tourism_development"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_tourism_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_tourism_development"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Natural Resources, Environment, Climate Change, Water and Land Management → 5 directorates -->
+        <record id="rel_natural_resources_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_natural_resources_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_natural_resources_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_natural_resources_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_natural_resources_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Sustainable Urbanization and Housing → 5 directorates -->
+        <record id="rel_sustainable_urbanization_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_urbanization"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_sustainable_urbanization_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_urbanization"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_sustainable_urbanization_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_urbanization"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_sustainable_urbanization_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_urbanization"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_sustainable_urbanization_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_urbanization"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Digital Transformation → 5 directorates -->
+        <record id="rel_digital_transformation_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_digital_transformation_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_digital_transformation_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_digital_transformation_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_digital_transformation_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- ROW 2: Strategic Objective 2 - 1 programme → 3 directorates -->
+        
+        <!-- Human Capital Development → 3 directorates -->
+        <record id="rel_human_capital_public_health" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="directorate_id" ref="directorate_public_health"/>
+            <field name="master_table_row">2</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_human_capital_education" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="directorate_id" ref="directorate_education_sports"/>
+            <field name="master_table_row">2</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_human_capital_gender" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="directorate_id" ref="directorate_gender_community"/>
+            <field name="master_table_row">2</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <!-- ROW 3: Strategic Objective 3 - 3 programmes → 2 directorates -->
+        
+        <!-- Legislation, Oversight and Representation → 2 directorates -->
+        <record id="rel_legislation_legislative" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_legislation_oversight"/>
+            <field name="directorate_id" ref="directorate_legislative_political"/>
+            <field name="master_table_row">3</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_legislation_legal" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_legislation_oversight"/>
+            <field name="directorate_id" ref="directorate_legal_affairs"/>
+            <field name="master_table_row">3</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <!-- Administration of Justice → 2 directorates -->
+        <record id="rel_justice_legislative" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_admin_justice"/>
+            <field name="directorate_id" ref="directorate_legislative_political"/>
+            <field name="master_table_row">3</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_justice_legal" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_admin_justice"/>
+            <field name="directorate_id" ref="directorate_legal_affairs"/>
+            <field name="master_table_row">3</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <!-- Governance and Security → 2 directorates -->
+        <record id="rel_governance_legislative" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_governance_security"/>
+            <field name="directorate_id" ref="directorate_legislative_political"/>
+            <field name="master_table_row">3</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_governance_legal" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_governance_security"/>
+            <field name="directorate_id" ref="directorate_legal_affairs"/>
+            <field name="master_table_row">3</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- ROW 4: Strategic Objective 4 - 2 programmes → 2 directorates -->
+
+        <!-- Development Plan Implementation (Row 4) → 2 directorates -->
+        <record id="rel_dev_plan_treasury_row4" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_treasury_services"/>
+            <field name="master_table_row">4</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_dev_plan_hr_row4" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_human_resource"/>
+            <field name="master_table_row">4</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Digital Transformation (Row 4) → 2 directorates -->
+        <record id="rel_digital_transformation_treasury_row4" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="directorate_id" ref="directorate_treasury_services"/>
+            <field name="master_table_row">4</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_digital_transformation_hr_row4" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="directorate_id" ref="directorate_human_resource"/>
+            <field name="master_table_row">4</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- ROW 5: Strategic Objective 5 - 3 programmes → 4 directorates -->
+        
+        <record id="rel_public_sector_treasury" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_public_sector_transformation"/>
+            <field name="directorate_id" ref="directorate_treasury_services"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_public_sector_hr" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_public_sector_transformation"/>
+            <field name="directorate_id" ref="directorate_human_resource"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_public_sector_admin_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_public_sector_transformation"/>
+            <field name="directorate_id" ref="directorate_administration_ict"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+        
+        <record id="rel_public_sector_internal_audit" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_public_sector_transformation"/>
+            <field name="directorate_id" ref="directorate_internal_audit"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Natural Resources, Environment, Climate Change, Water and Land Management (Row 5) → 4 directorates -->
+        <record id="rel_natural_resources_treasury_row5" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_treasury_services"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_natural_resources_hr_row5" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_human_resource"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_natural_resources_admin_ict_row5" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_administration_ict"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_natural_resources_internal_audit_row5" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="directorate_id" ref="directorate_internal_audit"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Development Plan Implementation (Row 5) → 4 directorates -->
+        <record id="rel_dev_plan_treasury_row5" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_treasury_services"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_dev_plan_hr_row5" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_human_resource"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_dev_plan_admin_ict_row5" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_administration_ict"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_dev_plan_internal_audit_row5" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="directorate_id" ref="directorate_internal_audit"/>
+            <field name="master_table_row">5</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Sustainable Energy Development → 5 directorates (Row 1 - Economic Growth) -->
+        <record id="rel_sustainable_energy_prod_commercial" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="directorate_id" ref="directorate_production_commercial"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_sustainable_energy_engineering" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="directorate_id" ref="directorate_engineering"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_sustainable_energy_revenue" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="directorate_id" ref="directorate_revenue_administration"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_sustainable_energy_physical_planning" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="directorate_id" ref="directorate_physical_planning"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <record id="rel_sustainable_energy_ict" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="directorate_id" ref="directorate_ict"/>
+            <field name="master_table_row">1</field>
+            <field name="implementation_role">primary</field>
+        </record>
+
+        <!-- Sustainable Energy Development → 3 directorates (Row 2 - Productivity & Wellbeing) -->
+        <record id="rel_sustainable_energy_public_health" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="directorate_id" ref="directorate_public_health"/>
+            <field name="master_table_row">2</field>
+            <field name="implementation_role">supporting</field>
+        </record>
+
+        <record id="rel_sustainable_energy_education_sports" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="directorate_id" ref="directorate_education_sports"/>
+            <field name="master_table_row">2</field>
+            <field name="implementation_role">supporting</field>
+        </record>
+
+        <record id="rel_sustainable_energy_gender_community" model="programme.directorate.rel">
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="directorate_id" ref="directorate_gender_community"/>
+            <field name="master_table_row">2</field>
+            <field name="implementation_role">supporting</field>
+        </record>
+
+    </data>
+</odoo>

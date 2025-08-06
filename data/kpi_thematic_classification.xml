@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- ========================================= -->
+        <!-- STRATEGIC KPI THEMATIC CLASSIFICATION -->
+        <!-- ========================================= -->
+        
+        <!-- Revenue & Finance KPIs -->
+        <record id="kpi_lr_generated" model="key.performance.indicator">
+            <field name="thematic_area">finance</field>
+        </record>
+        
+        <record id="kpi_non_traditional_budget" model="key.performance.indicator">
+            <field name="thematic_area">finance</field>
+        </record>
+        
+        <record id="kpi_budget_released" model="key.performance.indicator">
+            <field name="thematic_area">finance</field>
+        </record>
+        
+        <!-- Infrastructure & Transport KPIs -->
+        <record id="kpi_paved_roads" model="key.performance.indicator">
+            <field name="thematic_area">infrastructure</field>
+        </record>
+        
+        <record id="kpi_road_network_paved" model="key.performance.indicator">
+            <field name="thematic_area">infrastructure</field>
+        </record>
+        
+        <!-- Economic Development KPIs -->
+        <record id="kpi_unemployment_rate" model="key.performance.indicator">
+            <field name="thematic_area">economic</field>
+        </record>
+        
+        <record id="kpi_ict_enterprises" model="key.performance.indicator">
+            <field name="thematic_area">economic</field>
+        </record>
+        
+        <record id="kpi_economic_empowerment_access" model="key.performance.indicator">
+            <field name="thematic_area">economic</field>
+        </record>
+        
+        <record id="kpi_agricultural_commodities" model="key.performance.indicator">
+            <field name="thematic_area">economic</field>
+        </record>
+        
+        <record id="kpi_tourist_arrivals" model="key.performance.indicator">
+            <field name="thematic_area">economic</field>
+        </record>
+        
+        <!-- Education Services KPIs -->
+        <record id="kpi_literacy_lower_primary" model="key.performance.indicator">
+            <field name="thematic_area">education</field>
+        </record>
+        
+        <record id="kpi_numeracy_lower_primary" model="key.performance.indicator">
+            <field name="thematic_area">education</field>
+        </record>
+        
+        <record id="kpi_completion_primary" model="key.performance.indicator">
+            <field name="thematic_area">education</field>
+        </record>
+        
+        <record id="kpi_survival_primary" model="key.performance.indicator">
+            <field name="thematic_area">education</field>
+        </record>
+        
+        <!-- Health Services KPIs -->
+        <record id="kpi_maternal_deaths" model="key.performance.indicator">
+            <field name="thematic_area">health</field>
+        </record>
+        
+        <record id="kpi_perinatal_mortality" model="key.performance.indicator">
+            <field name="thematic_area">health</field>
+        </record>
+        
+        <record id="kpi_infant_mortality" model="key.performance.indicator">
+            <field name="thematic_area">health</field>
+        </record>
+        
+        <record id="kpi_hiv_prevalence" model="key.performance.indicator">
+            <field name="thematic_area">health</field>
+        </record>
+        
+        <record id="kpi_hiv_viral_suppression" model="key.performance.indicator">
+            <field name="thematic_area">health</field>
+        </record>
+        
+        <record id="kpi_ncd_mortality" model="key.performance.indicator">
+            <field name="thematic_area">health</field>
+        </record>
+        
+        <record id="kpi_opd_attendance" model="key.performance.indicator">
+            <field name="thematic_area">health</field>
+        </record>
+        
+        <!-- Governance & Legal KPIs -->
+        <record id="kpi_case_disposal_rate" model="key.performance.indicator">
+            <field name="thematic_area">governance</field>
+        </record>
+        
+        <record id="kpi_cases_favor_kcca" model="key.performance.indicator">
+            <field name="thematic_area">governance</field>
+        </record>
+        
+        <record id="kpi_council_recommendations" model="key.performance.indicator">
+            <field name="thematic_area">governance</field>
+        </record>
+        
+        <record id="kpi_ordinances_enacted" model="key.performance.indicator">
+            <field name="thematic_area">governance</field>
+        </record>
+        
+        <!-- Environmental Management KPIs -->
+        <record id="kpi_air_quality_index" model="key.performance.indicator">
+            <field name="thematic_area">environment</field>
+        </record>
+        
+        <record id="kpi_solid_waste_disposal" model="key.performance.indicator">
+            <field name="thematic_area">environment</field>
+        </record>
+        
+        <record id="kpi_waste_recycled" model="key.performance.indicator">
+            <field name="thematic_area">environment</field>
+        </record>
+        
+        <!-- Climate & Resilience KPIs -->
+        <record id="kpi_pluvial_flooding" model="key.performance.indicator">
+            <field name="thematic_area">climate</field>
+        </record>
+        
+        <record id="kpi_gg_emissions_reduction" model="key.performance.indicator">
+            <field name="thematic_area">climate</field>
+        </record>
+        
+        <!-- Citizen Satisfaction KPIs -->
+        <record id="kpi_citizen_satisfaction" model="key.performance.indicator">
+            <field name="thematic_area">citizen</field>
+        </record>
+        
+        <!-- Organizational Performance KPIs -->
+        <record id="kpi_staffing_levels" model="key.performance.indicator">
+            <field name="thematic_area">organizational</field>
+        </record>
+        
+        <record id="kpi_staff_retention" model="key.performance.indicator">
+            <field name="thematic_area">organizational</field>
+        </record>
+        
+        <record id="kpi_projects_on_time" model="key.performance.indicator">
+            <field name="thematic_area">organizational</field>
+        </record>
+        
+    </data>
+</odoo>

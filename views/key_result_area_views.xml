@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Key Result Area List View -->
+        <record id="view_key_result_area_list" model="ir.ui.view">
+            <field name="name">key.result.area.list</field>
+            <field name="model">key.result.area</field>
+            <field name="arch" type="xml">
+                <list string="Key Result Areas" decoration-muted="not active">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="parent_goal_id" string="Strategic Goal"/>
+                    <field name="strategic_objective_id"/>
+                    <field name="kpi_count" string="KPIs"/>
+                    <field name="progress" widget="progressbar"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Key Result Area Form View -->
+        <record id="view_key_result_area_form" model="ir.ui.view">
+            <field name="name">key.result.area.form</field>
+            <field name="model">key.result.area</field>
+            <field name="arch" type="xml">
+                <form string="Key Result Area" class="o_form_view_compact_chatter">
+                    <header>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_kpis" type="object"
+                                    class="oe_stat_button" icon="fa-tachometer">
+                                <field name="kpi_count" widget="statinfo" string="KPIs"/>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Key Result Area Name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="strategic_goal_id"/>
+                                <field name="strategic_objective_id"/>
+                                <field name="sequence"/>
+                            </group>
+                            <group>
+                                <field name="parent_goal_id"/>
+                                <field name="progress" widget="progressbar"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" widget="html"/>
+                            </page>
+                            <page string="Key Performance Indicators">
+                                <field name="kpi_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="baseline_value"/>
+                                        <field name="current_value"/>
+                                        <field name="target_value"/>
+                                        <field name="measurement_unit"/>
+                                        <field name="achievement_percentage" widget="progressbar"/>
+                                        <field name="status"/>
+                                        <field name="kpi_type"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Strategic Programme Analytics List View -->
+        <record id="view_strategic_programme_analytics_list" model="ir.ui.view">
+            <field name="name">strategic.programme.analytics.list</field>
+            <field name="model">strategic.programme.analytics</field>
+            <field name="arch" type="xml">
+                <list string="Strategic-Programme Analytics" create="false" edit="false" delete="false">
+                    <field name="thematic_area"/>
+                    <field name="strategic_kpi_name"/>
+                    <field name="strategic_achievement" widget="progressbar"/>
+                    <field name="programme_indicator_name"/>
+                    <field name="programme_name"/>
+                    <field name="programme_achievement" widget="progressbar"/>
+                    <field name="contribution_weight"/>
+                    <field name="impact_relationship"/>
+                    <field name="performance_gap"/>
+                    <field name="responsible_directorate"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Strategic Programme Analytics Search View -->
+        <record id="view_strategic_programme_analytics_search" model="ir.ui.view">
+            <field name="name">strategic.programme.analytics.search</field>
+            <field name="model">strategic.programme.analytics</field>
+            <field name="arch" type="xml">
+                <search string="Strategic-Programme Analytics">
+                    <field name="strategic_kpi_name"/>
+                    <field name="programme_indicator_name"/>
+                    <field name="programme_name"/>
+                    <field name="responsible_directorate"/>
+                    
+                    <filter name="high_performance" string="High Performance (≥80%)" 
+                            domain="[('strategic_achievement', '>=', 80)]"/>
+                    <filter name="at_risk" string="At Risk (50-79%)"
+                            domain="[('strategic_achievement', '>=', 50), ('strategic_achievement', '&lt;', 80)]"/>
+                    <filter name="underperforming" string="Underperforming (&lt;50%)"
+                            domain="[('strategic_achievement', '&lt;', 50)]"/>
+                    
+                    <separator/>
+                    <filter name="direct_impact" string="Direct Impact" 
+                            domain="[('impact_relationship', '=', 'direct')]"/>
+                    <filter name="indirect_impact" string="Indirect Impact" 
+                            domain="[('impact_relationship', '=', 'indirect')]"/>
+                    <filter name="supporting_impact" string="Supporting Impact" 
+                            domain="[('impact_relationship', '=', 'supporting')]"/>
+                    
+                    <separator/>
+                    <filter name="high_contribution" string="High Contribution (>30%)" 
+                            domain="[('contribution_weight', '>', 30)]"/>
+                    <filter name="medium_contribution" string="Medium Contribution (15-30%)"
+                            domain="[('contribution_weight', '>=', 15), ('contribution_weight', '&lt;=', 30)]"/>
+                    <filter name="low_contribution" string="Low Contribution (&lt;15%)"
+                            domain="[('contribution_weight', '&lt;', 15)]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter name="group_thematic_area" string="Thematic Area" 
+                                context="{'group_by': 'thematic_area'}"/>
+                        <filter name="group_strategic_kpi" string="Strategic KPI" 
+                                context="{'group_by': 'strategic_kpi_name'}"/>
+                        <filter name="group_programme" string="Programme" 
+                                context="{'group_by': 'programme_name'}"/>
+                        <filter name="group_directorate" string="Directorate" 
+                                context="{'group_by': 'responsible_directorate'}"/>
+                        <filter name="group_impact_relationship" string="Impact Relationship" 
+                                context="{'group_by': 'impact_relationship'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Strategic Programme Analytics Pivot View -->
+        <record id="view_strategic_programme_analytics_pivot" model="ir.ui.view">
+            <field name="name">strategic.programme.analytics.pivot</field>
+            <field name="model">strategic.programme.analytics</field>
+            <field name="arch" type="xml">
+                <pivot string="Strategic-Programme Analytics">
+                    <field name="thematic_area" type="row"/>
+                    <field name="strategic_kpi_name" type="row"/>
+                    <field name="strategic_achievement" type="measure"/>
+                    <field name="programme_achievement" type="measure"/>
+                    <field name="contribution_weight" type="measure"/>
+                    <field name="performance_gap" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        
+        <!-- Strategic Programme Analytics Graph View -->
+        <record id="view_strategic_programme_analytics_graph" model="ir.ui.view">
+            <field name="name">strategic.programme.analytics.graph</field>
+            <field name="model">strategic.programme.analytics</field>
+            <field name="arch" type="xml">
+                <graph string="Strategic-Programme Performance Analysis" type="bar">
+                    <field name="thematic_area"/>
+                    <field name="strategic_achievement" type="measure"/>
+                    <field name="programme_achievement" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        
+        <!-- Strategic Programme Analytics Action -->
+        <record id="action_strategic_programme_analytics" model="ir.actions.act_window">
+            <field name="name">Strategic-Programme Analytics</field>
+            <field name="res_model">strategic.programme.analytics</field>
+            <field name="view_mode">list,pivot,graph</field>
+            <field name="search_view_id" ref="view_strategic_programme_analytics_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Strategic-Programme Performance Analytics
+                </p>
+                <p>
+                    Analyze the performance linkages between strategic KPIs and programme-level indicators.
+                    This view shows how programme performance contributes to strategic objectives.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Menu Item -->
+        <menuitem id="menu_strategic_programme_analytics"
+                  name="Strategic-Programme Analytics"
+                  parent="menu_performance_tracking"
+                  action="action_strategic_programme_analytics"
+                  sequence="18"/>
+        
+
+        
+    </data>
+</odoo>

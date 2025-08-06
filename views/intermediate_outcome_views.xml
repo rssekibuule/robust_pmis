@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Intermediate Outcome List View -->
+        <record id="view_intermediate_outcome_list" model="ir.ui.view">
+            <field name="name">intermediate.outcome.list</field>
+            <field name="model">intermediate.outcome</field>
+            <field name="arch" type="xml">
+                <list string="Intermediate Outcomes" decoration-muted="not active">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="objective_id"/>
+                    <field name="responsible_user_id"/>
+                    <field name="intervention_count" string="Interventions"/>
+                    <field name="indicator_count" string="Indicators"/>
+                    <field name="progress" widget="progressbar"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Intermediate Outcome Form View -->
+        <record id="view_intermediate_outcome_form" model="ir.ui.view">
+            <field name="name">intermediate.outcome.form</field>
+            <field name="model">intermediate.outcome</field>
+            <field name="arch" type="xml">
+                <form string="Intermediate Outcome" class="o_form_view_compact_chatter">
+                    <header>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_interventions" type="object"
+                                    class="oe_stat_button" icon="fa-cogs">
+                                <field name="intervention_count" widget="statinfo" string="Interventions"/>
+                            </button>
+                            <button name="action_view_indicators" type="object"
+                                    class="oe_stat_button" icon="fa-tachometer">
+                                <field name="indicator_count" widget="statinfo" string="Indicators"/>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Intermediate Outcome Name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="objective_id"/>
+                                <field name="responsible_user_id"/>
+                                <field name="sequence"/>
+                            </group>
+                            <group>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="progress" widget="progressbar"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" widget="html"/>
+                            </page>
+                            <page string="Interventions">
+                                <field name="intervention_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="responsible_user_id"/>
+                                        <field name="output_count" string="Outputs"/>
+                                        <field name="indicator_count" string="Indicators"/>
+                                        <field name="progress" widget="progressbar"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Intermediate Outcome Action -->
+        <record id="action_intermediate_outcome" model="ir.actions.act_window">
+            <field name="name">Intermediate Outcomes</field>
+            <field name="res_model">intermediate.outcome</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Intermediate Outcome!
+                </p>
+                <p>
+                    Intermediate outcomes are specific results that contribute to achieving programme objectives.
+                    They represent measurable changes that occur as a result of programme interventions.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

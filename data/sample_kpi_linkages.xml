@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- ========================================= -->
+        <!-- SAMPLE KPI LINKAGE DATA -->
+        <!-- ========================================= -->
+        
+        <!-- Sample Programme Performance Indicators for Transport Programme -->
+        <record id="sample_transport_indicator_1" model="performance.indicator">
+            <field name="name">Km of roads rehabilitated</field>
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="measurement_unit">Km</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">50</field>
+            <field name="current_value">45</field>
+            <field name="indicator_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="thematic_area">infrastructure</field>
+            <field name="results_chain_level">output</field>
+            <field name="impact_relationship">direct</field>
+            <field name="contribution_weight">40.0</field>
+        </record>
+        
+        <record id="sample_transport_indicator_2" model="performance.indicator">
+            <field name="name">Road maintenance completion rate</field>
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">60</field>
+            <field name="target_value">90</field>
+            <field name="current_value">78</field>
+            <field name="indicator_type">increasing</field>
+            <field name="frequency">monthly</field>
+            <field name="thematic_area">infrastructure</field>
+            <field name="results_chain_level">output</field>
+            <field name="impact_relationship">direct</field>
+            <field name="contribution_weight">35.0</field>
+        </record>
+        
+        <!-- Sample Programme Performance Indicators for Human Capital Development -->
+        <record id="sample_health_indicator_1" model="performance.indicator">
+            <field name="name">Health facilities upgraded</field>
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">5</field>
+            <field name="target_value">20</field>
+            <field name="current_value">12</field>
+            <field name="indicator_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="thematic_area">health</field>
+            <field name="results_chain_level">output</field>
+            <field name="impact_relationship">direct</field>
+            <field name="contribution_weight">50.0</field>
+        </record>
+        
+        <record id="sample_health_indicator_2" model="performance.indicator">
+            <field name="name">Skilled birth attendance rate</field>
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">70</field>
+            <field name="target_value">95</field>
+            <field name="current_value">85</field>
+            <field name="indicator_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="thematic_area">health</field>
+            <field name="results_chain_level">outcome</field>
+            <field name="impact_relationship">direct</field>
+            <field name="contribution_weight">30.0</field>
+        </record>
+        
+        <!-- Sample Education Indicators -->
+        <record id="sample_education_indicator_1" model="performance.indicator">
+            <field name="name">Schools with improved infrastructure</field>
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">10</field>
+            <field name="target_value">30</field>
+            <field name="current_value">25</field>
+            <field name="indicator_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="thematic_area">education</field>
+            <field name="results_chain_level">output</field>
+            <field name="impact_relationship">supporting</field>
+            <field name="contribution_weight">45.0</field>
+        </record>
+        
+        <record id="sample_education_indicator_2" model="performance.indicator">
+            <field name="name">Teacher training programmes completed</field>
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">50</field>
+            <field name="target_value">200</field>
+            <field name="current_value">150</field>
+            <field name="indicator_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="thematic_area">education</field>
+            <field name="results_chain_level">activity</field>
+            <field name="impact_relationship">indirect</field>
+            <field name="contribution_weight">35.0</field>
+        </record>
+        
+        <!-- Sample Economic Development Indicators -->
+        <record id="sample_economic_indicator_1" model="performance.indicator">
+            <field name="name">SME support programmes completed</field>
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">20</field>
+            <field name="target_value">60</field>
+            <field name="current_value">45</field>
+            <field name="indicator_type">increasing</field>
+            <field name="frequency">quarterly</field>
+            <field name="thematic_area">economic</field>
+            <field name="results_chain_level">output</field>
+            <field name="impact_relationship">indirect</field>
+            <field name="contribution_weight">40.0</field>
+        </record>
+        
+        <record id="sample_economic_indicator_2" model="performance.indicator">
+            <field name="name">Job creation initiatives</field>
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">500</field>
+            <field name="target_value">2000</field>
+            <field name="current_value">1250</field>
+            <field name="indicator_type">increasing</field>
+            <field name="frequency">monthly</field>
+            <field name="thematic_area">economic</field>
+            <field name="results_chain_level">outcome</field>
+            <field name="impact_relationship">direct</field>
+            <field name="contribution_weight">35.0</field>
+        </record>
+        
+        <!-- ========================================= -->
+        <!-- STRATEGIC KPI LINKAGES -->
+        <!-- ========================================= -->
+        
+        <!-- Link Infrastructure KPIs -->
+        <record id="kpi_paved_roads" model="key.performance.indicator">
+            <field name="contributing_programme_indicators" eval="[(4, ref('sample_transport_indicator_1')), (4, ref('sample_transport_indicator_2'))]"/>
+            <field name="auto_calculate">True</field>
+            <field name="calculation_method">weighted_average</field>
+        </record>
+        
+        <!-- Link Health KPIs -->
+        <record id="kpi_maternal_deaths" model="key.performance.indicator">
+            <field name="contributing_programme_indicators" eval="[(4, ref('sample_health_indicator_1')), (4, ref('sample_health_indicator_2'))]"/>
+            <field name="auto_calculate">True</field>
+            <field name="calculation_method">weighted_average</field>
+        </record>
+        
+        <!-- Link Education KPIs -->
+        <record id="kpi_literacy_lower_primary" model="key.performance.indicator">
+            <field name="contributing_programme_indicators" eval="[(4, ref('sample_education_indicator_1')), (4, ref('sample_education_indicator_2'))]"/>
+            <field name="auto_calculate">True</field>
+            <field name="calculation_method">weighted_average</field>
+        </record>
+        
+        <!-- Link Economic KPIs -->
+        <record id="kpi_unemployment_rate" model="key.performance.indicator">
+            <field name="contributing_programme_indicators" eval="[(4, ref('sample_economic_indicator_1')), (4, ref('sample_economic_indicator_2'))]"/>
+            <field name="auto_calculate">True</field>
+            <field name="calculation_method">percentage_complete</field>
+        </record>
+        
+        <!-- Set up reverse linkages (programme indicators to strategic KPIs) -->
+        <record id="sample_transport_indicator_1" model="performance.indicator">
+            <field name="strategic_kpi_ids" eval="[(4, ref('kpi_paved_roads'))]"/>
+            <field name="parent_strategic_kpi_id" ref="kpi_paved_roads"/>
+            <field name="target_allocation_percentage">40.0</field>
+        </record>
+        
+        <record id="sample_transport_indicator_2" model="performance.indicator">
+            <field name="strategic_kpi_ids" eval="[(4, ref('kpi_paved_roads'))]"/>
+            <field name="parent_strategic_kpi_id" ref="kpi_paved_roads"/>
+            <field name="target_allocation_percentage">35.0</field>
+        </record>
+        
+        <record id="sample_health_indicator_1" model="performance.indicator">
+            <field name="strategic_kpi_ids" eval="[(4, ref('kpi_maternal_deaths'))]"/>
+            <field name="parent_strategic_kpi_id" ref="kpi_maternal_deaths"/>
+            <field name="target_allocation_percentage">50.0</field>
+        </record>
+        
+        <record id="sample_health_indicator_2" model="performance.indicator">
+            <field name="strategic_kpi_ids" eval="[(4, ref('kpi_maternal_deaths'))]"/>
+            <field name="parent_strategic_kpi_id" ref="kpi_maternal_deaths"/>
+            <field name="target_allocation_percentage">30.0</field>
+        </record>
+        
+        <record id="sample_education_indicator_1" model="performance.indicator">
+            <field name="strategic_kpi_ids" eval="[(4, ref('kpi_literacy_lower_primary'))]"/>
+            <field name="parent_strategic_kpi_id" ref="kpi_literacy_lower_primary"/>
+            <field name="target_allocation_percentage">45.0</field>
+        </record>
+        
+        <record id="sample_education_indicator_2" model="performance.indicator">
+            <field name="strategic_kpi_ids" eval="[(4, ref('kpi_literacy_lower_primary'))]"/>
+            <field name="parent_strategic_kpi_id" ref="kpi_literacy_lower_primary"/>
+            <field name="target_allocation_percentage">35.0</field>
+        </record>
+        
+        <record id="sample_economic_indicator_1" model="performance.indicator">
+            <field name="strategic_kpi_ids" eval="[(4, ref('kpi_unemployment_rate'))]"/>
+            <field name="parent_strategic_kpi_id" ref="kpi_unemployment_rate"/>
+            <field name="target_allocation_percentage">40.0</field>
+        </record>
+        
+        <record id="sample_economic_indicator_2" model="performance.indicator">
+            <field name="strategic_kpi_ids" eval="[(4, ref('kpi_unemployment_rate'))]"/>
+            <field name="parent_strategic_kpi_id" ref="kpi_unemployment_rate"/>
+            <field name="target_allocation_percentage">35.0</field>
+        </record>
+        
+    </data>
+</odoo>

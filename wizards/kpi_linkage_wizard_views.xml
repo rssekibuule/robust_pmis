@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- KPI Linkage Wizard Form View -->
+        <record id="view_kpi_linkage_wizard_form" model="ir.ui.view">
+            <field name="name">kpi.linkage.wizard.form</field>
+            <field name="model">kpi.linkage.wizard</field>
+            <field name="arch" type="xml">
+                <form string="KPI Linkage Setup Wizard">
+                    <header>
+                        <button name="action_previous_step" string="Previous" type="object"
+                                class="btn-secondary" invisible="step == 'select_strategic_kpi'"/>
+                        <button name="action_next_step" string="Next" type="object"
+                                class="btn-primary" invisible="step == 'review_confirm'"/>
+                        <button name="action_confirm_linkage" string="Create Linkage" type="object"
+                                class="btn-success" invisible="step != 'review_confirm'"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        <field name="step" widget="statusbar" statusbar_visible="select_strategic_kpi,select_programme_indicators,configure_weights,setup_cascade,review_confirm"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>Strategic-Programme KPI Linkage Setup</h1>
+                            <p>Create linkages between strategic KPIs and programme-level performance indicators</p>
+                        </div>
+                        
+                        <!-- Step 1: Select Strategic KPI -->
+                        <group invisible="step != 'select_strategic_kpi'">
+                            <group string="Select Strategic KPI">
+                                <field name="strategic_kpi_id" options="{'no_create': True}"/>
+                                <field name="strategic_kpi_thematic_area" readonly="1"/>
+                            </group>
+                            <group string="Instructions">
+                                <div>
+                                    <p><strong>Step 1:</strong> Select the strategic KPI that you want to link with programme indicators.</p>
+                                    <p>The system will automatically filter programme indicators based on the thematic area of the selected strategic KPI.</p>
+                                </div>
+                            </group>
+                        </group>
+
+                        <!-- Step 2: Select Programme Indicators -->
+                        <group invisible="step != 'select_programme_indicators'">
+                            <group string="Select Programme Indicators" colspan="2">
+                                <field name="programme_indicator_ids" widget="many2many_tags" nolabel="1"/>
+                            </group>
+                            <group string="Instructions">
+                                <div>
+                                    <p><strong>Step 2:</strong> Select the programme indicators that contribute to the strategic KPI.</p>
+                                    <p>Only indicators from the same thematic area are shown for better alignment.</p>
+                                </div>
+                            </group>
+                        </group>
+                        
+                        <!-- Step 3: Configure Weights -->
+                        <div invisible="step != 'configure_weights'">
+                            <group>
+                                <group string="Calculation Method">
+                                    <field name="calculation_method"/>
+                                </group>
+                                <group string="Quick Actions">
+                                    <button name="action_auto_distribute_weights" string="Auto Distribute Weights" 
+                                            type="object" class="btn-secondary"/>
+                                </group>
+                            </group>
+                            <separator string="Configure Contribution Weights"/>
+                            <p><strong>Step 3:</strong> Configure how much each programme indicator contributes to the strategic KPI calculation. Total must equal 100%.</p>
+                            <p>Use the wizard to configure detailed weights for each programme indicator.</p>
+                        </div>
+                        
+                        <!-- Step 4: Setup Target Cascade -->
+                        <div invisible="step != 'setup_cascade'">
+                            <group>
+                                <group string="Target Cascade Settings">
+                                    <field name="enable_target_cascade"/>
+                                    <field name="total_allocation_percentage" readonly="1"
+                                           invisible="enable_target_cascade == False"/>
+                                </group>
+                                <group string="Quick Actions" invisible="enable_target_cascade == False">
+                                    <button name="action_auto_distribute_targets" string="Auto Distribute Targets"
+                                            type="object" class="btn-secondary"/>
+                                </group>
+                            </group>
+                            <separator string="Target Allocation" invisible="enable_target_cascade == False"/>
+                            <p invisible="enable_target_cascade == False">
+                                <strong>Step 4:</strong> Configure how the strategic KPI target is allocated to programme indicators. Total must equal 100%.
+                            </p>
+                            <p invisible="enable_target_cascade == False">
+                                Use the wizard to configure target allocation percentages for each programme indicator.
+                            </p>
+                        </div>
+                        
+                        <!-- Step 5: Review & Confirm -->
+                        <div invisible="step != 'review_confirm'">
+                            <group string="Review Configuration">
+                                <group>
+                                    <field name="strategic_kpi_id" readonly="1"/>
+                                    <field name="calculation_method" readonly="1"/>
+                                    <field name="enable_target_cascade" readonly="1"/>
+                                </group>
+                                <group>
+                                    <label for="programme_indicator_ids"/>
+                                    <div>
+                                        <field name="programme_indicator_ids" widget="many2many_tags" readonly="1"/>
+                                        <p>Total Indicators: <field name="programme_indicator_ids" readonly="1" widget="integer"/></p>
+                                    </div>
+                                </group>
+                            </group>
+                            <separator string="Linkage Summary"/>
+                            <p><strong>Step 5:</strong> Review the configuration and confirm to create the KPI linkage.</p>
+                            <p>The linkage will be created with the selected programme indicators and configured weights.</p>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- KPI Linkage Wizard Action -->
+        <record id="action_kpi_linkage_wizard" model="ir.actions.act_window">
+            <field name="name">Setup KPI Linkage</field>
+            <field name="res_model">kpi.linkage.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_kpi_linkage_wizard_form"/>
+        </record>
+        
+        <!-- Menu Item -->
+        <menuitem id="menu_kpi_linkage_wizard"
+                  name="Setup KPI Linkages"
+                  parent="menu_performance_tracking"
+                  action="action_kpi_linkage_wizard"
+                  sequence="16"/>
+        
+        <!-- Add button to Strategic KPI form -->
+        <record id="view_key_performance_indicator_form_inherit_linkage" model="ir.ui.view">
+            <field name="name">key.performance.indicator.form.inherit.linkage</field>
+            <field name="model">key.performance.indicator</field>
+            <field name="inherit_id" ref="view_key_performance_indicator_form"/>
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <button name="%(action_kpi_linkage_wizard)d" string="Setup Programme Linkages"
+                            type="action" class="btn-secondary"
+                            context="{'default_strategic_kpi_id': id}"/>
+                </header>
+            </field>
+        </record>
+
+        <!-- Bulk KPI Linkage Wizard Form View -->
+        <record id="view_bulk_kpi_linkage_wizard_form" model="ir.ui.view">
+            <field name="name">bulk.kpi.linkage.wizard.form</field>
+            <field name="model">bulk.kpi.linkage.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Bulk KPI Linkage Setup">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>Bulk KPI Linkage Setup</h1>
+                            <p>Create multiple KPI linkages at once based on thematic areas</p>
+                        </div>
+
+                        <group>
+                            <group string="Selection Criteria">
+                                <field name="thematic_area"/>
+                                <field name="auto_link_by_thematic"/>
+                                <field name="default_calculation_method"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="Strategic KPIs" colspan="2">
+                                <field name="strategic_kpi_ids" widget="many2many_tags" nolabel="1"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="Programme Indicators" colspan="2">
+                                <field name="programme_indicator_ids" widget="many2many_tags" nolabel="1"/>
+                            </group>
+                        </group>
+
+                        <div class="alert alert-info" role="alert" invisible="auto_link_by_thematic == False">
+                            <strong>Auto-link Mode:</strong> Strategic KPIs will be automatically linked with programme indicators that have matching thematic areas.
+                        </div>
+
+                        <div class="alert alert-warning" role="alert" invisible="auto_link_by_thematic == True">
+                            <strong>Manual Mode:</strong> All selected programme indicators will be linked to all selected strategic KPIs with equal weights.
+                        </div>
+                    </sheet>
+
+                    <footer>
+                        <button name="action_create_bulk_linkages" string="Create Linkages" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Bulk KPI Linkage Wizard Action -->
+        <record id="action_bulk_kpi_linkage_wizard" model="ir.actions.act_window">
+            <field name="name">Bulk Setup KPI Linkages</field>
+            <field name="res_model">bulk.kpi.linkage.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_bulk_kpi_linkage_wizard_form"/>
+        </record>
+
+        <!-- Menu Item for Bulk Setup -->
+        <menuitem id="menu_bulk_kpi_linkage_wizard"
+                  name="Bulk Setup KPI Linkages"
+                  parent="menu_performance_tracking"
+                  action="action_bulk_kpi_linkage_wizard"
+                  sequence="17"/>
+
+    </data>
+</odoo>

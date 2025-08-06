@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Division-Programme Relationships -->
+        <!-- All 5 KCCA divisions implement all 13 programmes -->
+        
+        <!-- CENTRAL DIVISION - All 13 Programmes -->
+        
+        <!-- Central Division → Agro-Industrialization -->
+        <record id="rel_central_agro" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_agro_industrialization"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">5000</field>
+            <field name="completion_percentage">65.0</field>
+        </record>
+        
+        <!-- Central Division → Private Sector Development -->
+        <record id="rel_central_private_sector" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">critical</field>
+            <field name="target_beneficiaries">8000</field>
+            <field name="completion_percentage">75.0</field>
+        </record>
+        
+        <!-- Central Division → Integrated Transport Infrastructure and Services -->
+        <record id="rel_central_transport" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">critical</field>
+            <field name="target_beneficiaries">50000</field>
+            <field name="completion_percentage">80.0</field>
+        </record>
+        
+        <!-- Central Division → Development Plan Implementation -->
+        <record id="rel_central_dev_plan" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">30000</field>
+            <field name="completion_percentage">70.0</field>
+        </record>
+        
+        <!-- Central Division → Tourism Development -->
+        <record id="rel_central_tourism" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_tourism_development"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">15000</field>
+            <field name="completion_percentage">85.0</field>
+        </record>
+        
+        <!-- Central Division → Natural Resources, Environment, Climate Change, Water and Land Management -->
+        <record id="rel_central_natural_resources" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">25000</field>
+            <field name="completion_percentage">60.0</field>
+        </record>
+        
+        <!-- Central Division → Sustainable Urbanization and Housing -->
+        <record id="rel_central_urbanization" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_sustainable_urbanization"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">20000</field>
+            <field name="completion_percentage">55.0</field>
+        </record>
+        
+        <!-- Central Division → Digital Transformation -->
+        <record id="rel_central_digital" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">critical</field>
+            <field name="target_beneficiaries">40000</field>
+            <field name="completion_percentage">90.0</field>
+        </record>
+        
+        <!-- Central Division → Human Capital Development -->
+        <record id="rel_central_human_capital" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">35000</field>
+            <field name="completion_percentage">65.0</field>
+        </record>
+        
+        <!-- Central Division → Legislation, Oversight and Representation -->
+        <record id="rel_central_legislation" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_legislation_oversight"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">10000</field>
+            <field name="completion_percentage">70.0</field>
+        </record>
+        
+        <!-- Central Division → Administration of Justice -->
+        <record id="rel_central_justice" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_admin_justice"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">12000</field>
+            <field name="completion_percentage">75.0</field>
+        </record>
+        
+        <!-- Central Division → Governance and Security -->
+        <record id="rel_central_governance" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_governance_security"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">45000</field>
+            <field name="completion_percentage">80.0</field>
+        </record>
+        
+        <!-- Central Division → Public Sector Transformation -->
+        <record id="rel_central_public_sector" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_public_sector_transformation"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">8000</field>
+            <field name="completion_percentage">60.0</field>
+        </record>
+
+        <!-- KAWEMPE DIVISION - All 13 Programmes -->
+
+        <!-- Kawempe Division → Agro-Industrialization -->
+        <record id="rel_kawempe_agro" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_agro_industrialization"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">critical</field>
+            <field name="target_beneficiaries">7000</field>
+            <field name="completion_percentage">70.0</field>
+        </record>
+
+        <!-- Kawempe Division → Private Sector Development -->
+        <record id="rel_kawempe_private_sector" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">6000</field>
+            <field name="completion_percentage">65.0</field>
+        </record>
+
+        <!-- Kawempe Division → Integrated Transport Infrastructure and Services -->
+        <record id="rel_kawempe_transport" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">45000</field>
+            <field name="completion_percentage">60.0</field>
+        </record>
+
+        <!-- Kawempe Division → Development Plan Implementation -->
+        <record id="rel_kawempe_dev_plan" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">35000</field>
+            <field name="completion_percentage">55.0</field>
+        </record>
+
+        <!-- Kawempe Division → Tourism Development -->
+        <record id="rel_kawempe_tourism" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_tourism_development"/>
+            <field name="implementation_status">planning</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">8000</field>
+            <field name="completion_percentage">30.0</field>
+        </record>
+
+        <!-- Kawempe Division → Natural Resources, Environment, Climate Change, Water and Land Management -->
+        <record id="rel_kawempe_natural_resources" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">30000</field>
+            <field name="completion_percentage">65.0</field>
+        </record>
+
+        <!-- Kawempe Division → Sustainable Urbanization and Housing -->
+        <record id="rel_kawempe_urbanization" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_sustainable_urbanization"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">critical</field>
+            <field name="target_beneficiaries">40000</field>
+            <field name="completion_percentage">45.0</field>
+        </record>
+
+        <!-- Kawempe Division → Digital Transformation -->
+        <record id="rel_kawempe_digital" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">25000</field>
+            <field name="completion_percentage">50.0</field>
+        </record>
+
+        <!-- Kawempe Division → Human Capital Development -->
+        <record id="rel_kawempe_human_capital" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">critical</field>
+            <field name="target_beneficiaries">50000</field>
+            <field name="completion_percentage">75.0</field>
+        </record>
+
+        <!-- Kawempe Division → Legislation, Oversight and Representation -->
+        <record id="rel_kawempe_legislation" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_legislation_oversight"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">15000</field>
+            <field name="completion_percentage">60.0</field>
+        </record>
+
+        <!-- Kawempe Division → Administration of Justice -->
+        <record id="rel_kawempe_justice" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_admin_justice"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">18000</field>
+            <field name="completion_percentage">55.0</field>
+        </record>
+
+        <!-- Kawempe Division → Governance and Security -->
+        <record id="rel_kawempe_governance" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_governance_security"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">55000</field>
+            <field name="completion_percentage">70.0</field>
+        </record>
+
+        <!-- Kawempe Division → Public Sector Transformation -->
+        <record id="rel_kawempe_public_sector" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_public_sector_transformation"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">medium</field>
+            <field name="target_beneficiaries">12000</field>
+            <field name="completion_percentage">50.0</field>
+        </record>
+
+        <!-- ALL DIVISIONS → Sustainable Energy Development -->
+
+        <!-- Central Division → Sustainable Energy Development -->
+        <record id="rel_central_sustainable_energy" model="division.programme.rel">
+            <field name="division_id" ref="division_central"/>
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">15000</field>
+            <field name="completion_percentage">40.0</field>
+        </record>
+
+        <!-- Kawempe Division → Sustainable Energy Development -->
+        <record id="rel_kawempe_sustainable_energy" model="division.programme.rel">
+            <field name="division_id" ref="division_kawempe"/>
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">18000</field>
+            <field name="completion_percentage">35.0</field>
+        </record>
+
+        <!-- Makindye Division → Sustainable Energy Development -->
+        <record id="rel_makindye_sustainable_energy" model="division.programme.rel">
+            <field name="division_id" ref="division_makindye"/>
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">16000</field>
+            <field name="completion_percentage">45.0</field>
+        </record>
+
+        <!-- Nakawa Division → Sustainable Energy Development -->
+        <record id="rel_nakawa_sustainable_energy" model="division.programme.rel">
+            <field name="division_id" ref="division_nakawa"/>
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">14000</field>
+            <field name="completion_percentage">50.0</field>
+        </record>
+
+        <!-- Lubaga Division → Sustainable Energy Development -->
+        <record id="rel_lubaga_sustainable_energy" model="division.programme.rel">
+            <field name="division_id" ref="division_lubaga"/>
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="implementation_status">implementing</field>
+            <field name="priority_level">high</field>
+            <field name="target_beneficiaries">17000</field>
+            <field name="completion_percentage">42.0</field>
+        </record>
+
+    </data>
+</odoo>

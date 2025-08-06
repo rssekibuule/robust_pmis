@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Programme Budget Allocations for Strategic Plan Cost Breakdown -->
+        
+        <!-- 1. Agro-Industrialization -->
+        <record id="budget_agro_industrialization" model="programme.budget">
+            <field name="sequence">1</field>
+            <field name="programme_id" ref="programme_agro_industrialization"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">4.47</field>
+            <field name="budget_fy2026_27">5.16</field>
+            <field name="budget_fy2027_28">5.35</field>
+            <field name="budget_fy2028_29">5.41</field>
+            <field name="budget_fy2029_30">6.45</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 2. Tourism Development -->
+        <record id="budget_tourism_development" model="programme.budget">
+            <field name="sequence">2</field>
+            <field name="programme_id" ref="programme_tourism_development"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">0.60</field>
+            <field name="budget_fy2026_27">0.70</field>
+            <field name="budget_fy2027_28">0.72</field>
+            <field name="budget_fy2028_29">0.73</field>
+            <field name="budget_fy2029_30">0.87</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 3. Natural Resources, Environment, Climate Change, Land & Water Management -->
+        <record id="budget_natural_resources" model="programme.budget">
+            <field name="sequence">3</field>
+            <field name="programme_id" ref="programme_natural_resources"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">64.65</field>
+            <field name="budget_fy2026_27">74.63</field>
+            <field name="budget_fy2027_28">77.30</field>
+            <field name="budget_fy2028_29">78.22</field>
+            <field name="budget_fy2029_30">93.29</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 4. Integrated Transport Infrastructure and Services -->
+        <record id="budget_integrated_transport" model="programme.budget">
+            <field name="sequence">4</field>
+            <field name="programme_id" ref="programme_transport_infrastructure"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">654.97</field>
+            <field name="budget_fy2026_27">756.14</field>
+            <field name="budget_fy2027_28">783.14</field>
+            <field name="budget_fy2028_29">792.49</field>
+            <field name="budget_fy2029_30">945.17</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 5. Digital Transformation -->
+        <record id="budget_digital_transformation" model="programme.budget">
+            <field name="sequence">5</field>
+            <field name="programme_id" ref="programme_digital_transformation"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">7.07</field>
+            <field name="budget_fy2026_27">8.16</field>
+            <field name="budget_fy2027_28">8.45</field>
+            <field name="budget_fy2028_29">8.55</field>
+            <field name="budget_fy2029_30">10.20</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 6. Human Capital Development -->
+        <record id="budget_human_capital_development" model="programme.budget">
+            <field name="sequence">6</field>
+            <field name="programme_id" ref="programme_human_capital_dev"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">209.20</field>
+            <field name="budget_fy2026_27">241.52</field>
+            <field name="budget_fy2027_28">250.14</field>
+            <field name="budget_fy2028_29">253.13</field>
+            <field name="budget_fy2029_30">301.89</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 7. Public Sector Transformation -->
+        <record id="budget_public_sector_transformation" model="programme.budget">
+            <field name="sequence">7</field>
+            <field name="programme_id" ref="programme_public_sector_transformation"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">279.46</field>
+            <field name="budget_fy2026_27">322.63</field>
+            <field name="budget_fy2027_28">334.15</field>
+            <field name="budget_fy2028_29">338.14</field>
+            <field name="budget_fy2029_30">403.28</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 8. Sustainable Energy Development -->
+        <record id="budget_sustainable_energy_development" model="programme.budget">
+            <field name="sequence">8</field>
+            <field name="programme_id" ref="programme_sustainable_energy_dev"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">3.60</field>
+            <field name="budget_fy2026_27">4.15</field>
+            <field name="budget_fy2027_28">4.30</field>
+            <field name="budget_fy2028_29">4.35</field>
+            <field name="budget_fy2029_30">5.19</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 9. Development Plan Implementation -->
+        <record id="budget_development_plan_implementation" model="programme.budget">
+            <field name="sequence">9</field>
+            <field name="programme_id" ref="programme_dev_plan_implementation"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">13.95</field>
+            <field name="budget_fy2026_27">16.10</field>
+            <field name="budget_fy2027_28">16.68</field>
+            <field name="budget_fy2028_29">16.88</field>
+            <field name="budget_fy2029_30">20.13</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 10. Governance and Security -->
+        <record id="budget_governance_security" model="programme.budget">
+            <field name="sequence">10</field>
+            <field name="programme_id" ref="programme_governance_security"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">1.97</field>
+            <field name="budget_fy2026_27">2.28</field>
+            <field name="budget_fy2027_28">2.36</field>
+            <field name="budget_fy2028_29">2.39</field>
+            <field name="budget_fy2029_30">2.85</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 11. Legislature, Oversight and Representation -->
+        <record id="budget_legislature_oversight" model="programme.budget">
+            <field name="sequence">11</field>
+            <field name="programme_id" ref="programme_legislation_oversight"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">34.80</field>
+            <field name="budget_fy2026_27">40.17</field>
+            <field name="budget_fy2027_28">41.61</field>
+            <field name="budget_fy2028_29">42.10</field>
+            <field name="budget_fy2029_30">50.22</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 12. Private Sector Development -->
+        <record id="budget_private_sector_development" model="programme.budget">
+            <field name="sequence">12</field>
+            <field name="programme_id" ref="programme_private_sector_dev"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">79.48</field>
+            <field name="budget_fy2026_27">91.76</field>
+            <field name="budget_fy2027_28">95.04</field>
+            <field name="budget_fy2028_29">96.17</field>
+            <field name="budget_fy2029_30">114.70</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 13. Sustainable Urbanization and Housing -->
+        <record id="budget_sustainable_urbanization" model="programme.budget">
+            <field name="sequence">13</field>
+            <field name="programme_id" ref="programme_sustainable_urbanization"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">174.86</field>
+            <field name="budget_fy2026_27">201.87</field>
+            <field name="budget_fy2027_28">209.08</field>
+            <field name="budget_fy2028_29">211.58</field>
+            <field name="budget_fy2029_30">252.34</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- 14. Administration of Justice -->
+        <record id="budget_administration_justice" model="programme.budget">
+            <field name="sequence">14</field>
+            <field name="programme_id" ref="programme_admin_justice"/>
+            <field name="financial_strategy_id" ref="financial_strategy_strategic_plan_budget"/>
+            <field name="budget_fy2025_26">9.92</field>
+            <field name="budget_fy2026_27">11.45</field>
+            <field name="budget_fy2027_28">11.86</field>
+            <field name="budget_fy2028_29">12.00</field>
+            <field name="budget_fy2029_30">14.32</field>
+            <field name="status">approved</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+        </record>
+
+    </data>
+</odoo>

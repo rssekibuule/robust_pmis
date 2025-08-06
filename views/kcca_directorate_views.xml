@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Directorate Kanban View -->
+        <record id="view_kcca_directorate_kanban" model="ir.ui.view">
+            <field name="name">kcca.directorate.kanban</field>
+            <field name="model">kcca.directorate</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard kcca_directorate_dashboard" sample="1">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="director_id"/>
+                    <field name="division_count"/>
+                    <field name="programme_count"/>
+                    <field name="kpi_count"/>
+                    <field name="overall_performance"/>
+                    <field name="color"/>
+                    <field name="active"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a t-if="widget.editable" role="menuitem" type="edit" class="dropdown-item">
+                                            <i class="fa fa-edit"/> Edit
+                                        </a>
+                                        <a role="menuitem" class="dropdown-item" name="action_view_divisions" type="object">
+                                            <i class="fa fa-sitemap"/> Divisions
+                                        </a>
+                                        <a role="menuitem" class="dropdown-item" name="action_view_programmes" type="object">
+                                            <i class="fa fa-tasks"/> Programmes
+                                        </a>
+                                        <a role="menuitem" class="dropdown-item" name="action_view_kpis" type="object">
+                                            <i class="fa fa-tachometer"/> KPIs
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Compact Dashboard Card Header -->
+                                <div class="card_header">
+                                    <div class="card_icon">
+                                        <i class="fa fa-building" title="Directorate" t-attf-style="color: #{record.color.raw_value ? '#' + record.color.raw_value.toString(16).padStart(6, '0') : '#007bff'}"/>
+                                    </div>
+                                    <div class="card_title">
+                                        <field name="name"/>
+                                    </div>
+                                    <div class="card_performance">
+                                        <field name="overall_performance"/>%
+                                    </div>
+                                </div>
+
+                                <!-- Compact Statistics Grid -->
+                                <div class="card_stats">
+                                    <div class="kcca_stat_box">
+                                        <div class="kcca_stat_number">
+                                            <field name="division_count"/>
+                                        </div>
+                                        <div class="kcca_stat_label">
+                                            <i class="fa fa-sitemap"/> DIV
+                                        </div>
+                                    </div>
+                                    <div class="kcca_stat_box">
+                                        <div class="kcca_stat_number">
+                                            <field name="programme_count"/>
+                                        </div>
+                                        <div class="kcca_stat_label">
+                                            <i class="fa fa-tasks"/> PRG
+                                        </div>
+                                    </div>
+                                    <div class="kcca_stat_box">
+                                        <div class="kcca_stat_number">
+                                            <field name="kpi_count"/>
+                                        </div>
+                                        <div class="kcca_stat_label">
+                                            <i class="fa fa-tachometer"/> KPI
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Compact Performance Bar -->
+                                <div class="card_progress">
+                                    <div class="progress">
+                                        <div class="progress-bar"
+                                             t-attf-style="width: #{record.overall_performance.raw_value}%; background-color: #{record.overall_performance.raw_value >= 80 ? '#28a745' : record.overall_performance.raw_value >= 60 ? '#ffc107' : '#dc3545'}"/>
+                                    </div>
+                                </div>
+
+                                <!-- Compact Footer -->
+                                <div class="card_footer">
+                                    <div class="kcca_director_compact" t-if="record.director_id.raw_value">
+                                        <i class="fa fa-user-tie"/>
+                                        <span>
+                                            <field name="director_id"/>
+                                        </span>
+                                    </div>
+                                    <div class="kcca_status_compact">
+                                        <span t-if="!record.active.raw_value" class="badge badge-danger">
+                                            Inactive
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Directorate List View -->
+        <record id="view_kcca_directorate_list" model="ir.ui.view">
+            <field name="name">kcca.directorate.list</field>
+            <field name="model">kcca.directorate</field>
+            <field name="arch" type="xml">
+                <list string="KCCA Directorates" decoration-muted="not active">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code" invisible="1"/>
+                    <field name="director_id"/>
+                    <field name="division_count" string="Divisions"/>
+                    <field name="programme_count" string="Programmes"/>
+                    <field name="kpi_count" string="KPIs"/>
+                    <field name="overall_performance" widget="progressbar"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Directorate Form View -->
+        <record id="view_kcca_directorate_form" model="ir.ui.view">
+            <field name="name">kcca.directorate.form</field>
+            <field name="model">kcca.directorate</field>
+            <field name="arch" type="xml">
+                <form string="KCCA Directorate" class="o_form_view_compact_chatter">
+                    <header>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_divisions" type="object"
+                                    class="oe_stat_button" icon="fa-sitemap"
+                                    invisible="division_count == 0">
+                                <field name="division_count" widget="statinfo" string="Divisions"/>
+                            </button>
+                            <button name="action_view_related_territorial_divisions" type="object"
+                                    class="oe_stat_button" icon="fa-map-marker"
+                                    invisible="division_count > 0">
+                                <field name="related_divisions_count" widget="statinfo" string="Territorial Divisions"/>
+                            </button>
+                            <button name="action_view_programmes" type="object" 
+                                    class="oe_stat_button" icon="fa-tasks">
+                                <field name="programme_count" widget="statinfo" string="Programmes"/>
+                            </button>
+                            <button name="action_view_kpis" type="object" 
+                                    class="oe_stat_button" icon="fa-tachometer">
+                                <field name="kpi_count" widget="statinfo" string="KPIs"/>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Directorate Name"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="code" invisible="1"/>
+                                <field name="sequence"/>
+                                <field name="color" widget="color"/>
+                            </group>
+                            <group>
+                                <field name="overall_performance" widget="progressbar"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Leadership">
+                            <group>
+                                <field name="director_id"/>
+                                <field name="deputy_director_id"/>
+                            </group>
+                            <group>
+                                <field name="email"/>
+                                <field name="phone"/>
+                                <field name="office_location"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" widget="html"/>
+                            </page>
+                            <page string="Divisions" invisible="not division_ids">
+                                <field name="division_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="programme_count" string="Programmes"/>
+                                        <field name="overall_performance" widget="progressbar"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Related Territorial Divisions" invisible="division_ids">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Territorial Implementation:</strong> This directorate implements programmes across all KCCA territorial divisions.
+                                    The divisions listed below implement programmes that this directorate is responsible for.
+                                </div>
+                                <field name="related_territorial_divisions">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="programme_count" string="Total Programmes"/>
+                                        <field name="overall_performance" widget="progressbar" string="Performance"/>
+                                        <field name="directorate_id" string="Parent Directorate"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Primary Programmes">
+                                <field name="direct_programme_ids">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="programme_manager_id"/>
+                                        <field name="overall_performance" widget="progressbar"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Implementing Programmes">
+                                <field name="implementing_programme_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="programme_manager_id"/>
+                                        <field name="overall_performance" widget="progressbar"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Responsible KPIs">
+                                <field name="kpi_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="current_value"/>
+                                        <field name="target_value"/>
+                                        <field name="achievement_percentage" widget="progressbar"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Directorate Action -->
+        <record id="action_kcca_directorate" model="ir.actions.act_window">
+            <field name="name">KCCA Directorates</field>
+            <field name="res_model">kcca.directorate</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first directorate!
+                </p>
+                <p>
+                    Directorates are the main organizational units within KCCA.
+                    Each directorate manages multiple divisions and implements various programmes.
+                </p>
+            </field>
+        </record>
+
+        <!-- Enhanced Directorate Dashboard Action -->
+        <record id="action_kcca_directorate_dashboard" model="ir.actions.act_window">
+            <field name="name">Directorate Performance Dashboard</field>
+            <field name="res_model">kcca.directorate</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="view_kcca_directorate_kanban"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Welcome to the Directorate Performance Dashboard
+                </p>
+                <p>
+                    Monitor the performance of all KCCA directorates in real-time.
+                    View key metrics, performance indicators, and organizational structure.
+                </p>
+            </field>
+        </record>
+
+        <!-- Division Action -->
+        <record id="action_kcca_division" model="ir.actions.act_window">
+            <field name="name">KCCA Divisions</field>
+            <field name="res_model">kcca.division</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_kcca_division_kanban')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_kcca_division_list')}),
+                                          (0, 0, {'view_mode': 'form', 'view_id': ref('view_kcca_division_form')})]"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first KCCA Division
+                </p>
+                <p>
+                    KCCA divisions are territorial administrative units that implement
+                    programmes within their geographical boundaries.
+                </p>
+            </field>
+        </record>
+
+        <!-- Programme Action -->
+        <record id="action_kcca_programme" model="ir.actions.act_window">
+            <field name="name">KCCA Programmes</field>
+            <field name="res_model">kcca.programme</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_kcca_programme_kanban')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_kcca_programme_list')}),
+                                          (0, 0, {'view_mode': 'form', 'view_id': ref('view_kcca_programme_form')})]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first KCCA Programme
+                </p>
+                <p>
+                    KCCA programmes are strategic initiatives that contribute to achieving
+                    the organization's strategic goals and objectives.
+                </p>
+            </field>
+        </record>
+
+        <!-- Programme Objective Action -->
+        <record id="action_programme_objective" model="ir.actions.act_window">
+            <field name="name">Programme Objectives</field>
+            <field name="res_model">programme.objective</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Intermediate Outcome Action -->
+        <record id="action_intermediate_outcome" model="ir.actions.act_window">
+            <field name="name">Intermediate Outcomes</field>
+            <field name="res_model">intermediate.outcome</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        
+        <!-- Performance Indicator Action -->
+        <record id="action_performance_indicator" model="ir.actions.act_window">
+            <field name="name">Performance Indicators</field>
+            <field name="res_model">performance.indicator</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Performance Action Action -->
+        <record id="action_performance_action" model="ir.actions.act_window">
+            <field name="name">Performance Actions</field>
+            <field name="res_model">performance.action</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Performance Score Action -->
+        <record id="action_performance_score" model="ir.actions.act_window">
+            <field name="name">Performance Scores</field>
+            <field name="res_model">performance.score</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        
+    </data>
+</odoo>

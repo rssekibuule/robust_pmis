@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- KPI Linkage Dashboard Template -->
+        <template id="kpi_linkage_dashboard_template">
+            <div class="kpi_linkage_dashboard">
+                <style>
+                    .kpi_linkage_dashboard {
+                        padding: 20px;
+                        background: #f8f9fa;
+                        min-height: 100vh;
+                    }
+                    
+                    .linkage_header {
+                        background: white;
+                        padding: 20px;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    
+                    .linkage_grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                        gap: 20px;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .thematic_area_card {
+                        background: white;
+                        border-radius: 8px;
+                        padding: 20px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        border-left: 4px solid #007bff;
+                    }
+                    
+                    .thematic_area_card.infrastructure { border-left-color: #FF9800; }
+                    .thematic_area_card.health { border-left-color: #4CAF50; }
+                    .thematic_area_card.education { border-left-color: #3F51B5; }
+                    .thematic_area_card.economic { border-left-color: #FF5722; }
+                    .thematic_area_card.environment { border-left-color: #8BC34A; }
+                    .thematic_area_card.governance { border-left-color: #607D8B; }
+                    .thematic_area_card.finance { border-left-color: #2196F3; }
+                    .thematic_area_card.climate { border-left-color: #009688; }
+                    .thematic_area_card.citizen { border-left-color: #9C27B0; }
+                    .thematic_area_card.organizational { border-left-color: #795548; }
+                    
+                    .area_title {
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                        color: #333;
+                    }
+                    
+                    .kpi_linkage_item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 10px;
+                        margin-bottom: 8px;
+                        background: #f8f9fa;
+                        border-radius: 4px;
+                        border-left: 3px solid #007bff;
+                    }
+                    
+                    .strategic_kpi {
+                        border-left-color: #dc3545;
+                        background: #fff5f5;
+                    }
+                    
+                    .programme_indicator {
+                        border-left-color: #28a745;
+                        background: #f8fff8;
+                    }
+                    
+                    .kpi_name {
+                        font-weight: 500;
+                        color: #333;
+                        flex: 1;
+                    }
+                    
+                    .kpi_value {
+                        font-weight: bold;
+                        color: #007bff;
+                        margin-left: 10px;
+                    }
+                    
+                    .linkage_arrow {
+                        text-align: center;
+                        color: #6c757d;
+                        margin: 10px 0;
+                        font-size: 14px;
+                    }
+                    
+                    .contribution_weight {
+                        background: #e9ecef;
+                        padding: 2px 8px;
+                        border-radius: 12px;
+                        font-size: 12px;
+                        color: #495057;
+                        margin-left: 10px;
+                    }
+                    
+                    .stats_summary {
+                        background: white;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 20px;
+                    }
+                    
+                    .stat_item {
+                        text-align: center;
+                    }
+                    
+                    .stat_number {
+                        font-size: 32px;
+                        font-weight: bold;
+                        color: #007bff;
+                        display: block;
+                    }
+                    
+                    .stat_label {
+                        color: #6c757d;
+                        font-size: 14px;
+                        margin-top: 5px;
+                    }
+                </style>
+                
+                <div class="linkage_header">
+                    <h1>Strategic-Programme KPI Linkage Dashboard</h1>
+                    <p>Monitor how programme-level indicators contribute to strategic KPIs across thematic areas</p>
+                </div>
+                
+                <div class="stats_summary">
+                    <div class="stat_item">
+                        <span class="stat_number">34</span>
+                        <div class="stat_label">Strategic KPIs</div>
+                    </div>
+                    <div class="stat_item">
+                        <span class="stat_number">127</span>
+                        <div class="stat_label">Programme Indicators</div>
+                    </div>
+                    <div class="stat_item">
+                        <span class="stat_number">10</span>
+                        <div class="stat_label">Thematic Areas</div>
+                    </div>
+                    <div class="stat_item">
+                        <span class="stat_number">85%</span>
+                        <div class="stat_label">Linkage Coverage</div>
+                    </div>
+                </div>
+                
+                <div class="linkage_grid">
+                    <!-- Infrastructure & Transport -->
+                    <div class="thematic_area_card infrastructure">
+                        <div class="area_title">🏗️ Infrastructure &amp; Transport</div>
+                        <div class="kpi_linkage_item strategic_kpi">
+                            <span class="kpi_name">% of paved road network in good condition</span>
+                            <span class="kpi_value">35.46%</span>
+                        </div>
+                        <div class="linkage_arrow">↑ Contributes to</div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Km of roads rehabilitated</span>
+                            <span class="kpi_value">45 km</span>
+                            <span class="contribution_weight">40%</span>
+                        </div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Road maintenance completion rate</span>
+                            <span class="kpi_value">78%</span>
+                            <span class="contribution_weight">35%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Health Services -->
+                    <div class="thematic_area_card health">
+                        <div class="area_title">🏥 Health Services</div>
+                        <div class="kpi_linkage_item strategic_kpi">
+                            <span class="kpi_name">Maternal deaths (per 100,000)</span>
+                            <span class="kpi_value">213</span>
+                        </div>
+                        <div class="linkage_arrow">↑ Contributes to</div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Health facilities upgraded</span>
+                            <span class="kpi_value">12</span>
+                            <span class="contribution_weight">50%</span>
+                        </div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Skilled birth attendance rate</span>
+                            <span class="kpi_value">85%</span>
+                            <span class="contribution_weight">30%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Education Services -->
+                    <div class="thematic_area_card education">
+                        <div class="area_title">📚 Education Services</div>
+                        <div class="kpi_linkage_item strategic_kpi">
+                            <span class="kpi_name">Literacy rate (Lower Primary)</span>
+                            <span class="kpi_value">80%</span>
+                        </div>
+                        <div class="linkage_arrow">↑ Contributes to</div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Schools with improved infrastructure</span>
+                            <span class="kpi_value">25</span>
+                            <span class="contribution_weight">45%</span>
+                        </div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Teacher training programmes completed</span>
+                            <span class="kpi_value">150</span>
+                            <span class="contribution_weight">35%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Economic Development -->
+                    <div class="thematic_area_card economic">
+                        <div class="area_title">📈 Economic Development</div>
+                        <div class="kpi_linkage_item strategic_kpi">
+                            <span class="kpi_name">Kampala City unemployment rate</span>
+                            <span class="kpi_value">14.6%</span>
+                        </div>
+                        <div class="linkage_arrow">↑ Contributes to</div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">SME support programmes completed</span>
+                            <span class="kpi_value">45</span>
+                            <span class="contribution_weight">40%</span>
+                        </div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Job creation initiatives</span>
+                            <span class="kpi_value">1,250</span>
+                            <span class="contribution_weight">35%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Revenue & Finance -->
+                    <div class="thematic_area_card finance">
+                        <div class="area_title">💰 Revenue &amp; Finance</div>
+                        <div class="kpi_linkage_item strategic_kpi">
+                            <span class="kpi_name">Amount of LR generated (Bn)</span>
+                            <span class="kpi_value">114.3</span>
+                        </div>
+                        <div class="linkage_arrow">↑ Contributes to</div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Tax collection efficiency</span>
+                            <span class="kpi_value">92%</span>
+                            <span class="contribution_weight">60%</span>
+                        </div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">New revenue streams established</span>
+                            <span class="kpi_value">8</span>
+                            <span class="contribution_weight">25%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Citizen Satisfaction -->
+                    <div class="thematic_area_card citizen">
+                        <div class="area_title">😊 Citizen Satisfaction</div>
+                        <div class="kpi_linkage_item strategic_kpi">
+                            <span class="kpi_name">Citizen satisfaction rating</span>
+                            <span class="kpi_value">37%</span>
+                        </div>
+                        <div class="linkage_arrow">↑ Contributes to</div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Service delivery improvements</span>
+                            <span class="kpi_value">15</span>
+                            <span class="contribution_weight">50%</span>
+                        </div>
+                        <div class="kpi_linkage_item programme_indicator">
+                            <span class="kpi_name">Public engagement initiatives</span>
+                            <span class="kpi_value">28</span>
+                            <span class="contribution_weight">30%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        
+        <!-- KPI Linkage Dashboard Action -->
+        <record id="action_kpi_linkage_dashboard" model="ir.actions.client">
+            <field name="name">KPI Linkage Dashboard</field>
+            <field name="tag">kpi_linkage_dashboard</field>
+        </record>
+        
+        <!-- Menu Item -->
+        <menuitem id="menu_kpi_linkage_dashboard"
+                  name="KPI Linkage Dashboard"
+                  parent="menu_performance_tracking"
+                  action="action_kpi_linkage_dashboard"
+                  sequence="15"/>
+        
+    </data>
+</odoo>

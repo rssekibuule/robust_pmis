@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Performance Analytics List View -->
+        <record id="view_performance_analytics_list" model="ir.ui.view">
+            <field name="name">performance.analytics.list</field>
+            <field name="model">performance.analytics</field>
+            <field name="arch" type="xml">
+                <list string="Performance Analytics" decoration-info="state=='draft'" decoration-success="state=='published'">
+                    <field name="date"/>
+                    <field name="title"/>
+                    <field name="analysis_type"/>
+                    <field name="scope"/>
+                    <field name="risk_level" widget="badge" decoration-success="risk_level=='low'" decoration-warning="risk_level=='medium'" decoration-danger="risk_level in ('high','critical')"/>
+                    <field name="confidence_score" widget="progressbar"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-warning="state=='in_review'" decoration-success="state=='published'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Performance Analytics Form View -->
+        <record id="view_performance_analytics_form" model="ir.ui.view">
+            <field name="name">performance.analytics.form</field>
+            <field name="model">performance.analytics</field>
+            <field name="arch" type="xml">
+                <form string="Performance Analytics" class="o_form_view_compact_chatter">
+                    <header>
+                        <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_publish" string="Publish" type="object" class="btn-success" invisible="state != 'approved'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,in_review,approved,published"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="title" placeholder="Analysis Title"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="date"/>
+                                <field name="analysis_type"/>
+                                <field name="scope"/>
+                                <field name="risk_level"/>
+                            </group>
+                            <group>
+                                <field name="confidence_score" widget="progressbar"/>
+                                <field name="data_points"/>
+                                <field name="analysis_period_start"/>
+                                <field name="analysis_period_end"/>
+                            </group>
+                        </group>
+
+                        <group string="Related Records">
+                            <group>
+                                <field name="strategic_goal_id" invisible="scope != 'strategic'"/>
+                                <field name="directorate_id" invisible="scope != 'directorate'"/>
+                            </group>
+                            <group>
+                                <field name="programme_id" invisible="scope != 'programme'"/>
+                                <field name="kpi_id" invisible="scope != 'kpi'"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Key Insights">
+                                <field name="insights" widget="html"/>
+                            </page>
+                            <page string="Recommendations">
+                                <field name="recommendations" widget="html"/>
+                            </page>
+                            <page string="Analysis Data" groups="robust_pmis.group_kcca_pmis_admin">
+                                <field name="analysis_data" widget="ace" options="{'mode': 'json'}"/>
+                            </page>
+                        </notebook>
+
+                        <group string="Review Information" invisible="state == 'draft'">
+                            <field name="reviewer_id"/>
+                            <field name="review_date"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Performance Analytics Kanban View -->
+        <record id="view_performance_analytics_kanban" model="ir.ui.view">
+            <field name="name">performance.analytics.kanban</field>
+            <field name="model">performance.analytics</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="analysis_type" class="o_kanban_small_column">
+                    <field name="title"/>
+                    <field name="date"/>
+                    <field name="analysis_type"/>
+                    <field name="risk_level"/>
+                    <field name="confidence_score"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="title"/>
+                                        </strong>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="text-muted">
+                                            <i class="fa fa-calendar" title="Date"/> <field name="date"/>
+                                        </div>
+                                        <div class="mt8">
+                                            <span class="badge badge-pill" t-attf-class="badge-#{record.risk_level.raw_value == 'low' and 'success' or record.risk_level.raw_value == 'medium' and 'warning' or 'danger'}">
+                                                <field name="risk_level"/>
+                                            </span>
+                                            <span class="badge badge-pill badge-info ml8">
+                                                <field name="confidence_score"/>% Confidence
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Performance Analytics Graph View -->
+        <record id="view_performance_analytics_graph" model="ir.ui.view">
+            <field name="name">performance.analytics.graph</field>
+            <field name="model">performance.analytics</field>
+            <field name="arch" type="xml">
+                <graph string="Analytics Overview" type="bar">
+                    <field name="analysis_type" type="row"/>
+                    <field name="confidence_score" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Performance Analytics Pivot View -->
+        <record id="view_performance_analytics_pivot" model="ir.ui.view">
+            <field name="name">performance.analytics.pivot</field>
+            <field name="model">performance.analytics</field>
+            <field name="arch" type="xml">
+                <pivot string="Analytics Analysis">
+                    <field name="analysis_type" type="row"/>
+                    <field name="risk_level" type="col"/>
+                    <field name="confidence_score" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Performance Analytics Action -->
+        <record id="action_performance_analytics" model="ir.actions.act_window">
+            <field name="name">Performance Analytics</field>
+            <field name="res_model">performance.analytics</field>
+            <field name="view_mode">kanban,list,form,graph,pivot</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No performance analytics found
+                </p>
+                <p>
+                    Performance analytics provide insights into trends, risks, and opportunities
+                    based on your performance data. Analytics are automatically generated
+                    by the system and can also be created manually.
+                </p>
+            </field>
+        </record>
+
+        <!-- Analytics Dashboard Action -->
+        <record id="action_analytics_dashboard" model="ir.actions.act_window">
+            <field name="name">Analytics Dashboard</field>
+            <field name="res_model">performance.analytics</field>
+            <field name="view_mode">kanban,graph,pivot</field>
+            <field name="domain">[('state', '=', 'published')]</field>
+            <field name="context">{'search_default_group_by_analysis_type': 1}</field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_performance_analytics_search" model="ir.ui.view">
+            <field name="name">performance.analytics.search</field>
+            <field name="model">performance.analytics</field>
+            <field name="arch" type="xml">
+                <search string="Search Performance Analytics">
+                    <field name="title"/>
+                    <field name="analysis_type"/>
+                    <field name="scope"/>
+                    <field name="strategic_goal_id"/>
+                    <field name="directorate_id"/>
+                    <field name="programme_id"/>
+                    <field name="kpi_id"/>
+                    
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Published" name="published" domain="[('state', '=', 'published')]"/>
+                    <separator/>
+                    <filter string="High Risk" name="high_risk" domain="[('risk_level', 'in', ['high', 'critical'])]"/>
+                    <filter string="Low Risk" name="low_risk" domain="[('risk_level', '=', 'low')]"/>
+                    <separator/>
+                    <filter string="This Month" name="this_month" domain="[('date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                    <filter string="This Quarter" name="this_quarter" domain="[('date', '>=', (context_today() - relativedelta(months=3)).strftime('%Y-%m-01'))]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter string="Analysis Type" name="group_by_analysis_type" context="{'group_by': 'analysis_type'}"/>
+                        <filter string="Scope" name="group_by_scope" context="{'group_by': 'scope'}"/>
+                        <filter string="Risk Level" name="group_by_risk_level" context="{'group_by': 'risk_level'}"/>
+                        <filter string="State" name="group_by_state" context="{'group_by': 'state'}"/>
+                        <filter string="Date" name="group_by_date" context="{'group_by': 'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

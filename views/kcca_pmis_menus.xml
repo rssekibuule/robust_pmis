@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Main Menu -->
+        <menuitem id="menu_kcca_pmis_root"
+                  name="KCCA Performance Management"
+                  sequence="10"
+                  web_icon="robust_pmis,static/description/icon.png"/>
+
+
+
+        <!-- 1. Organization Menu -->
+        <menuitem id="menu_organizational_structure"
+                  name="Organization"
+                  parent="menu_kcca_pmis_root"
+                  sequence="10"/>
+
+        <menuitem id="menu_kcca_directorate"
+                  name="Directorates"
+                  parent="menu_organizational_structure"
+                  action="robust_pmis.action_kcca_directorate"
+                  sequence="10"/>
+
+        <menuitem id="menu_kcca_division"
+                  name="Divisions"
+                  parent="menu_organizational_structure"
+                  action="robust_pmis.action_kcca_division"
+                  sequence="20"/>
+
+        <!-- Strategic Framework Submenu -->
+        <menuitem id="menu_strategic_framework"
+                  name="Strategic Framework"
+                  parent="menu_organizational_structure"
+                  sequence="30"/>
+
+        <menuitem id="menu_strategic_goal"
+                  name="Strategic Goals"
+                  parent="menu_strategic_framework"
+                  action="robust_pmis.action_strategic_goal"
+                  sequence="10"/>
+
+        <menuitem id="menu_strategic_objective"
+                  name="Strategic Objectives"
+                  parent="menu_strategic_framework"
+                  action="robust_pmis.action_strategic_objective"
+                  sequence="20"/>
+
+        <menuitem id="menu_key_result_area"
+                  name="Key Result Areas"
+                  parent="menu_strategic_framework"
+                  action="robust_pmis.action_key_result_area"
+                  sequence="30"/>
+
+        <menuitem id="menu_key_performance_indicator"
+                  name="Key Performance Indicators"
+                  parent="menu_strategic_framework"
+                  action="robust_pmis.action_key_performance_indicator"
+                  sequence="40"/>
+
+        <!-- 2. Programmes Menu -->
+        <menuitem id="menu_programme_management"
+                  name="Programmes"
+                  parent="menu_kcca_pmis_root"
+                  sequence="20"/>
+
+        <menuitem id="menu_kcca_programme"
+                  name="Programme Overview"
+                  parent="menu_programme_management"
+                  action="robust_pmis.action_kcca_programme"
+                  sequence="10"/>
+
+        <!-- Programme Structure Submenu -->
+        <menuitem id="menu_programme_structure"
+                  name="Programme Structure"
+                  parent="menu_programme_management"
+                  sequence="20"/>
+
+        <menuitem id="menu_programme_objective"
+                  name="Programme Objectives"
+                  parent="menu_programme_structure"
+                  action="robust_pmis.action_programme_objective"
+                  sequence="10"/>
+
+        <menuitem id="menu_intermediate_outcome"
+                  name="Intermediate Outcomes"
+                  parent="menu_programme_structure"
+                  action="robust_pmis.action_intermediate_outcome"
+                  sequence="20"/>
+
+        <menuitem id="menu_intervention"
+                  name="Interventions"
+                  parent="menu_programme_structure"
+                  action="robust_pmis.action_intervention"
+                  sequence="30"/>
+
+        <menuitem id="menu_output"
+                  name="Outputs"
+                  parent="menu_programme_structure"
+                  action="robust_pmis.action_output"
+                  sequence="40"/>
+
+        <menuitem id="menu_piap_action"
+                  name="PIAP Actions"
+                  parent="menu_programme_structure"
+                  action="robust_pmis.action_piap_action"
+                  sequence="50"/>
+
+        <!-- Programme Performance Indicators Menu -->
+        <menuitem id="menu_programme_objective_indicators"
+                  name="Programme-Objective Indicators"
+                  parent="menu_programme_management"
+                  action="action_programme_objective_indicators"
+                  sequence="30"/>
+
+        <!-- KPI Performance Dashboard in Programmes Menu -->
+        <menuitem id="menu_kpi_performance_dashboard_programmes"
+                  name="KPI Performance Dashboard"
+                  parent="menu_programme_management"
+                  action="action_kpi_performance_dashboard"
+                  sequence="35"/>
+
+        <!-- 3. Division Performance Menu -->
+        <menuitem id="menu_division_performance"
+                  name="Division Performance"
+                  parent="menu_kcca_pmis_root"
+                  sequence="30"/>
+
+        <!-- 4. Directorate Performance Menu -->
+        <menuitem id="menu_directorate_performance"
+                  name="Directorate Performance"
+                  parent="menu_kcca_pmis_root"
+                  sequence="40"/>
+
+        <!-- 5. Performance Monitoring Menu (Renamed from Performance) -->
+        <menuitem id="menu_performance_tracking"
+                  name="Performance Monitoring"
+                  parent="menu_kcca_pmis_root"
+                  sequence="50"/>
+
+        <menuitem id="menu_performance_indicator"
+                  name="Performance Indicators"
+                  parent="menu_performance_tracking"
+                  action="action_performance_indicator"
+                  sequence="10"/>
+
+        <menuitem id="menu_performance_action"
+                  name="Performance Actions"
+                  parent="menu_performance_tracking"
+                  action="action_performance_action"
+                  sequence="20"/>
+
+        <menuitem id="menu_performance_score"
+                  name="Performance Scores"
+                  parent="menu_performance_tracking"
+                  action="action_performance_score"
+                  sequence="30"/>
+
+        <!-- 6. Financial Strategy Menu (Top-level) -->
+        <menuitem id="menu_financial_strategy"
+                  name="Financial Strategy"
+                  parent="menu_kcca_pmis_root"
+                  sequence="60"/>
+
+        <!-- Strategic Plan Budget Submenu -->
+        <menuitem id="menu_strategic_plan_budget"
+                  name="Strategic Plan Budget"
+                  parent="menu_financial_strategy"
+                  action="action_strategic_plan_budget"
+                  sequence="10"/>
+
+        <!-- MTEF Projections Submenu -->
+        <menuitem id="menu_mtef_projections"
+                  name="MTEF Projections"
+                  parent="menu_financial_strategy"
+                  action="action_mtef_projections"
+                  sequence="20"/>
+
+        <!-- Programme Budget Allocations Submenu -->
+        <menuitem id="menu_programme_budget"
+                  name="Programme Budget Allocations"
+                  parent="menu_financial_strategy"
+                  action="action_programme_budget"
+                  sequence="30"/>
+
+        <!-- Financial Analysis Submenu -->
+        <menuitem id="menu_financial_analysis"
+                  name="Financial Analysis"
+                  parent="menu_financial_strategy"
+                  action="robust_pmis.action_financial_analysis"
+                  sequence="40"/>
+
+        <!-- Financial Integration Submenu -->
+        <menuitem id="menu_financial_integration"
+                  name="Financial Integration"
+                  parent="menu_financial_strategy"
+                  action="robust_pmis.action_financial_integration"
+                  sequence="50"/>
+
+        <!-- Financial Dashboards Submenu -->
+        <menuitem id="menu_financial_dashboard"
+                  name="Financial Dashboards"
+                  parent="menu_financial_strategy"
+                  action="robust_pmis.action_financial_dashboard"
+                  sequence="60"/>
+
+        <!-- 7. Analytics & Reports Menu -->
+        <menuitem id="menu_analytics_reports"
+                  name="Analytics &amp; Reports"
+                  parent="menu_kcca_pmis_root"
+                  sequence="70"/>
+
+        <!-- Analytics menu items temporarily disabled for server startup -->
+        <!-- Will be re-enabled once action loading issues are resolved -->
+        <!--
+        <menuitem id="menu_kpi_analysis"
+                  name="KPI Analysis"
+                  parent="menu_analytics_reports"
+                  action="action_kpi_analysis"
+                  sequence="10"/>
+
+        <menuitem id="menu_programme_analysis"
+                  name="Programme Analysis"
+                  parent="menu_analytics_reports"
+                  action="action_programme_analysis"
+                  sequence="20"/>
+
+        <menuitem id="menu_performance_trends"
+                  name="Performance Trends"
+                  parent="menu_analytics_reports"
+                  action="action_performance_trends"
+                  sequence="30"/>
+
+        <menuitem id="menu_performance_analytics"
+                  name="Advanced Analytics"
+                  parent="menu_analytics_reports"
+                  action="action_performance_analytics"
+                  sequence="40"/>
+
+        <menuitem id="menu_quarterly_report_generator"
+                  name="Quarterly Report Generator"
+                  parent="menu_analytics_reports"
+                  action="action_quarterly_report_wizard"
+                  sequence="50"/>
+        -->
+
+        <!-- 8. Monitoring & Dashboards Menu -->
+        <menuitem id="menu_monitoring_dashboards"
+                  name="Monitoring &amp; Dashboards"
+                  parent="menu_kcca_pmis_root"
+                  sequence="80"/>
+
+        <menuitem id="menu_kpi_performance_dashboard_monitoring"
+                  name="KPI Performance Dashboard"
+                  parent="menu_monitoring_dashboards"
+                  action="action_kpi_performance_dashboard"
+                  sequence="10"/>
+
+        <menuitem id="menu_master_table_dashboard"
+                  name="Master Table Dashboard"
+                  parent="menu_monitoring_dashboards"
+                  action="action_master_table_dashboard"
+                  sequence="20"/>
+
+        <!-- 9. Administration Menu -->
+        <menuitem id="menu_administration"
+                  name="Administration"
+                  parent="menu_kcca_pmis_root"
+                  sequence="90"/>
+
+        <!-- Alerts & Notifications Submenu -->
+        <menuitem id="menu_alerts_notifications"
+                  name="Alerts &amp; Notifications"
+                  parent="menu_administration"
+                  sequence="10"/>
+
+        <menuitem id="menu_performance_alerts"
+                  name="Performance Alerts"
+                  parent="menu_alerts_notifications"
+                  action="action_performance_alert"
+                  sequence="10"/>
+
+        <menuitem id="menu_my_alerts"
+                  name="My Alerts"
+                  parent="menu_alerts_notifications"
+                  action="action_my_alerts"
+                  sequence="20"/>
+
+        <menuitem id="menu_critical_alerts"
+                  name="Critical Alerts"
+                  parent="menu_alerts_notifications"
+                  action="action_critical_alerts"
+                  sequence="30"/>
+
+        <!-- Workflows & Automation Submenu -->
+        <menuitem id="menu_workflows_automation"
+                  name="Workflows &amp; Automation"
+                  parent="menu_administration"
+                  sequence="20"/>
+
+        <menuitem id="menu_performance_workflows"
+                  name="Performance Workflows"
+                  parent="menu_workflows_automation"
+                  action="action_performance_workflow"
+                  sequence="10"/>
+
+        <!-- Tools & Utilities Submenu -->
+        <menuitem id="menu_tools_utilities"
+                  name="Tools &amp; Utilities"
+                  parent="menu_administration"
+                  sequence="30"/>
+
+        <menuitem id="menu_bulk_performance_update"
+                  name="Bulk Performance Update"
+                  parent="menu_tools_utilities"
+                  action="action_performance_update_wizard"
+                  sequence="10"/>
+
+        <menuitem id="menu_audit_log"
+                  name="Audit Logs"
+                  parent="menu_administration"
+                  action="action_audit_log"
+                  sequence="40"/>
+
+
+
+    </data>
+</odoo>

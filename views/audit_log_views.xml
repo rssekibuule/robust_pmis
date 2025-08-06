@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Audit Log List View -->
+        <record id="view_audit_log_list" model="ir.ui.view">
+            <field name="name">audit.log.list</field>
+            <field name="model">audit.log</field>
+            <field name="arch" type="xml">
+                <list string="Audit Logs" create="false" edit="false" delete="false"
+                      decoration-info="action_type == 'create'"
+                      decoration-warning="action_type == 'update'"
+                      decoration-danger="action_type == 'delete'"
+                      decoration-success="action_type in ['approve', 'submit']">
+                    <field name="timestamp"/>
+                    <field name="user_id"/>
+                    <field name="action_type"/>
+                    <field name="action_description"/>
+                    <field name="model_display_name"/>
+                    <field name="record_name"/>
+                    <field name="field_name"/>
+                    <field name="programme_id"/>
+                    <field name="directorate_id"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Audit Log Form View -->
+        <record id="view_audit_log_form" model="ir.ui.view">
+            <field name="name">audit.log.form</field>
+            <field name="model">audit.log</field>
+            <field name="arch" type="xml">
+                <form string="Audit Log" create="false" edit="false" delete="false">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="action_description" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Action Information">
+                                <field name="action_type" readonly="1"/>
+                                <field name="timestamp" readonly="1"/>
+                                <field name="user_id" readonly="1"/>
+                            </group>
+                            <group string="Record Information">
+                                <field name="model_display_name" readonly="1"/>
+                                <field name="record_id" readonly="1"/>
+                                <field name="record_name" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Change Details" invisible="not field_name">
+                            <group>
+                                <field name="field_name" readonly="1"/>
+                                <field name="old_value" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="new_value" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Context Information">
+                            <group>
+                                <field name="programme_id" readonly="1"/>
+                                <field name="directorate_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="ip_address" readonly="1"/>
+                                <field name="session_id" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Details" invisible="not details">
+                                <field name="details" readonly="1"/>
+                            </page>
+                            <page string="Technical Information">
+                                <group>
+                                    <field name="model_name" readonly="1"/>
+                                    <field name="user_agent" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Audit Log Search View -->
+        <record id="view_audit_log_search" model="ir.ui.view">
+            <field name="name">audit.log.search</field>
+            <field name="model">audit.log</field>
+            <field name="arch" type="xml">
+                <search string="Search Audit Logs">
+                    <field name="action_description"/>
+                    <field name="user_id"/>
+                    <field name="model_name"/>
+                    <field name="record_name"/>
+                    <field name="programme_id"/>
+                    <field name="directorate_id"/>
+                    
+                    <filter string="Today" name="today" 
+                            domain="[('timestamp', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), 
+                                     ('timestamp', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                    <filter string="This Week" name="this_week" 
+                            domain="[('timestamp', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),
+                                     ('timestamp', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Month" name="this_month" 
+                            domain="[('timestamp', '&gt;=', context_today().strftime('%Y-%m-01')),
+                                     ('timestamp', '&lt;=', (context_today().replace(day=1) + datetime.timedelta(days=32)).replace(day=1) - datetime.timedelta(days=1))]"/>
+                    
+                    <separator/>
+                    <filter string="Creates" name="creates" domain="[('action_type', '=', 'create')]"/>
+                    <filter string="Updates" name="updates" domain="[('action_type', '=', 'update')]"/>
+                    <filter string="Deletes" name="deletes" domain="[('action_type', '=', 'delete')]"/>
+                    <filter string="Approvals" name="approvals" domain="[('action_type', '=', 'approve')]"/>
+                    
+                    <separator/>
+                    <filter string="Performance Indicators" name="performance_indicators" 
+                            domain="[('model_name', '=', 'performance.indicator')]"/>
+                    <filter string="KPIs" name="kpis" 
+                            domain="[('model_name', '=', 'key.performance.indicator')]"/>
+                    <filter string="PIAP Actions" name="piap_actions" 
+                            domain="[('model_name', '=', 'piap.action')]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
+                        <filter string="Action Type" name="group_action_type" context="{'group_by': 'action_type'}"/>
+                        <filter string="Model" name="group_model" context="{'group_by': 'model_display_name'}"/>
+                        <filter string="Programme" name="group_programme" context="{'group_by': 'programme_id'}"/>
+                        <filter string="Directorate" name="group_directorate" context="{'group_by': 'directorate_id'}"/>
+                        <filter string="Date" name="group_date" context="{'group_by': 'timestamp:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Audit Log Action -->
+        <record id="action_audit_log" model="ir.actions.act_window">
+            <field name="name">Audit Logs</field>
+            <field name="res_model">audit.log</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_audit_log_search"/>
+            <field name="context">{'search_default_this_month': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No audit logs found!
+                </p>
+                <p>
+                    Audit logs track all changes made to performance management data for accountability and compliance purposes.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+    </data>
+</odoo>

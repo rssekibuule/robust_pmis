@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Find the correct strategic objective external id for Infrastructure Development -->
+    <!-- Replace 'strategic_objective_infrastructure' with the actual external id if different -->
+    <record id="demo_kra_1" model="key.result.area">
+        <field name="name">Road Network Expansion</field>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="description">Expand and upgrade the city's road network</field>
+        <field name="sequence">10</field>
+        <field name="active">True</field>
+    </record>
+    <record id="demo_kra_2" model="key.result.area">
+        <field name="name">Public Transport Enhancement</field>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="description">Enhance public transport system</field>
+        <field name="sequence">20</field>
+        <field name="active">True</field>
+    </record>
+    <record id="demo_kra_3" model="key.result.area">
+        <field name="name">Urban Drainage Improvement</field>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="description">Improve urban drainage systems</field>
+        <field name="sequence">30</field>
+        <field name="active">True</field>
+    </record>
+    <record id="demo_kra_4" model="key.result.area">
+        <field name="name">Non-Motorized Transport Promotion</field>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="description">Promote walking and cycling infrastructure</field>
+        <field name="sequence">40</field>
+        <field name="active">True</field>
+    </record>
+    <record id="demo_kra_5" model="key.result.area">
+        <field name="name">Smart Infrastructure Deployment</field>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="description">Deploy smart city infrastructure</field>
+        <field name="sequence">50</field>
+        <field name="active">True</field>
+    </record>
+    <!-- 5 KPIs for each KRA -->
+    <!-- Road Network Expansion KPIs -->
+    <record id="demo_kpi_1_1" model="key.performance.indicator">
+        <field name="name">Kilometers of new roads constructed</field>
+        <field name="kra_id" ref="demo_kra_1"/>
+        <field name="description">Total new roads constructed</field>
+        <field name="target_value">50</field>
+        <field name="current_value">20</field>
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <record id="demo_kpi_1_2" model="key.performance.indicator">
+        <field name="name">Road maintenance interventions</field>
+        <field name="kra_id" ref="demo_kra_1"/>
+        <field name="description">Number of maintenance interventions</field>
+        <field name="target_value">100</field>
+        <field name="current_value">40</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <record id="demo_kpi_1_3" model="key.performance.indicator">
+        <field name="name">Average road quality index</field>
+        <field name="kra_id" ref="demo_kra_1"/>
+        <field name="description">Average quality index of roads</field>
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <record id="demo_kpi_1_4" model="key.performance.indicator">
+        <field name="name">Number of bridges constructed</field>
+        <field name="kra_id" ref="demo_kra_1"/>
+        <field name="description">Bridges constructed</field>
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <record id="demo_kpi_1_5" model="key.performance.indicator">
+        <field name="name">Road safety improvement projects</field>
+        <field name="kra_id" ref="demo_kra_1"/>
+        <field name="description">Projects for road safety</field>
+        <field name="target_value">5</field>
+        <field name="current_value">2</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <!-- Public Transport Enhancement KPIs -->
+    <record id="demo_kpi_2_1" model="key.performance.indicator">
+        <field name="name">Number of new buses deployed</field>
+        <field name="kra_id" ref="demo_kra_2"/>
+        <field name="description">New buses deployed</field>
+        <field name="target_value">100</field>
+        <field name="current_value">40</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <record id="demo_kpi_2_2" model="key.performance.indicator">
+        <field name="name">Public transport coverage</field>
+        <field name="kra_id" ref="demo_kra_2"/>
+        <field name="description">Coverage of public transport</field>
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <record id="demo_kpi_2_3" model="key.performance.indicator">
+        <field name="name">Average waiting time at bus stops</field>
+        <field name="kra_id" ref="demo_kra_2"/>
+        <field name="description">Waiting time at bus stops</field>
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <record id="demo_kpi_2_4" model="key.performance.indicator">
+        <field name="name">Bus punctuality rate</field>
+        <field name="kra_id" ref="demo_kra_2"/>
+        <field name="description">Punctuality of buses</field>
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+
+    </record>
+    <record id="demo_kpi_2_5" model="key.performance.indicator">
+        <field name="name">Customer satisfaction index</field>
+        <field name="kra_id" ref="demo_kra_2"/>
+        <field name="description">Satisfaction with public transport</field>
+        <field name="target_value">90</field>
+        <field name="current_value">65</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <!-- Urban Drainage Improvement KPIs -->
+    <record id="demo_kpi_3_1" model="key.performance.indicator">
+        <field name="name">Drainage channels upgraded</field>
+        <field name="kra_id" ref="demo_kra_3"/>
+        <field name="description">Upgraded drainage channels</field>
+        <field name="target_value">30</field>
+        <field name="current_value">10</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_3_2" model="key.performance.indicator">
+        <field name="name">Flooding incidents reduced</field>
+        <field name="kra_id" ref="demo_kra_3"/>
+        <field name="description">Reduction in flooding incidents</field>
+        <field name="target_value">20</field>
+        <field name="current_value">7</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_3_3" model="key.performance.indicator">
+        <field name="name">Drainage maintenance frequency</field>
+        <field name="kra_id" ref="demo_kra_3"/>
+        <field name="description">Frequency of drainage maintenance</field>
+        <field name="target_value">12</field>
+        <field name="current_value">6</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_3_4" model="key.performance.indicator">
+        <field name="name">Length of new drainage constructed</field>
+        <field name="kra_id" ref="demo_kra_3"/>
+        <field name="description">New drainage constructed</field>
+        <field name="target_value">10</field>
+        <field name="current_value">3</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_3_5" model="key.performance.indicator">
+        <field name="name">Drainage system reliability</field>
+        <field name="kra_id" ref="demo_kra_3"/>
+        <field name="description">Reliability of drainage system</field>
+        <field name="target_value">95</field>
+        <field name="current_value">80</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <!-- Non-Motorized Transport Promotion KPIs -->
+    <record id="demo_kpi_4_1" model="key.performance.indicator">
+        <field name="name">Kilometers of cycling lanes added</field>
+        <field name="kra_id" ref="demo_kra_4"/>
+        <field name="description">Cycling lanes added</field>
+        <field name="target_value">25</field>
+        <field name="current_value">8</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_4_2" model="key.performance.indicator">
+        <field name="name">Pedestrian walkways constructed</field>
+        <field name="kra_id" ref="demo_kra_4"/>
+        <field name="description">Walkways constructed</field>
+        <field name="target_value">15</field>
+        <field name="current_value">6</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_4_3" model="key.performance.indicator">
+        <field name="name">Bicycle parking stations</field>
+        <field name="kra_id" ref="demo_kra_4"/>
+        <field name="description">Bicycle parking stations</field>
+        <field name="target_value">10</field>
+        <field name="current_value">3</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_4_4" model="key.performance.indicator">
+        <field name="name">Public awareness campaigns</field>
+        <field name="kra_id" ref="demo_kra_4"/>
+        <field name="description">Awareness campaigns for non-motorized transport</field>
+        <field name="target_value">5</field>
+        <field name="current_value">2</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_4_5" model="key.performance.indicator">
+        <field name="name">Accident reduction rate</field>
+        <field name="kra_id" ref="demo_kra_4"/>
+        <field name="description">Reduction in accidents involving pedestrians/cyclists</field>
+        <field name="target_value">10</field>
+        <field name="current_value">3</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <!-- Smart Infrastructure Deployment KPIs -->
+    <record id="demo_kpi_5_1" model="key.performance.indicator">
+        <field name="name">Smart traffic lights installed</field>
+        <field name="kra_id" ref="demo_kra_5"/>
+        <field name="description">Smart traffic lights installed</field>
+        <field name="target_value">15</field>
+        <field name="current_value">5</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_5_2" model="key.performance.indicator">
+        <field name="name">CCTV cameras deployed</field>
+        <field name="kra_id" ref="demo_kra_5"/>
+        <field name="description">CCTV cameras deployed for smart monitoring</field>
+        <field name="target_value">50</field>
+        <field name="current_value">20</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_5_3" model="key.performance.indicator">
+        <field name="name">WiFi hotspots installed</field>
+        <field name="kra_id" ref="demo_kra_5"/>
+        <field name="description">WiFi hotspots for public use</field>
+        <field name="target_value">30</field>
+        <field name="current_value">12</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_5_4" model="key.performance.indicator">
+        <field name="name">Smart parking systems deployed</field>
+        <field name="kra_id" ref="demo_kra_5"/>
+        <field name="description">Smart parking systems</field>
+        <field name="target_value">10</field>
+        <field name="current_value">3</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="demo_kpi_5_5" model="key.performance.indicator">
+        <field name="name">Energy-efficient streetlights installed</field>
+        <field name="kra_id" ref="demo_kra_5"/>
+        <field name="description">LED streetlights for energy efficiency</field>
+        <field name="target_value">100</field>
+        <field name="current_value">40</field>
+
+        <field name="frequency">annual</field>
+        <field name="active">True</field>
+        <field name="weight">1.0</field>
+    </record>
+</odoo>

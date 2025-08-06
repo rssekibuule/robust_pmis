@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- NDPIII Programmes with proper relationships -->
+        
+        <!-- 1. Agro-Industrialization -->
+        <record id="programme_agro_industrialization" model="kcca.programme">
+            <field name="name">Agro-Industrialization</field>
+            <field name="code">AGRO</field>
+            <field name="description">Programme focused on agricultural and industrial development</field>
+            <field name="sequence">1</field>
+        </record>
+        
+        <!-- 2. Private Sector Development -->
+        <record id="programme_private_sector_dev" model="kcca.programme">
+            <field name="name">Private Sector Development</field>
+            <field name="code">PSD</field>
+            <field name="description">Programme to enhance private sector growth and development</field>
+            <field name="sequence">2</field>
+        </record>
+        
+        <!-- 3. Integrated Transport Infrastructure and Services -->
+        <record id="programme_transport_infrastructure" model="kcca.programme">
+            <field name="name">Integrated Transport Infrastructure and Services</field>
+            <field name="code">ITIS</field>
+            <field name="description">Programme for integrated transport infrastructure development</field>
+            <field name="sequence">3</field>
+        </record>
+        
+        <!-- 4. Development Plan Implementation -->
+        <record id="programme_dev_plan_implementation" model="kcca.programme">
+            <field name="name">Development Plan Implementation</field>
+            <field name="code">DPI</field>
+            <field name="description">Programme for implementing development plans</field>
+            <field name="sequence">4</field>
+        </record>
+        
+        <!-- 5. Tourism Development -->
+        <record id="programme_tourism_development" model="kcca.programme">
+            <field name="name">Tourism Development</field>
+            <field name="code">TD</field>
+            <field name="description">Programme for tourism sector development</field>
+            <field name="sequence">5</field>
+        </record>
+        
+        <!-- 6. Natural Resources, Environment, Climate Change, Water and Land Management -->
+        <record id="programme_natural_resources" model="kcca.programme">
+            <field name="name">Natural Resources, Environment, Climate Change, Water and Land Management</field>
+            <field name="code">NRECCWLM</field>
+            <field name="description">Programme for natural resources and environmental management</field>
+            <field name="sequence">6</field>
+        </record>
+        
+        <!-- 7. Sustainable Urbanization and Housing -->
+        <record id="programme_sustainable_urbanization" model="kcca.programme">
+            <field name="name">Sustainable Urbanization and Housing</field>
+            <field name="code">SUH</field>
+            <field name="description">Programme for sustainable urban development and housing</field>
+            <field name="sequence">7</field>
+        </record>
+        
+        <!-- 8. Digital Transformation -->
+        <record id="programme_digital_transformation" model="kcca.programme">
+            <field name="name">Digital Transformation</field>
+            <field name="code">DT</field>
+            <field name="description">Programme for digital transformation initiatives</field>
+            <field name="sequence">8</field>
+        </record>
+        
+        <!-- 9. Human Capital Development -->
+        <record id="programme_human_capital_dev" model="kcca.programme">
+            <field name="name">Human Capital Development</field>
+            <field name="code">HCD</field>
+            <field name="description">Programme for human capital development</field>
+            <field name="sequence">9</field>
+        </record>
+        
+        <!-- 10. Legislation, Oversight and Representation -->
+        <record id="programme_legislation_oversight" model="kcca.programme">
+            <field name="name">Legislation, Oversight and Representation</field>
+            <field name="code">LOR</field>
+            <field name="description">Programme for legislative oversight and representation</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- 11. Administration of Justice -->
+        <record id="programme_admin_justice" model="kcca.programme">
+            <field name="name">Administration of Justice</field>
+            <field name="code">AOJ</field>
+            <field name="description">Programme for administration of justice</field>
+            <field name="sequence">11</field>
+        </record>
+        
+        <!-- 12. Governance and Security -->
+        <record id="programme_governance_security" model="kcca.programme">
+            <field name="name">Governance and Security</field>
+            <field name="code">GS</field>
+            <field name="description">Programme for governance and security</field>
+            <field name="sequence">12</field>
+        </record>
+        
+        <!-- 13. Public Sector Transformation -->
+        <record id="programme_public_sector_transformation" model="kcca.programme">
+            <field name="name">Public Sector Transformation</field>
+            <field name="code">PST</field>
+            <field name="description">Programme for public sector transformation</field>
+            <field name="sequence">13</field>
+        </record>
+
+        <!-- 14. Sustainable Energy Development -->
+        <record id="programme_sustainable_energy_dev" model="kcca.programme">
+            <field name="name">Sustainable Energy Development</field>
+            <field name="code">SED</field>
+            <field name="description">Programme focused on sustainable energy development and renewable energy initiatives</field>
+            <field name="sequence">14</field>
+        </record>
+
+        <!-- Programme-Strategic Objective Relationships (Based on Master Table) -->
+
+        <!-- Strategic Objective 1: Enhance Kampala City economic Growth -->
+        <!-- Programmes: 1-8 (Agro-Industrialization through Digital Transformation) -->
+
+        <record id="programme_agro_industrialization" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <record id="programme_private_sector_dev" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <record id="programme_transport_infrastructure" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <record id="programme_dev_plan_implementation" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <record id="programme_tourism_development" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <record id="programme_natural_resources" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <record id="programme_sustainable_urbanization" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <record id="programme_digital_transformation" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <record id="programme_sustainable_energy_dev" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_economic_growth'))]"/>
+        </record>
+
+        <!-- Strategic Objective 2: Increase productivity, inclusiveness and wellbeing of Population -->
+        <!-- Programme: 9 (Human Capital Development) -->
+
+        <record id="programme_human_capital_dev" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_productivity_wellbeing'))]"/>
+        </record>
+
+        <record id="programme_sustainable_energy_dev" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_productivity_wellbeing'))]"/>
+        </record>
+
+        <!-- Strategic Objective 3: Strengthen the oversight and governance function in the city -->
+        <!-- Programmes: 10-12 (Legislation/Oversight, Administration of Justice, Governance and Security) -->
+
+        <record id="programme_legislation_oversight" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_governance'))]"/>
+        </record>
+
+        <record id="programme_admin_justice" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_governance'))]"/>
+        </record>
+
+        <record id="programme_governance_security" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_governance'))]"/>
+        </record>
+
+        <!-- Strategic Objective 4: Mainstream action on city climate resilience -->
+        <!-- Programmes: 6 (Natural Resources/Environment), 4 (Development Plan Implementation) -->
+
+        <record id="programme_natural_resources" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_climate_resilience'))]"/>
+        </record>
+
+        <record id="programme_dev_plan_implementation" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_climate_resilience'))]"/>
+        </record>
+
+        <!-- Strategic Objective 5: Strengthen institutional capacity to drive organizational excellence -->
+        <!-- Programmes: 13 (Public Sector Transformation), 8 (Digital Transformation), 4 (Development Plan Implementation) -->
+
+        <record id="programme_public_sector_transformation" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_institutional_capacity'))]"/>
+        </record>
+
+        <record id="programme_digital_transformation" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_institutional_capacity'))]"/>
+        </record>
+
+        <record id="programme_dev_plan_implementation" model="kcca.programme">
+            <field name="strategic_objective_ids" eval="[(4, ref('strategic_objective_institutional_capacity'))]"/>
+        </record>
+
+        <!-- Programme-Directorate Implementation Relationships -->
+        <!-- Relationships are now managed through the programme.directorate.rel intermediate model -->
+        <!-- See data/programme_directorate_relationships.xml for the actual relationships -->
+
+    </data>
+</odoo>

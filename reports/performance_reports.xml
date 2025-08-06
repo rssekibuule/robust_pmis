@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Strategic Goal Performance Report -->
+        <record id="action_report_strategic_goal_performance" model="ir.actions.report">
+            <field name="name">Strategic Goal Performance Report</field>
+            <field name="model">strategic.goal</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">robust_pmis.report_strategic_goal_performance</field>
+            <field name="report_file">robust_pmis.report_strategic_goal_performance</field>
+            <field name="binding_model_id" ref="model_strategic_goal"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- KPI Performance Report -->
+        <record id="action_report_kpi_performance" model="ir.actions.report">
+            <field name="name">KPI Performance Report</field>
+            <field name="model">key.performance.indicator</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">robust_pmis.report_kpi_performance</field>
+            <field name="report_file">robust_pmis.report_kpi_performance</field>
+            <field name="binding_model_id" ref="model_key_performance_indicator"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Programme Performance Report -->
+        <record id="action_report_programme_performance" model="ir.actions.report">
+            <field name="name">Programme Performance Report</field>
+            <field name="model">kcca.programme</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">robust_pmis.report_programme_performance</field>
+            <field name="report_file">robust_pmis.report_programme_performance</field>
+            <field name="binding_model_id" ref="model_kcca_programme"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Directorate Performance Report -->
+        <record id="action_report_directorate_performance" model="ir.actions.report">
+            <field name="name">Directorate Performance Report</field>
+            <field name="model">kcca.directorate</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">robust_pmis.report_directorate_performance</field>
+            <field name="report_file">robust_pmis.report_directorate_performance</field>
+            <field name="binding_model_id" ref="model_kcca_directorate"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Quarterly Performance Report -->
+        <record id="action_report_quarterly_performance" model="ir.actions.report">
+            <field name="name">Quarterly Performance Report</field>
+            <field name="model">performance.score</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">robust_pmis.report_quarterly_performance</field>
+            <field name="report_file">robust_pmis.report_quarterly_performance</field>
+            <field name="binding_model_id" ref="model_performance_score"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

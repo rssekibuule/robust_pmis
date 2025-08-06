@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- Action for unified performance dashboard -->
+    <record id="action_performance_dashboard_unified" model="ir.actions.act_window">
+      <field name="name">Organization Performance</field>
+      <field name="res_model">performance.dashboard</field>
+      <field name="view_mode">form</field>
+      <!-- Removed explicit view_id to use default form view and avoid XML ID errors -->
+      <field name="target">current</field>
+    </record>
+
+    <!-- Form view displaying aggregated metrics -->
+    <record id="view_performance_dashboard_form" model="ir.ui.view">
+      <field name="name">performance.dashboard.form</field>
+      <field name="model">performance.dashboard</field>
+      <field name="arch" type="xml">
+        <form string="Organization Performance" class="o_performance_dashboard">
+          <sheet>
+            <!-- Summary Metrics -->
+            <group>
+              <field name="total_goals"/>
+              <field name="total_kpis"/>
+              <field name="avg_kpi_performance"/>
+              <field name="total_programmes"/>
+              <field name="avg_programme_performance"/>
+              <field name="total_directorates"/>
+              <field name="avg_directorate_performance"/>
+              <field name="total_divisions"/>
+              <field name="avg_division_performance"/>
+            </group>
+            <!-- Performance Overview Chart -->
+            <div class="o_dashboard_chart" style="width:100%; max-width:800px; margin:20px auto;">
+              <canvas id="performance_overview_chart" width="800" height="400"></canvas>
+            </div>
+            <!-- Performance Distribution Pie Chart -->
+            <div class="o_dashboard_chart" style="width:100%; max-width:600px; margin:20px auto;">
+              <canvas id="performance_distribution_pie" width="600" height="300"></canvas>
+            </div>
+            <!-- Performance Trends Line Chart -->
+            <div class="o_dashboard_chart" style="width:100%; max-width:800px; margin:20px auto;">
+              <canvas id="performance_line_chart" width="800" height="400"></canvas>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Menu entry under KCCA Performance Management -->
+    <menuitem id="menu_performance_dashboard_unified" parent="menu_kcca_pmis_root"
+              name="Organization Performance" action="action_performance_dashboard_unified"
+              sequence="45"/>
+  </data>
+</odoo>

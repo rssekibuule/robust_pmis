@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Daily Performance Monitoring -->
+        <record id="cron_daily_performance_monitoring" model="ir.cron">
+            <field name="name">KCCA: Daily Performance Monitoring</field>
+            <field name="model_id" ref="model_key_performance_indicator"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_daily_performance_check()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Weekly Performance Summary -->
+        <record id="cron_weekly_performance_summary" model="ir.cron">
+            <field name="name">KCCA: Weekly Performance Summary</field>
+            <field name="model_id" ref="model_performance_score"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_weekly_performance_summary()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Monthly Performance Report -->
+        <record id="cron_monthly_performance_report" model="ir.cron">
+            <field name="name">KCCA: Monthly Performance Report</field>
+            <field name="model_id" ref="model_performance_score"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_monthly_performance_report()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Quarterly Score Generation -->
+        <record id="cron_quarterly_score_generation" model="ir.cron">
+            <field name="name">KCCA: Quarterly Score Generation</field>
+            <field name="model_id" ref="model_performance_score"/>
+            <field name="state">code</field>
+            <field name="code">model.create_periodic_scores('quarterly')</field>
+            <field name="interval_number">3</field>
+            <field name="interval_type">months</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Performance Alert System -->
+        <record id="cron_performance_alerts" model="ir.cron">
+            <field name="name">KCCA: Performance Alert System</field>
+            <field name="model_id" ref="model_key_performance_indicator"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_performance_alerts()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Weekly Performance Analytics Generation -->
+        <record id="cron_weekly_analytics" model="ir.cron">
+            <field name="name">KCCA: Generate Weekly Performance Analytics</field>
+            <field name="model_id" ref="model_performance_analytics"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_generate_weekly_analytics()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Daily Advanced Performance Alert Check -->
+        <record id="cron_advanced_performance_alerts" model="ir.cron">
+            <field name="name">KCCA: Advanced Performance Alert Check</field>
+            <field name="model_id" ref="model_performance_alert"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_check_performance_alerts()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Daily Workflow Check -->
+        <record id="cron_workflow_check" model="ir.cron">
+            <field name="name">KCCA: Check Overdue Workflows</field>
+            <field name="model_id" ref="model_performance_workflow"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_check_overdue_workflows()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Strategic KPI Auto-Calculation -->
+        <record id="cron_strategic_kpi_auto_calculation" model="ir.cron">
+            <field name="name">KCCA: Strategic KPI Auto-Calculation</field>
+            <field name="model_id" ref="model_key_performance_indicator"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_update_strategic_kpis()</field>
+            <field name="interval_number">6</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+        </record>
+
+    </data>
+</odoo>

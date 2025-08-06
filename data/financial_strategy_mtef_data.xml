@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- KCCA Medium-Term Expenditure Framework (MTEF) Projections -->
+        <record id="financial_strategy_mtef_projections" model="financial.strategy">
+            <field name="name">KCCA Medium-Term Expenditure Framework (MTEF) Projections</field>
+            <field name="description">
+                <![CDATA[
+                <h3>KCCA's Medium-Term Expenditure Framework (MTEF) Projections</h3>
+                <p>This framework outlines KCCA's expenditure projections over the Financial Strategic Plan period from FY2025/26 to FY2029/30.</p>
+                
+                <h4>Key Categories:</h4>
+                <ul>
+                    <li><strong>Wage:</strong> Personnel costs and salaries</li>
+                    <li><strong>Non-Wage Recurrent:</strong> Operational expenses excluding personnel</li>
+                    <li><strong>GoU Dev't:</strong> Government of Uganda Development funding</li>
+                    <li><strong>GoU Total (Excluding Ext Fin):</strong> Total Government funding excluding external financing</li>
+                    <li><strong>External Financing:</strong> Funding from external sources and development partners</li>
+                    <li><strong>Total GoU+Ext Fin (MTEF):</strong> Combined Government and external financing</li>
+                    <li><strong>Arrears:</strong> Outstanding payments from previous periods</li>
+                    <li><strong>Total Budget:</strong> Complete budget including all sources</li>
+                    <li><strong>Total Vote Budget Excl Arrears:</strong> Budget allocation excluding arrears</li>
+                </ul>
+                
+                <p><strong>Total MTEF Budget:</strong> UGX 3,640.77 Billion over the 5-year period</p>
+                ]]>
+            </field>
+            <field name="sequence">20</field>
+            <field name="start_date">2025-07-01</field>
+            <field name="end_date">2030-06-30</field>
+            <field name="status">approved</field>
+            
+            <!-- MTEF FY2025/26 (Approved) -->
+            <field name="mtef_wage_fy2025_26">175.73</field>
+            <field name="mtef_non_wage_recurrent_fy2025_26">99.14</field>
+            <field name="mtef_gou_devt_fy2025_26">221.62</field>
+            <field name="mtef_gou_total_excl_ext_fin_fy2025_26">496.49</field>
+            <field name="mtef_external_financing_fy2025_26">264.51</field>
+            <field name="mtef_total_gou_ext_fin_fy2025_26">761.00</field>
+            <field name="mtef_arrears_fy2025_26">39.55</field>
+            <field name="mtef_total_budget_fy2025_26">800.55</field>
+            <field name="mtef_total_vote_budget_excl_arrears_fy2025_26">761.00</field>
+            
+            <!-- MTEF FY2026/27 -->
+            <field name="mtef_wage_fy2026_27">184.52</field>
+            <field name="mtef_non_wage_recurrent_fy2026_27">99.17</field>
+            <field name="mtef_gou_devt_fy2026_27">254.86</field>
+            <field name="mtef_gou_total_excl_ext_fin_fy2026_27">538.55</field>
+            <field name="mtef_external_financing_fy2026_27">271.38</field>
+            <field name="mtef_total_gou_ext_fin_fy2026_27">809.93</field>
+            <field name="mtef_arrears_fy2026_27">0.00</field>
+            <field name="mtef_total_budget_fy2026_27">809.93</field>
+            <field name="mtef_total_vote_budget_excl_arrears_fy2026_27">809.93</field>
+            
+            <!-- MTEF FY2027/28 -->
+            <field name="mtef_wage_fy2027_28">193.74</field>
+            <field name="mtef_non_wage_recurrent_fy2027_28">115.41</field>
+            <field name="mtef_gou_devt_fy2027_28">280.35</field>
+            <field name="mtef_gou_total_excl_ext_fin_fy2027_28">589.51</field>
+            <field name="mtef_external_financing_fy2027_28">0.00</field>
+            <field name="mtef_total_gou_ext_fin_fy2027_28">589.51</field>
+            <field name="mtef_arrears_fy2027_28">0.00</field>
+            <field name="mtef_total_budget_fy2027_28">589.51</field>
+            <field name="mtef_total_vote_budget_excl_arrears_fy2027_28">589.51</field>
+            
+            <!-- MTEF FY2028/29 -->
+            <field name="mtef_wage_fy2028_29">203.43</field>
+            <field name="mtef_non_wage_recurrent_fy2028_29">128.80</field>
+            <field name="mtef_gou_devt_fy2028_29">336.42</field>
+            <field name="mtef_gou_total_excl_ext_fin_fy2028_29">668.65</field>
+            <field name="mtef_external_financing_fy2028_29">0.00</field>
+            <field name="mtef_total_gou_ext_fin_fy2028_29">668.65</field>
+            <field name="mtef_arrears_fy2028_29">0.00</field>
+            <field name="mtef_total_budget_fy2028_29">668.65</field>
+            <field name="mtef_total_vote_budget_excl_arrears_fy2028_29">668.65</field>
+            
+            <!-- MTEF FY2029/30 -->
+            <field name="mtef_wage_fy2029_30">213.60</field>
+            <field name="mtef_non_wage_recurrent_fy2029_30">154.83</field>
+            <field name="mtef_gou_devt_fy2029_30">403.70</field>
+            <field name="mtef_gou_total_excl_ext_fin_fy2029_30">772.14</field>
+            <field name="mtef_external_financing_fy2029_30">0.00</field>
+            <field name="mtef_total_gou_ext_fin_fy2029_30">772.14</field>
+            <field name="mtef_arrears_fy2029_30">0.00</field>
+            <field name="mtef_total_budget_fy2029_30">772.14</field>
+            <field name="mtef_total_vote_budget_excl_arrears_fy2029_30">772.14</field>
+        </record>
+        
+    </data>
+</odoo>

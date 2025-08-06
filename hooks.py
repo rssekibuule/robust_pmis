@@ -1,0 +1,229 @@
+# -*- coding: utf-8 -*-
+
+def post_init_hook(env):
+    """Post-installation hook to create transport infrastructure data"""
+    
+    # Check if transport programme already exists
+    existing_programme = env['kcca.programme'].search([('code', '=', 'ITIS')], limit=1)
+    if existing_programme:
+        print(f"Transport Infrastructure Programme already exists: {existing_programme.name}")
+        return
+    
+    print("Creating Transport Infrastructure Programme...")
+    
+    # Create the transport infrastructure programme
+    programme = env['kcca.programme'].create({
+        'name': 'Integrated Transport Infrastructure and Services',
+        'code': 'ITIS',
+        'description': '''<p><strong>Programme Goal:</strong> To have a safe, integrated and sustainable multi-modal transport system</p>
+        <p>Programme focused on developing integrated transport infrastructure and services for Kampala.</p>
+        <p><strong>Implementation Structure:</strong></p>
+        <ul>
+            <li>5 Implementing Directorates</li>
+            <li>5 Implementing Divisions (All KCCA Territorial Divisions)</li>
+            <li>Strategic Objective: Economic Growth (Master Table Row 1)</li>
+        </ul>
+        <p><strong>Total Budget:</strong> 1,487.50 UGX Billion across FY2022/23 to FY2026/27</p>''',
+        'sequence': 1,
+    })
+    
+    # Create programme objective
+    objective = env['programme.objective'].create({
+        'name': 'To develop an inter-modal and seamless transport infrastructure and services',
+        'programme_id': programme.id,
+        'sequence': 1,
+        'description': 'Single programme objective under which all intermediate outcomes are organized',
+    })
+    
+    # Create intermediate outcomes
+    outcome1 = env['intermediate.outcome'].create({
+        'name': 'Reduced travel time',
+        'objective_id': objective.id,
+        'sequence': 1,
+        'description': 'Achieve reduced travel time through strategic transport infrastructure development',
+    })
+    
+    outcome2 = env['intermediate.outcome'].create({
+        'name': 'Increased stock of transport infrastructure',
+        'objective_id': objective.id,
+        'sequence': 2,
+        'description': 'Increase the stock of transport infrastructure through capacity enhancement',
+    })
+    
+    outcome3 = env['intermediate.outcome'].create({
+        'name': 'Reduced fatalities',
+        'objective_id': objective.id,
+        'sequence': 3,
+        'description': 'Reduce road fatalities through enhanced transport safety measures',
+    })
+    
+    # Create performance indicators for outcomes
+    env['performance.indicator'].create({
+        'name': 'Average Travel time (Min/Km) on KCCA Road',
+        'outcome_id': outcome1.id,
+        'measurement_unit': 'Minutes per Km',
+        'baseline_value': 4.2,
+        'target_value': 3.0,
+        'indicator_type': 'decreasing',
+        'sequence': 1,
+    })
+    
+    env['performance.indicator'].create({
+        'name': 'Proportion of Commuters using mass public transport (Rail & BRT)',
+        'outcome_id': outcome1.id,
+        'measurement_unit': 'Percentage',
+        'baseline_value': 2.0,
+        'target_value': 30.0,
+        'indicator_type': 'increasing',
+        'sequence': 2,
+    })
+    
+    env['performance.indicator'].create({
+        'name': 'Proportion of city road network paved',
+        'outcome_id': outcome2.id,
+        'measurement_unit': 'Percentage',
+        'baseline_value': 37.0,
+        'target_value': 52.0,
+        'indicator_type': 'increasing',
+        'sequence': 1,
+    })
+    
+    env['performance.indicator'].create({
+        'name': 'Km of City Roads Paved',
+        'outcome_id': outcome2.id,
+        'measurement_unit': 'Kilometers',
+        'baseline_value': 770.50,
+        'target_value': 1094.00,
+        'indicator_type': 'increasing',
+        'sequence': 2,
+    })
+    
+    env['performance.indicator'].create({
+        'name': 'Fatalities per 100,000 persons (Roads)',
+        'outcome_id': outcome3.id,
+        'measurement_unit': 'Number per 100,000',
+        'baseline_value': 11.0,
+        'target_value': 5.0,
+        'indicator_type': 'decreasing',
+        'sequence': 1,
+    })
+    
+    env['performance.indicator'].create({
+        'name': 'Proportion of paved road network with street lights',
+        'outcome_id': outcome3.id,
+        'measurement_unit': 'Percentage',
+        'baseline_value': 15.0,
+        'target_value': 100.0,
+        'indicator_type': 'increasing',
+        'sequence': 2,
+    })
+    
+    # Create interventions
+    intervention1 = env['intervention'].create({
+        'name': 'Construct and upgrade strategic transport infrastructure',
+        'outcome_id': outcome1.id,
+        'sequence': 1,
+    })
+    
+    intervention2 = env['intervention'].create({
+        'name': 'Increase capacity of existing transport infrastructure and services',
+        'outcome_id': outcome2.id,
+        'sequence': 1,
+    })
+    
+    intervention3 = env['intervention'].create({
+        'name': 'Enhance transport safety',
+        'outcome_id': outcome3.id,
+        'sequence': 1,
+    })
+    
+    # Create outputs
+    output1 = env['output'].create({
+        'name': 'Strategic transport infrastructure constructed and upgraded',
+        'intervention_id': intervention1.id,
+        'sequence': 1,
+    })
+    
+    output2 = env['output'].create({
+        'name': 'Capacity of existing road transport infrastructure and services increased',
+        'intervention_id': intervention2.id,
+        'sequence': 1,
+    })
+    
+    output3_1 = env['output'].create({
+        'name': 'Road Transport Safety Enhanced',
+        'intervention_id': intervention3.id,
+        'sequence': 1,
+    })
+    
+    output3_2 = env['output'].create({
+        'name': 'Transport safety capacity strengthened',
+        'intervention_id': intervention3.id,
+        'sequence': 2,
+    })
+    
+    # Create sample PIAP actions with budget data
+    piap_actions_data = [
+        {
+            'name': 'Complete detailed design & Construct BRT Pilot Corridor (Bombo Road-Semuliki-Jinja Road-Kireka, Kampala-Zana via Kibuli) including upgrading 14 intersections',
+            'output_id': output1.id,
+            'budget_fy2022_23': 6.00,
+            'budget_fy2023_24': 0.00,
+            'budget_fy2024_25': 0.00,
+            'budget_fy2025_26': 228.00,
+            'budget_fy2026_27': 259.00,
+        },
+        {
+            'name': 'Implement the Kampala City Road Rehabilitation Project financed by the AFDB (83Km & 7 Junctions)',
+            'output_id': output2.id,
+            'budget_fy2022_23': 131.98,
+            'budget_fy2023_24': 85.52,
+            'budget_fy2024_25': 0.00,
+            'budget_fy2025_26': 0.00,
+            'budget_fy2026_27': 0.00,
+        },
+        {
+            'name': 'Operationalize the KCCA Road Safety Unit',
+            'output_id': output3_1.id,
+            'budget_fy2022_23': 0.00,
+            'budget_fy2023_24': 0.10,
+            'budget_fy2024_25': 0.00,
+            'budget_fy2025_26': 0.00,
+            'budget_fy2026_27': 0.00,
+        },
+        {
+            'name': 'Train staff on road safety',
+            'output_id': output3_2.id,
+            'budget_fy2022_23': 0.05,
+            'budget_fy2023_24': 0.05,
+            'budget_fy2024_25': 0.05,
+            'budget_fy2025_26': 0.05,
+            'budget_fy2026_27': 0.05,
+            'target_value': 10,
+            'measurement_unit': 'Number of staff',
+        },
+    ]
+    
+    for i, action_data in enumerate(piap_actions_data, 1):
+        env['piap.action'].create({
+            'name': action_data['name'],
+            'output_id': action_data['output_id'],
+            'sequence': i,
+            'budget_fy2022_23': action_data.get('budget_fy2022_23', 0.0),
+            'budget_fy2023_24': action_data.get('budget_fy2023_24', 0.0),
+            'budget_fy2024_25': action_data.get('budget_fy2024_25', 0.0),
+            'budget_fy2025_26': action_data.get('budget_fy2025_26', 0.0),
+            'budget_fy2026_27': action_data.get('budget_fy2026_27', 0.0),
+            'target_value': action_data.get('target_value', 0.0),
+            'measurement_unit': action_data.get('measurement_unit', ''),
+            'status': 'in_progress',
+        })
+    
+    print(f"✅ Transport Infrastructure Programme created successfully!")
+    print(f"   Programme: {programme.name}")
+    print(f"   Objectives: 1")
+    print(f"   Intermediate Outcomes: 3")
+    print(f"   Interventions: 3")
+    print(f"   Outputs: 4")
+    print(f"   PIAP Actions: {len(piap_actions_data)}")
+    print(f"   Performance Indicators: 6")

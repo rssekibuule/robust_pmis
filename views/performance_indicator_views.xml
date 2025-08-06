@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Performance Indicator List View -->
+        <record id="view_performance_indicator_list" model="ir.ui.view">
+            <field name="name">performance.indicator.list</field>
+            <field name="model">performance.indicator</field>
+            <field name="arch" type="xml">
+                <list string="Performance Indicators" decoration-muted="not active"
+                      decoration-success="status == 'achieved'"
+                      decoration-info="status == 'on_track'"
+                      decoration-warning="status == 'at_risk'"
+                      decoration-danger="status == 'behind'"
+                      editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="outcome_id" readonly="1"/>
+                    <field name="responsible_user_id"/>
+                    <field name="current_value"/>
+                    <field name="target_value"/>
+                    <field name="measurement_unit"/>
+                    <field name="achievement_percentage" widget="progressbar" readonly="1"/>
+                    <field name="status" readonly="1"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Performance Indicator Form View -->
+        <record id="view_performance_indicator_form" model="ir.ui.view">
+            <field name="name">performance.indicator.form</field>
+            <field name="model">performance.indicator</field>
+            <field name="arch" type="xml">
+                <form string="Performance Indicator" class="o_form_view_compact_chatter">
+                    <header>
+                        <field name="status" widget="statusbar" statusbar_visible="draft,active,achieved,behind"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Performance Indicator Name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="Basic Information">
+                                <field name="outcome_id"/>
+                                <field name="responsible_user_id"/>
+                                <field name="sequence"/>
+                                <field name="indicator_type"/>
+                                <field name="thematic_area"/>
+                                <field name="results_chain_level"/>
+                            </group>
+                            <group string="Performance">
+                                <field name="achievement_percentage" widget="progressbar"/>
+                                <field name="frequency"/>
+                                <field name="status"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="Values">
+                                <field name="current_value"/>
+                                <field name="target_value"/>
+                                <field name="baseline_value"/>
+                                <field name="measurement_unit"/>
+                            </group>
+                            <group string="Timeline">
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" widget="html"/>
+                            </page>
+                            <page string="Configuration">
+                                <group>
+                                    <field name="frequency"/>
+                                    <field name="indicator_type"/>
+                                </group>
+                            </page>
+                            <page string="Strategic Linkages">
+                                <group>
+                                    <group string="Strategic KPI Linkage">
+                                        <field name="strategic_kpi_ids" widget="many2many_tags"/>
+                                        <field name="impact_relationship"/>
+                                        <field name="contribution_weight"/>
+                                    </group>
+                                    <group string="Target Cascade">
+                                        <field name="parent_strategic_kpi_id"/>
+                                        <field name="target_allocation_percentage" invisible="parent_strategic_kpi_id == False"/>
+                                        <field name="cascaded_target" invisible="parent_strategic_kpi_id == False"/>
+                                    </group>
+                                </group>
+                                <separator string="Linked Strategic KPIs"/>
+                                <field name="strategic_kpi_ids" widget="many2many_tags"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Performance Indicator Search View -->
+        <record id="view_performance_indicator_search" model="ir.ui.view">
+            <field name="name">performance.indicator.search</field>
+            <field name="model">performance.indicator</field>
+            <field name="arch" type="xml">
+                <search string="Performance Indicators">
+                    <!-- Search Fields -->
+                    <field name="name" string="Indicator Name" filter_domain="[('name', 'ilike', self)]"/>
+                    <field name="outcome_id" string="Intermediate Outcome"/>
+                    <field name="responsible_user_id" string="Responsible User"/>
+                    <field name="measurement_unit" string="Unit"/>
+
+                    <!-- Filters -->
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+
+                    <separator/>
+                    <filter string="Achieved" name="achieved" domain="[('status', '=', 'achieved')]"/>
+                    <filter string="On Track" name="on_track" domain="[('status', '=', 'on_track')]"/>
+                    <filter string="At Risk" name="at_risk" domain="[('status', '=', 'at_risk')]"/>
+                    <filter string="Behind Schedule" name="behind" domain="[('status', '=', 'behind')]"/>
+                    <filter string="Not Started" name="not_started" domain="[('status', '=', 'not_started')]"/>
+
+                    <separator/>
+                    <filter string="High Achievement (≥80%)" name="high_achievement"
+                            domain="[('achievement_percentage', '>=', 80)]"/>
+                    <filter string="Medium Achievement (50-79%)" name="medium_achievement"
+                            domain="[('achievement_percentage', '>=', 50), ('achievement_percentage', '&lt;', 80)]"/>
+                    <filter string="Low Achievement (&lt;50%)" name="low_achievement"
+                            domain="[('achievement_percentage', '&lt;', 50)]"/>
+
+                    <separator/>
+                    <filter string="Increasing Indicators" name="increasing" domain="[('indicator_type', '=', 'increasing')]"/>
+                    <filter string="Decreasing Indicators" name="decreasing" domain="[('indicator_type', '=', 'decreasing')]"/>
+
+                    <separator/>
+                    <filter string="My Indicators" name="my_indicators"
+                            domain="[('responsible_user_id', '=', uid)]"/>
+
+                    <!-- Group By Options -->
+                    <group expand="0" string="Group By">
+                        <filter string="Programme" name="group_by_programme" context="{'group_by': 'parent_programme_id'}"/>
+                        <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                        <filter string="Intermediate Outcome" name="group_by_outcome" context="{'group_by': 'outcome_id'}"/>
+                        <filter string="Responsible User" name="group_by_user" context="{'group_by': 'responsible_user_id'}"/>
+                        <filter string="Indicator Type" name="group_by_type" context="{'group_by': 'indicator_type'}"/>
+                        <filter string="Measurement Unit" name="group_by_unit" context="{'group_by': 'measurement_unit'}"/>
+                        <filter string="Achievement Level" name="group_by_achievement" context="{'group_by': 'achievement_level'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Performance Indicator Action -->
+        <record id="action_performance_indicator" model="ir.actions.act_window">
+            <field name="name">Performance Indicators</field>
+            <field name="res_model">performance.indicator</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_performance_indicator_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Performance Indicator!
+                </p>
+                <p>
+                    Performance indicators are specific, measurable metrics used to track progress
+                    towards achieving intermediate outcomes and programme objectives.
+                </p>
+            </field>
+        </record>
+
+        <!-- Programme-Objective Indicators Action -->
+        <record id="action_programme_objective_indicators" model="ir.actions.act_window">
+            <field name="name">Programme-Objective Indicators</field>
+            <field name="res_model">performance.indicator</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_performance_indicator_search"/>
+            <field name="domain">['|', '|', '|', ('outcome_id', '!=', False), ('output_id', '!=', False), ('piap_action_id', '!=', False), ('programme_id', '!=', False)]</field>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_programme': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Programme-Objective Performance Indicators
+                </p>
+                <p>
+                    Track all performance indicators that are linked to programmes through any level:
+                    programme objectives, intermediate outcomes, outputs, or PIAP actions. These indicators
+                    measure progress towards achieving programme goals and strategic objectives.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

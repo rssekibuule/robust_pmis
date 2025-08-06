@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Strategic Objective List View -->
+        <record id="view_strategic_objective_list" model="ir.ui.view">
+            <field name="name">strategic.objective.list</field>
+            <field name="model">strategic.objective</field>
+            <field name="arch" type="xml">
+                <list string="Strategic Objectives" decoration-muted="not active">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="strategic_goal_id"/>
+                    <field name="kra_count" string="KRAs"/>
+                    <field name="programme_count" string="Programmes"/>
+                    <field name="progress" widget="progressbar"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Strategic Objective Form View -->
+        <record id="view_strategic_objective_form" model="ir.ui.view">
+            <field name="name">strategic.objective.form</field>
+            <field name="model">strategic.objective</field>
+            <field name="arch" type="xml">
+                <form string="Strategic Objective" class="o_form_view_compact_chatter">
+                    <header>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_kras" type="object"
+                                    class="oe_stat_button" icon="fa-key">
+                                <field name="kra_count" widget="statinfo" string="KRAs"/>
+                            </button>
+                            <button name="action_view_programmes" type="object"
+                                    class="oe_stat_button" icon="fa-tasks">
+                                <field name="programme_count" widget="statinfo" string="Programmes"/>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Strategic Objective Name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="strategic_goal_id"/>
+                                <field name="sequence"/>
+                            </group>
+                            <group>
+                                <field name="progress" widget="progressbar"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" widget="html"/>
+                            </page>
+                            <page string="Key Result Areas">
+                                <field name="kra_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="kpi_count" string="KPIs"/>
+                                        <field name="progress" widget="progressbar"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Related Programmes">
+                                <field name="programme_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="implementing_unit"/>
+                                        <field name="overall_performance" widget="progressbar"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

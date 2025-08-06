@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Programme-Directorate Relationships Menu -->
+        <menuitem id="menu_programme_directorate_relationships"
+                  name="Programme-Directorate Relationships"
+                  parent="menu_programme_management"
+                  action="action_programme_directorate_rel"
+                  sequence="25"/>
+        
+        <!-- Strategic Objective Dashboard Menu -->
+        <menuitem id="menu_strategic_objective_dashboard"
+                  name="Strategic Implementation Dashboard"
+                  parent="menu_strategic_framework"
+                  action="action_strategic_objective_dashboard"
+                  sequence="50"/>
+        
+        <!-- Add submenu under Organizational Structure -->
+        <menuitem id="menu_implementation_structure"
+                  name="Implementation Structure"
+                  parent="menu_organizational_structure"
+                  sequence="30"/>
+        
+        <menuitem id="menu_programme_directorate_relationships_org"
+                  name="Programme-Directorate Matrix"
+                  parent="menu_implementation_structure"
+                  action="action_programme_directorate_rel"
+                  sequence="10"/>
+        
+        <!-- Add to Reports menu -->
+        <menuitem id="menu_strategic_implementation_reports"
+                  name="Strategic Implementation Reports"
+                  parent="menu_analytics_reports"
+                  sequence="40"/>
+
+        <menuitem id="menu_strategic_implementation_dashboard_report"
+                  name="Strategic Implementation Dashboard"
+                  parent="menu_strategic_implementation_reports"
+                  action="action_strategic_objective_dashboard"
+                  sequence="10"/>
+
+        <menuitem id="menu_strategic_implementation_analysis_report"
+                  name="Strategic Implementation Analysis"
+                  parent="menu_strategic_implementation_reports"
+                  action="action_strategic_implementation_analysis"
+                  sequence="20"/>
+        
+    </data>
+</odoo>

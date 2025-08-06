@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Performance Update Wizard Views -->
+        <record id="view_performance_update_wizard_form" model="ir.ui.view">
+            <field name="name">performance.update.wizard.form</field>
+            <field name="model">performance.update.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Bulk Performance Update">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Update Name"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="update_date"/>
+                                <field name="update_type"/>
+                            </group>
+                            <group>
+                                <field name="directorate_id"/>
+                                <field name="programme_id"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <field name="notes" placeholder="General notes for this bulk update..."/>
+                        </group>
+                        
+                        <notebook>
+                            <page string="KPI Updates" invisible="update_type == 'performance_indicator'">
+                                <field name="kpi_line_ids">
+                                    <list editable="bottom">
+                                        <field name="update_selected"/>
+                                        <field name="kpi_id"/>
+                                        <field name="current_value"/>
+                                        <field name="new_value"/>
+                                        <field name="target_value"/>
+                                        <field name="measurement_unit"/>
+                                        <field name="achievement_percentage" widget="progressbar"/>
+                                        <field name="notes"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Performance Indicator Updates" invisible="update_type == 'kpi'">
+                                <field name="pi_line_ids">
+                                    <list editable="bottom">
+                                        <field name="update_selected"/>
+                                        <field name="indicator_id"/>
+                                        <field name="current_value"/>
+                                        <field name="new_value"/>
+                                        <field name="target_value"/>
+                                        <field name="measurement_unit"/>
+                                        <field name="achievement_percentage" widget="progressbar"/>
+                                        <field name="notes"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button name="action_update_performance" type="object" string="Update Performance" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Quarterly Report Wizard Views -->
+        <record id="view_quarterly_report_wizard_form" model="ir.ui.view">
+            <field name="name">quarterly.report.wizard.form</field>
+            <field name="model">quarterly.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Quarterly Report">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="year"/>
+                                <field name="quarter"/>
+                                <field name="report_type"/>
+                            </group>
+                            <group>
+                                <field name="include_charts"/>
+                                <field name="include_trends"/>
+                                <field name="include_recommendations"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Filters" invisible="report_type in ('strategic', 'comprehensive')">
+                            <field name="directorate_ids" widget="many2many_tags" 
+                                   invisible="report_type != 'directorate'"/>
+                            <field name="programme_ids" widget="many2many_tags" 
+                                   invisible="report_type != 'programme'"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_generate_report" type="object" string="Generate Report" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Wizard Actions -->
+        <record id="action_performance_update_wizard" model="ir.actions.act_window">
+            <field name="name">Bulk Performance Update</field>
+            <field name="res_model">performance.update.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_performance_update_wizard_form"/>
+        </record>
+        
+        <record id="action_quarterly_report_wizard" model="ir.actions.act_window">
+            <field name="name">Generate Quarterly Report</field>
+            <field name="res_model">quarterly.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_quarterly_report_wizard_form"/>
+        </record>
+        
+    </data>
+</odoo>

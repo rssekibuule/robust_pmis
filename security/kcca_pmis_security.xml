@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Categories -->
+        <record id="module_category_kcca_pmis" model="ir.module.category">
+            <field name="name">KCCA Performance Management</field>
+            <field name="description">Performance Management Information System for KCCA</field>
+            <field name="sequence">20</field>
+        </record>
+        
+        <!-- Groups -->
+        <record id="group_kcca_pmis_user" model="res.groups">
+            <field name="name">PMIS User</field>
+            <field name="category_id" ref="module_category_kcca_pmis"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Basic user access to view performance data</field>
+        </record>
+        
+        <record id="group_kcca_pmis_officer" model="res.groups">
+            <field name="name">PMIS Officer</field>
+            <field name="category_id" ref="module_category_kcca_pmis"/>
+            <field name="implied_ids" eval="[(4, ref('group_kcca_pmis_user'))]"/>
+            <field name="comment">Can create and update performance actions and indicators</field>
+        </record>
+        
+        <record id="group_kcca_pmis_manager" model="res.groups">
+            <field name="name">PMIS Manager</field>
+            <field name="category_id" ref="module_category_kcca_pmis"/>
+            <field name="implied_ids" eval="[(4, ref('group_kcca_pmis_officer'))]"/>
+            <field name="comment">Can approve actions and manage programmes</field>
+        </record>
+        
+        <record id="group_kcca_pmis_admin" model="res.groups">
+            <field name="name">PMIS Administrator</field>
+            <field name="category_id" ref="module_category_kcca_pmis"/>
+            <field name="implied_ids" eval="[(4, ref('group_kcca_pmis_manager'))]"/>
+            <field name="comment">Full access to configure strategic goals, KRAs, and system settings</field>
+        </record>
+        
+        <!-- Record Rules -->
+        
+        <!-- Strategic Goals - All users can read, only admins can write -->
+        <record id="rule_strategic_goal_read" model="ir.rule">
+            <field name="name">Strategic Goal: Read Access</field>
+            <field name="model_id" ref="model_strategic_goal"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_kcca_pmis_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <record id="rule_strategic_goal_admin" model="ir.rule">
+            <field name="name">Strategic Goal: Admin Access</field>
+            <field name="model_id" ref="model_strategic_goal"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_kcca_pmis_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- Performance Actions - Users can see their own, officers can create, managers can approve -->
+        <record id="rule_performance_action_user" model="ir.rule">
+            <field name="name">Performance Action: User Access</field>
+            <field name="model_id" ref="model_performance_action"/>
+            <field name="domain_force">['|', ('action_by_id', '=', user.id), ('indicator_id.responsible_user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_kcca_pmis_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <record id="rule_performance_action_officer" model="ir.rule">
+            <field name="name">Performance Action: Officer Access</field>
+            <field name="model_id" ref="model_performance_action"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_kcca_pmis_officer'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- Directorates - All users can read, managers can write -->
+        <record id="rule_directorate_read" model="ir.rule">
+            <field name="name">Directorate: Read Access</field>
+            <field name="model_id" ref="model_kcca_directorate"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_kcca_pmis_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <record id="rule_directorate_manager" model="ir.rule">
+            <field name="name">Directorate: Manager Access</field>
+            <field name="model_id" ref="model_kcca_directorate"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_kcca_pmis_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+    </data>
+</odoo>

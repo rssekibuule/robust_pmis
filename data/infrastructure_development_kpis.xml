@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- KPIs for Transport Infrastructure Development KRA -->
+        
+        <!-- Transport Infrastructure KPIs -->
+        <record id="kpi_roads_rehabilitated" model="key.performance.indicator">
+            <field name="name">Kilometers of Roads Rehabilitated</field>
+            <field name="description">Total kilometers of roads rehabilitated and upgraded annually</field>
+            <field name="frequency">annual</field>
+            <field name="kra_id" ref="kra_transport_infrastructure"/>
+            <field name="active">True</field>
+
+        </record>
+
+        <record id="kpi_bridge_construction" model="key.performance.indicator">
+            <field name="name">Bridge Construction and Rehabilitation</field>
+            <field name="description">Number of bridges constructed and rehabilitated</field>
+            <field name="frequency">annual</field>
+            <field name="kra_id" ref="kra_transport_infrastructure"/>
+            <field name="active">True</field>
+
+        </record>
+
+        <record id="kpi_public_transport_coverage" model="key.performance.indicator">
+            <field name="name">Public Transport Coverage</field>
+            <field name="description">Percentage of city areas covered by public transport</field>
+            <field name="frequency">quarterly</field>
+            <field name="kra_id" ref="kra_transport_infrastructure"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <!-- Urban Housing KPIs -->
+        <record id="kpi_affordable_housing" model="key.performance.indicator">
+            <field name="name">Affordable Housing Units Delivered</field>
+            <field name="description">Number of affordable housing units constructed annually</field>
+            <field name="frequency">annual</field>
+            <field name="kra_id" ref="kra_urban_housing"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <record id="kpi_informal_settlement_upgrades" model="key.performance.indicator">
+            <field name="name">Informal Settlement Upgrades</field>
+            <field name="description">Number of informal settlements upgraded with basic services</field>
+            <field name="frequency">annual</field>
+            <field name="kra_id" ref="kra_urban_housing"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <record id="kpi_building_permits" model="key.performance.indicator">
+            <field name="name">Building Permits Issued</field>
+            <field name="description">Number of building permits processed and issued</field>
+            <field name="frequency">quarterly</field>
+            <field name="kra_id" ref="kra_urban_housing"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <!-- Infrastructure Maintenance KPIs -->
+        <record id="kpi_maintenance_response_time" model="key.performance.indicator">
+            <field name="name">Infrastructure Maintenance Response Time</field>
+            <field name="description">Average time to respond to infrastructure maintenance requests</field>
+            <field name="frequency">monthly</field>
+            <field name="kra_id" ref="kra_infrastructure_maintenance"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <record id="kpi_water_infrastructure_uptime" model="key.performance.indicator">
+            <field name="name">Water Infrastructure Uptime</field>
+            <field name="description">Percentage of time water infrastructure is operational</field>
+            <field name="frequency">monthly</field>
+            <field name="kra_id" ref="kra_infrastructure_maintenance"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <record id="kpi_electricity_coverage" model="key.performance.indicator">
+            <field name="name">Electricity Infrastructure Coverage</field>
+            <field name="description">Percentage of city areas with reliable electricity supply</field>
+            <field name="frequency">quarterly</field>
+            <field name="kra_id" ref="kra_infrastructure_maintenance"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <!-- Smart City Infrastructure KPIs -->
+        <record id="kpi_digital_service_points" model="key.performance.indicator">
+            <field name="name">Digital Service Points Established</field>
+            <field name="description">Number of digital service points established across the city</field>
+            <field name="frequency">annual</field>
+            <field name="kra_id" ref="kra_smart_city"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <record id="kpi_internet_connectivity" model="key.performance.indicator">
+            <field name="name">Internet Connectivity Coverage</field>
+            <field name="description">Percentage of city areas with high-speed internet access</field>
+            <field name="frequency">quarterly</field>
+            <field name="kra_id" ref="kra_smart_city"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <record id="kpi_smart_traffic_systems" model="key.performance.indicator">
+            <field name="name">Smart Traffic Management Systems</field>
+            <field name="description">Number of intersections with smart traffic management</field>
+            <field name="frequency">annual</field>
+            <field name="kra_id" ref="kra_smart_city"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <!-- Water and Sanitation KPIs -->
+        <record id="kpi_water_supply_coverage" model="key.performance.indicator">
+            <field name="name">Water Supply Coverage</field>
+            <field name="description">Percentage of households with access to clean water supply</field>
+            <field name="target_value">95.0</field>
+            <field name="current_value">78.0</field>
+            <field name="unit_of_measure">Percentage</field>
+            <field name="frequency">quarterly</field>
+            <field name="kra_id" ref="kra_water_sanitation"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <record id="kpi_sanitation_facilities" model="key.performance.indicator">
+            <field name="name">Sanitation Facilities Coverage</field>
+            <field name="description">Percentage of households with access to improved sanitation</field>
+            <field name="target_value">90.0</field>
+            <field name="current_value">65.0</field>
+            <field name="unit_of_measure">Percentage</field>
+            <field name="frequency">quarterly</field>
+            <field name="kra_id" ref="kra_water_sanitation"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+        <record id="kpi_wastewater_treatment" model="key.performance.indicator">
+            <field name="name">Wastewater Treatment Capacity</field>
+            <field name="description">Percentage of wastewater properly treated before discharge</field>
+            <field name="target_value">85.0</field>
+            <field name="current_value">58.0</field>
+            <field name="unit_of_measure">Percentage</field>
+            <field name="frequency">monthly</field>
+            <field name="kra_id" ref="kra_water_sanitation"/>
+            <field name="active">True</field>
+            <field name="weight">1.0</field>
+        </record>
+
+    </data>
+</odoo>

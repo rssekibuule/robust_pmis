@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- KRA Dashboard View -->
+        <record id="view_kra_dashboard" model="ir.ui.view">
+            <field name="name">kra.dashboard</field>
+            <field name="model">key.result.area</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard" create="false" edit="false">
+                    <field name="name"/>
+                    <field name="strategic_objective_id"/>
+                    <field name="kpi_count"/>
+                    <field name="progress"/>
+                    <field name="parent_goal_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                <div class="o_kanban_image_fill_left d-none d-md-block" style="background-color: #875A7B;">
+                                    <i class="fa fa-bullseye fa-2x text-white" title="Key Result Area"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                            <br/>
+                                            <small class="text-muted">
+                                                <field name="strategic_objective_id"/>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <button class="btn btn-primary btn-sm" type="object" name="action_view_kpis">
+                                                    <field name="kpi_count"/> KPIs
+                                                </button>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-right">
+                                                    <field name="progress" widget="progressbar"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- KPI Performance Dashboard -->
+        <record id="view_kpi_performance_dashboard" model="ir.ui.view">
+            <field name="name">kpi.performance.dashboard</field>
+            <field name="model">key.performance.indicator</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard" create="false" edit="false">
+                    <field name="name"/>
+                    <field name="kra_id"/>
+                    <field name="baseline_value"/>
+                    <field name="current_value"/>
+                    <field name="target_value"/>
+                    <field name="measurement_unit"/>
+                    <field name="achievement_percentage"/>
+                    <field name="status"/>
+                    <field name="kpi_type"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                            <br/>
+                                            <small class="text-muted">
+                                                <field name="kra_id"/>
+                                            </small>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <field name="status" widget="label_selection" 
+                                                   options="{'classes': {'achieved': 'success', 'on_track': 'info', 'at_risk': 'warning', 'behind': 'danger'}}"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="row mb-2">
+                                            <div class="col-4 text-center">
+                                                <div class="text-muted small">Baseline</div>
+                                                <strong><field name="baseline_value"/></strong>
+                                            </div>
+                                            <div class="col-4 text-center">
+                                                <div class="text-muted small">Current</div>
+                                                <strong><field name="current_value"/></strong>
+                                            </div>
+                                            <div class="col-4 text-center">
+                                                <div class="text-muted small">Target</div>
+                                                <strong><field name="target_value"/></strong>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <small class="text-muted">Unit: <field name="measurement_unit"/></small>
+                                            </div>
+                                            <div class="col-4 text-right">
+                                                <field name="achievement_percentage" widget="progressbar"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- KPI Performance Dashboard List View -->
+        <record id="view_kpi_performance_dashboard_list" model="ir.ui.view">
+            <field name="name">kpi.performance.dashboard.list</field>
+            <field name="model">key.performance.indicator</field>
+            <field name="arch" type="xml">
+                <list string="KPI Performance Dashboard"
+                      decoration-success="status == 'achieved'"
+                      decoration-info="status == 'on_track'"
+                      decoration-warning="status == 'at_risk'"
+                      decoration-danger="status == 'behind'"
+                      decoration-muted="not active"
+                      create="false" edit="false">
+                    <field name="name"/>
+                    <field name="kra_id"/>
+                    <field name="directorate_id"/>
+                    <field name="baseline_value"/>
+                    <field name="current_value"/>
+                    <field name="target_value"/>
+                    <field name="measurement_unit"/>
+                    <field name="achievement_percentage" widget="progressbar"/>
+                    <field name="status"/>
+                    <field name="responsible_user_id"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Strategic Objective KRA Summary View -->
+        <record id="view_strategic_objective_kra_summary" model="ir.ui.view">
+            <field name="name">strategic.objective.kra.summary</field>
+            <field name="model">strategic.objective</field>
+            <field name="arch" type="xml">
+                <list string="Strategic Objectives with KRAs" create="false" edit="false">
+                    <field name="name"/>
+                    <field name="kra_count" string="KRAs"/>
+                    <field name="kpi_count" string="KPIs"/>
+                    <field name="programme_count" string="Programmes"/>
+                    <field name="progress" widget="progressbar"/>
+                    <button name="action_view_kras" type="object" string="View KRAs" class="btn-link"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Actions -->
+        <record id="action_kra_dashboard" model="ir.actions.act_window">
+            <field name="name">KRA Dashboard</field>
+            <field name="res_model">key.result.area</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="view_id" ref="view_kra_dashboard"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Key Result Areas Dashboard
+                </p>
+                <p>
+                    Monitor the performance of Key Result Areas across all Strategic Objectives.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_kpi_performance_dashboard" model="ir.actions.act_window">
+            <field name="name">KPI Performance Dashboard</field>
+            <field name="res_model">key.performance.indicator</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="view_id" ref="view_kpi_performance_dashboard"/>
+            <field name="search_view_id" ref="view_key_performance_indicator_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    KPI Performance Dashboard
+                </p>
+                <p>
+                    Track the performance of Key Performance Indicators with baseline, current, and target values.
+                    Use filters to view KPIs by status, achievement level, directorate, or other criteria.
+                </p>
+            </field>
+        </record>
+
+        <!-- View references for the dashboard action -->
+        <record id="action_kpi_performance_dashboard_view_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="view_kpi_performance_dashboard"/>
+            <field name="act_window_id" ref="action_kpi_performance_dashboard"/>
+        </record>
+
+        <record id="action_kpi_performance_dashboard_view_list" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_kpi_performance_dashboard_list"/>
+            <field name="act_window_id" ref="action_kpi_performance_dashboard"/>
+        </record>
+
+        <record id="action_strategic_objective_kra_summary" model="ir.actions.act_window">
+            <field name="name">Strategic Objectives Summary</field>
+            <field name="res_model">strategic.objective</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_strategic_objective_kra_summary"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Strategic Objectives Summary
+                </p>
+                <p>
+                    Overview of all Strategic Objectives with their KRAs and KPIs.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_kra_dashboard"
+                  name="KRA Dashboard"
+                  parent="menu_performance_tracking"
+                  action="action_kra_dashboard"
+                  sequence="15"/>
+
+        <menuitem id="menu_kpi_performance_dashboard"
+                  name="KPI Performance"
+                  parent="menu_performance_tracking"
+                  action="action_kpi_performance_dashboard"
+                  sequence="16"/>
+
+        <menuitem id="menu_strategic_objectives_summary"
+                  name="Strategic Objectives Summary"
+                  parent="menu_performance_tracking"
+                  action="action_strategic_objective_kra_summary"
+                  sequence="17"/>
+
+    </data>
+</odoo>

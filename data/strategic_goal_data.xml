@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Strategic Goal -->
+        <record id="strategic_goal_kcca_main" model="strategic.goal">
+            <field name="name">A well planned, inclusive and resilient capital city</field>
+            <field name="description">
+                <![CDATA[
+                <p>KCCA's main strategic goal is to develop Kampala into a well planned, inclusive and resilient capital city that provides quality services to all residents while promoting sustainable development and economic growth.</p>
+                
+                <p>This strategic goal encompasses:</p>
+                <ul>
+                    <li>Comprehensive urban planning and development</li>
+                    <li>Inclusive service delivery for all residents</li>
+                    <li>Climate resilience and environmental sustainability</li>
+                    <li>Economic growth and development</li>
+                    <li>Good governance and institutional excellence</li>
+                </ul>
+                ]]>
+            </field>
+            <field name="sequence">1</field>
+            <field name="active">True</field>
+            <field name="color">1</field>
+        </record>
+        
+        <!-- Strategic Objectives -->
+        <record id="strategic_objective_economic_growth" model="strategic.objective">
+            <field name="name">Enhance Kampala City economic Growth</field>
+            <field name="description">Focus on economic development through various programmes and initiatives</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="sequence">1</field>
+        </record>
+        
+        <record id="strategic_objective_productivity_wellbeing" model="strategic.objective">
+            <field name="name">Increase productivity, inclusiveness and wellbeing of Population</field>
+            <field name="description">Improve the quality of life and productivity of Kampala residents</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="sequence">2</field>
+        </record>
+        
+        <record id="strategic_objective_governance" model="strategic.objective">
+            <field name="name">Strengthen the oversight and governance function in the city</field>
+            <field name="description">Enhance governance, oversight, and administrative functions</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="sequence">3</field>
+        </record>
+        
+        <record id="strategic_objective_climate_resilience" model="strategic.objective">
+            <field name="name">Mainstream action on city climate resilience</field>
+            <field name="description">Integrate climate resilience into all city planning and operations</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="sequence">4</field>
+        </record>
+        
+        <record id="strategic_objective_institutional_capacity" model="strategic.objective">
+            <field name="name">Strengthen institutional capacity to drive organizational excellence</field>
+            <field name="description">Build institutional capacity and drive organizational excellence</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="sequence">5</field>
+        </record>
+        
+    </data>
+</odoo>

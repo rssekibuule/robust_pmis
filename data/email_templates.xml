@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Performance Alert Email Template -->
+        <record id="email_template_performance_alert" model="mail.template">
+            <field name="name">KCCA Performance Alert</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">KCCA Performance Alert - {{ ctx.get('directorate').name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="email_to">{{ object.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear {{ object.name }},</p>
+                    
+                    <p>This is an automated alert regarding KPI performance in your directorate: <strong>{{ ctx.get('directorate').name }}</strong></p>
+                    
+                    <p>The following KPIs require immediate attention:</p>
+                    
+                    <table border="1" style="border-collapse: collapse; width: 100%;">
+                        <thead>
+                            <tr style="background-color: #f0f0f0;">
+                                <th style="padding: 8px;">KPI Name</th>
+                                <th style="padding: 8px;">Current Value</th>
+                                <th style="padding: 8px;">Target Value</th>
+                                <th style="padding: 8px;">Achievement</th>
+                                <th style="padding: 8px;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            % for kpi in ctx.get('kpis', []):
+                            <tr>
+                                <td style="padding: 8px;">${ kpi.name }</td>
+                                <td style="padding: 8px;">${ kpi.current_value } ${ kpi.measurement_unit }</td>
+                                <td style="padding: 8px;">${ kpi.target_value } ${ kpi.measurement_unit }</td>
+                                <td style="padding: 8px;">${ "%.1f" % kpi.achievement_percentage }%</td>
+                                <td style="padding: 8px; color: ${'red' if kpi.status == 'behind' else 'orange'};">
+                                    ${ kpi.status.replace('_', ' ').title() }
+                                </td>
+                            </tr>
+                            % endfor
+                        </tbody>
+                    </table>
+                    
+                    <p>Please review these KPIs and take necessary corrective actions.</p>
+                    
+                    <p>Best regards,<br/>
+                    KCCA Performance Management System</p>
+                </div>
+            </field>
+        </record>
+        
+        <!-- Update Reminder Email Template -->
+        <record id="email_template_update_reminder" model="mail.template">
+            <field name="name">KCCA KPI Update Reminder</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Reminder: Update Required for KPI - {{ ctx.get('kpi').name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="email_to">{{ object.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear {{ object.name }},</p>
+                    
+                    <p>This is a reminder that the following KPI requires an update:</p>
+                    
+                    <div style="background-color: #f9f9f9; padding: 15px; margin: 10px 0; border-left: 4px solid #2c5aa0;">
+                        <h3 style="margin: 0; color: #2c5aa0;">{{ ctx.get('kpi').name }}</h3>
+                        <p><strong>Current Value:</strong> {{ ctx.get('kpi').current_value }} {{ ctx.get('kpi').measurement_unit }}</p>
+                        <p><strong>Target Value:</strong> {{ ctx.get('kpi').target_value }} {{ ctx.get('kpi').measurement_unit }}</p>
+                        <p><strong>Achievement:</strong> {{ "%.1f" % ctx.get('kpi').achievement_percentage }}%</p>
+                        <p><strong>Status:</strong> {{ ctx.get('kpi').status.replace('_', ' ').title() }}</p>
+                    </div>
+                    
+                    <p>No performance actions have been recorded for this KPI in the last 30 days. Please log into the KCCA Performance Management System to update the progress.</p>
+                    
+                    <p>Best regards,<br/>
+                    KCCA Performance Management System</p>
+                </div>
+            </field>
+        </record>
+        
+        <!-- Weekly Summary Email Template -->
+        <record id="email_template_weekly_summary" model="mail.template">
+            <field name="name">KCCA Weekly Performance Summary</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Weekly Performance Summary - {{ ctx.get('directorate').name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="email_to">{{ object.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear {{ object.name }},</p>
+                    
+                    <p>Here is your weekly performance summary for <strong>{{ ctx.get('directorate').name }}</strong> 
+                    ({{ ctx.get('start_date') }} to {{ ctx.get('end_date') }}):</p>
+                    
+                    <div style="background-color: #f9f9f9; padding: 20px; margin: 15px 0; border-radius: 5px;">
+                        <h3 style="color: #2c5aa0; margin-top: 0;">Performance Overview</h3>
+                        
+                        <div style="display: flex; justify-content: space-between; margin: 10px 0;">
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 24px; font-weight: bold; color: #28a745;">{{ ctx.get('achieved_kpis', 0) }}</div>
+                                <div style="font-size: 12px; color: #666;">Achieved</div>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 24px; font-weight: bold; color: #17a2b8;">{{ ctx.get('on_track_kpis', 0) }}</div>
+                                <div style="font-size: 12px; color: #666;">On Track</div>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 24px; font-weight: bold; color: #ffc107;">{{ ctx.get('at_risk_kpis', 0) }}</div>
+                                <div style="font-size: 12px; color: #666;">At Risk</div>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 24px; font-weight: bold; color: #dc3545;">{{ ctx.get('behind_kpis', 0) }}</div>
+                                <div style="font-size: 12px; color: #666;">Behind</div>
+                            </div>
+                        </div>
+                        
+                        <p style="text-align: center; margin-top: 15px;">
+                            <strong>Total KPIs: {{ ctx.get('total_kpis', 0) }}</strong>
+                        </p>
+                    </div>
+                    
+                    <p>Please review the detailed performance data in the KCCA Performance Management System and take necessary actions for KPIs that are at risk or behind schedule.</p>
+                    
+                    <p>Best regards,<br/>
+                    KCCA Performance Management System</p>
+                </div>
+            </field>
+        </record>
+        
+        <!-- Monthly Report Email Template -->
+        <record id="email_template_monthly_report" model="mail.template">
+            <field name="name">KCCA Monthly Performance Report</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">KCCA Monthly Performance Report - {{ ctx.get('start_date') }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="email_to">{{ object.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear {{ object.name }},</p>
+                    
+                    <p>Please find below the monthly performance report for KCCA 
+                    ({{ ctx.get('start_date') }} to {{ ctx.get('end_date') }}):</p>
+                    
+                    <div style="background-color: #f9f9f9; padding: 20px; margin: 15px 0; border-radius: 5px;">
+                        <h3 style="color: #2c5aa0; margin-top: 0;">Overall Performance Summary</h3>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="margin: 10px 0;">
+                                <strong>Overall KPI Performance:</strong> 
+                                <span style="font-size: 18px; color: #2c5aa0;">{{ "%.1f" % ctx.get('overall_kpi_performance', 0) }}%</span>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Overall Programme Performance:</strong> 
+                                <span style="font-size: 18px; color: #2c5aa0;">{{ "%.1f" % ctx.get('overall_programme_performance', 0) }}%</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="margin: 10px 0;">
+                                <strong>Total KPIs:</strong> {{ ctx.get('total_kpis', 0) }}
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Total Programmes:</strong> {{ ctx.get('total_programmes', 0) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>For detailed analysis and recommendations, please access the comprehensive monthly report in the KCCA Performance Management System.</p>
+                    
+                    <p>Best regards,<br/>
+                    KCCA Performance Management System</p>
+                </div>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

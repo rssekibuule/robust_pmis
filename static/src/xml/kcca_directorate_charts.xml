@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="robust_pmis.DirectoratePerformanceChart" owl="1">
+        <div class="kcca_directorate_chart_container">
+            <div t-if="state.loading" class="kcca_chart_loading">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="mt-2">Loading chart data...</div>
+            </div>
+            <div t-else="" class="kcca_chart_wrapper">
+                <canvas t-ref="chart" height="300"></canvas>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Financial Strategy Sample Data -->
+        <record id="financial_strategy_sample_1" model="financial.strategy">
+            <field name="name">KCCA Strategic Financial Plan 2025-2030</field>
+            <field name="start_date">2025-07-01</field>
+            <field name="end_date">2030-06-30</field>
+            <field name="wage_fy2025_26">450.0</field>
+            <field name="non_wage_recurrent_fy2025_26">800.0</field>
+            <field name="total_development_fy2025_26">1250.0</field>
+        </record>
+
+        <!-- Financial Analysis Sample Data -->
+        <record id="financial_analysis_sample_1" model="financial.analysis">
+            <field name="name">Q1 FY2025/26 Budget Variance Analysis</field>
+            <field name="financial_strategy_id" ref="financial_strategy_sample_1"/>
+            <field name="analysis_type">budget_variance</field>
+            <field name="scope">strategic</field>
+            <field name="fiscal_year">2025_26</field>
+            <field name="analysis_date">2025-10-31</field>
+            <field name="total_budget_analyzed">625.0</field>
+            <field name="variance_amount">45.2</field>
+            <field name="variance_percentage">7.23</field>
+            <field name="efficiency_score">85.5</field>
+            <field name="risk_level">medium</field>
+            <field name="state">published</field>
+            <field name="executive_summary">&lt;p&gt;Q1 budget execution shows overall positive performance with 92.77% budget utilization. Key programmes performing well include Transport Infrastructure and Human Capital Development.&lt;/p&gt;</field>
+            <field name="key_findings">&lt;p&gt;&lt;strong&gt;Key Findings:&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Transport Infrastructure: 88.7% budget utilization&lt;/li&gt;&lt;li&gt;Natural Resources: 114.2% budget utilization (over budget)&lt;/li&gt;&lt;li&gt;Human Capital Development: 95.8% budget utilization&lt;/li&gt;&lt;li&gt;Digital Transformation: 90.8% budget utilization&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</field>
+            <field name="recommendations">&lt;p&gt;&lt;strong&gt;Recommendations:&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Review Natural Resources budget allocation for Q2&lt;/li&gt;&lt;li&gt;Accelerate Transport Infrastructure project implementation&lt;/li&gt;&lt;li&gt;Maintain current pace for Human Capital programmes&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</field>
+            <field name="confidence_level">92.5</field>
+        </record>
+
+        <record id="financial_analysis_sample_2" model="financial.analysis">
+            <field name="name">Programme Cost Efficiency Analysis - Transport</field>
+            <field name="financial_strategy_id" ref="financial_strategy_sample_1"/>
+            <field name="analysis_type">programme_efficiency</field>
+            <field name="scope">programme</field>
+            <field name="fiscal_year">2025_26</field>
+            <field name="analysis_date">2025-11-15</field>
+            <field name="total_budget_analyzed">163.74</field>
+            <field name="variance_amount">-12.3</field>
+            <field name="variance_percentage">-7.51</field>
+            <field name="efficiency_score">78.2</field>
+            <field name="risk_level">low</field>
+            <field name="state">approved</field>
+            <field name="executive_summary">&lt;p&gt;Transport Infrastructure programme showing good cost efficiency with room for improvement in procurement processes.&lt;/p&gt;</field>
+            <field name="key_findings">&lt;p&gt;Road construction costs 15% below market average. Equipment procurement showing delays affecting project timelines.&lt;/p&gt;</field>
+            <field name="recommendations">&lt;p&gt;Streamline procurement processes and establish framework agreements with suppliers.&lt;/p&gt;</field>
+            <field name="confidence_level">88.0</field>
+        </record>
+
+        <!-- Financial Integration Sample Data -->
+        <record id="financial_integration_sample_1" model="financial.integration">
+            <field name="name">Budget-Performance Integration Analysis</field>
+            <field name="financial_strategy_id" ref="financial_strategy_sample_1"/>
+            <field name="integration_type">budget_performance</field>
+            <field name="integration_date">2025-07-26</field>
+            <field name="scope">full_strategy</field>
+            <field name="fiscal_year_focus">2025_26</field>
+            <field name="total_budget_integrated">625.0</field>
+            <field name="performance_score">85.5</field>
+            <field name="efficiency_ratio">1.23</field>
+            <field name="state">published</field>
+            <field name="executive_summary">&lt;p&gt;Successfully integrated budget data with performance metrics for Q1 FY2025/26. Key findings show strong correlation between budget utilization and programme delivery.&lt;/p&gt;</field>
+            <field name="key_insights">&lt;p&gt;&lt;strong&gt;Key Insights:&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Transport programmes show 88% budget-performance alignment&lt;/li&gt;&lt;li&gt;Human Capital programmes exceed performance targets by 12%&lt;/li&gt;&lt;li&gt;Digital transformation showing efficiency gains&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</field>
+            <field name="recommendations">&lt;p&gt;Continue current integration approach with enhanced real-time monitoring capabilities.&lt;/p&gt;</field>
+        </record>
+
+        <record id="financial_integration_sample_2" model="financial.integration">
+            <field name="name">Programme-Financial Integration Dashboard</field>
+            <field name="financial_strategy_id" ref="financial_strategy_sample_1"/>
+            <field name="integration_type">programme_financial</field>
+            <field name="integration_date">2025-07-25</field>
+            <field name="scope">selected_programmes</field>
+            <field name="fiscal_year_focus">2025_26</field>
+            <field name="total_budget_integrated">450.0</field>
+            <field name="performance_score">78.2</field>
+            <field name="efficiency_ratio">1.15</field>
+            <field name="state">published</field>
+            <field name="executive_summary">&lt;p&gt;Integrated financial tracking for 8 priority programmes with automated variance alerts and performance correlation.&lt;/p&gt;</field>
+            <field name="key_insights">&lt;p&gt;Programme financial integration reveals opportunities for resource reallocation and efficiency improvements.&lt;/p&gt;</field>
+            <field name="recommendations">&lt;p&gt;Implement automated budget reallocation triggers based on performance thresholds.&lt;/p&gt;</field>
+        </record>
+
+        <!-- Financial Dashboard Sample Data -->
+        <record id="financial_dashboard_sample_1" model="financial.dashboard">
+            <field name="name">Executive Financial Overview</field>
+            <field name="financial_strategy_id" ref="financial_strategy_sample_1"/>
+            <field name="dashboard_type">executive</field>
+            <field name="dashboard_date">2025-07-26</field>
+            <field name="refresh_frequency">daily</field>
+            <field name="last_refresh">2025-07-26 06:00:00</field>
+            <field name="total_budget">2500.0</field>
+            <field name="budget_utilization">78.5</field>
+            <field name="performance_score">85.2</field>
+            <field name="efficiency_index">1.23</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="financial_dashboard_sample_2" model="financial.dashboard">
+            <field name="name">Programme Financial Performance</field>
+            <field name="financial_strategy_id" ref="financial_strategy_sample_1"/>
+            <field name="dashboard_type">programme</field>
+            <field name="dashboard_date">2025-07-26</field>
+            <field name="refresh_frequency">hourly</field>
+            <field name="last_refresh">2025-07-26 06:30:00</field>
+            <field name="total_budget">1850.0</field>
+            <field name="budget_utilization">82.1</field>
+            <field name="performance_score">88.7</field>
+            <field name="efficiency_index">1.15</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Financial Dashboard Widget Sample Data -->
+        <record id="financial_dashboard_widget_sample_1" model="financial.dashboard.widget">
+            <field name="dashboard_id" ref="financial_dashboard_sample_1"/>
+            <field name="name">Total Budget Utilization</field>
+            <field name="widget_type">metric</field>
+            <field name="position_x">0</field>
+            <field name="position_y">0</field>
+            <field name="width">4</field>
+            <field name="height">3</field>
+            <field name="data_source">budget_breakdown</field>
+            <field name="widget_data">{"metric": "utilization_percentage", "target": 85, "format": "percentage", "current": 78.5}</field>
+            <field name="title">Budget Utilization</field>
+            <field name="description">Overall budget utilization percentage across all programmes</field>
+            <field name="color_scheme">blue</field>
+            <field name="is_active">True</field>
+            <field name="refresh_interval">300</field>
+        </record>
+
+        <record id="financial_dashboard_widget_sample_2" model="financial.dashboard.widget">
+            <field name="dashboard_id" ref="financial_dashboard_sample_1"/>
+            <field name="name">Revenue Achievement</field>
+            <field name="widget_type">gauge</field>
+            <field name="position_x">4</field>
+            <field name="position_y">0</field>
+            <field name="width">4</field>
+            <field name="height">3</field>
+            <field name="data_source">funding_sources</field>
+            <field name="widget_data">{"metric": "revenue_achievement", "target": 100, "current": 92.3, "gauge_type": "arc"}</field>
+            <field name="title">Revenue vs Target</field>
+            <field name="description">Revenue collection achievement against annual targets</field>
+            <field name="color_scheme">green</field>
+            <field name="is_active">True</field>
+            <field name="refresh_interval">300</field>
+        </record>
+
+    </data>
+</odoo>

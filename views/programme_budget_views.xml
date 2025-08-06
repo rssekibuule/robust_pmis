@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Programme Budget Tree View -->
+    <record id="view_programme_budget_tree" model="ir.ui.view">
+        <field name="name">programme.budget.tree</field>
+        <field name="model">programme.budget</field>
+        <field name="arch" type="xml">
+            <list string="Programme Budget Allocations" editable="bottom">
+                <field name="sequence" string="S/N"/>
+                <field name="programme_id" options="{'no_create': True}"/>
+                <field name="budget_fy2025_26" sum="Total FY2025/26"/>
+                <field name="budget_fy2026_27" sum="Total FY2026/27"/>
+                <field name="budget_fy2027_28" sum="Total FY2027/28"/>
+                <field name="budget_fy2028_29" sum="Total FY2028/29"/>
+                <field name="budget_fy2029_30" sum="Total FY2029/30"/>
+                <field name="total_budget" sum="Grand Total"/>
+                <field name="status" widget="badge" 
+                       decoration-success="status == 'approved'" 
+                       decoration-info="status == 'active'"
+                       decoration-muted="status == 'draft'"/>
+                <field name="currency_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Programme Budget Form View -->
+    <record id="view_programme_budget_form" model="ir.ui.view">
+        <field name="name">programme.budget.form</field>
+        <field name="model">programme.budget</field>
+        <field name="arch" type="xml">
+            <form string="Programme Budget Allocation">
+                <header>
+                    <button name="action_approve" string="Approve" type="object" 
+                            class="oe_highlight" invisible="status != 'draft'"/>
+                    <button name="action_activate" string="Activate" type="object" 
+                            class="oe_highlight" invisible="status != 'approved'"/>
+                    <button name="action_complete" string="Complete" type="object" 
+                            invisible="status != 'active'"/>
+                    <button name="action_cancel" string="Cancel" type="object" 
+                            invisible="status in ['completed', 'cancelled']"/>
+                    <field name="status" widget="statusbar" 
+                           statusbar_visible="draft,approved,active,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sequence" string="S/N"/>
+                            <field name="programme_id" options="{'no_create': True}"/>
+                            <field name="financial_strategy_id" options="{'no_create': True}"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                        </group>
+                        <group>
+                            <field name="responsible_user_id"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Budget Allocations" name="budget_allocations">
+                            <group string="Budget by Fiscal Year (UGX Billions)">
+                                <group>
+                                    <field name="budget_fy2025_26"/>
+                                    <field name="budget_fy2026_27"/>
+                                    <field name="budget_fy2027_28"/>
+                                </group>
+                                <group>
+                                    <field name="budget_fy2028_29"/>
+                                    <field name="budget_fy2029_30"/>
+                                    <field name="total_budget" readonly="1" 
+                                           class="oe_subtotal_footer_separator"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Additional notes about this budget allocation..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Programme Budget Kanban View -->
+    <record id="view_programme_budget_kanban" model="ir.ui.view">
+        <field name="name">programme.budget.kanban</field>
+        <field name="model">programme.budget</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="sequence"/>
+                <field name="programme_name"/>
+                <field name="total_budget"/>
+                <field name="status"/>
+                <field name="currency_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_content">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>S/N: <field name="sequence"/></strong>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <span class="badge badge-pill" 
+                                          t-attf-class="badge-#{record.status.raw_value == 'approved' ? 'success' : record.status.raw_value == 'active' ? 'info' : 'secondary'}">
+                                        <field name="status"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <field name="programme_name"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <strong>Total: <field name="total_budget" widget="monetary"/> UGX Bns</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Programme Budget Search View -->
+    <record id="view_programme_budget_search" model="ir.ui.view">
+        <field name="name">programme.budget.search</field>
+        <field name="model">programme.budget</field>
+        <field name="arch" type="xml">
+            <search string="Programme Budget Allocations">
+                <field name="programme_id" string="Programme"/>
+                <field name="financial_strategy_id" string="Financial Strategy"/>
+                <field name="sequence" string="S/N"/>
+                <field name="responsible_user_id" string="Responsible Person"/>
+                
+                <filter string="Draft" name="draft" domain="[('status', '=', 'draft')]"/>
+                <filter string="Approved" name="approved" domain="[('status', '=', 'approved')]"/>
+                <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
+                <filter string="Completed" name="completed" domain="[('status', '=', 'completed')]"/>
+                
+                <separator/>
+                <filter string="My Budget Allocations" name="my_budgets" 
+                        domain="[('responsible_user_id', '=', uid)]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Programme" name="group_programme" 
+                            context="{'group_by': 'programme_id'}"/>
+                    <filter string="Financial Strategy" name="group_strategy" 
+                            context="{'group_by': 'financial_strategy_id'}"/>
+                    <filter string="Status" name="group_status" 
+                            context="{'group_by': 'status'}"/>
+                    <filter string="Responsible Person" name="group_responsible" 
+                            context="{'group_by': 'responsible_user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Programme Budget Action -->
+    <record id="action_programme_budget" model="ir.actions.act_window">
+        <field name="name">Programme Budget Allocations</field>
+        <field name="res_model">programme.budget</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first programme budget allocation!
+            </p>
+            <p>
+                Programme budget allocations define the cost breakdown by programme
+                for the strategic plan across different fiscal years.
+            </p>
+        </field>
+    </record>
+
+</odoo>

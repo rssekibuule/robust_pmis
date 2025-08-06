@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Note: Strategic Objective Dashboard views moved to programme_directorate_rel_views.xml for proper loading order -->
+
+        <!-- Graph View for Strategic Objective Relationships -->
+        <record id="view_programme_directorate_rel_graph_strategic" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.graph.strategic</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <graph string="Implementation by Strategic Objective" type="bar">
+                    <field name="strategic_objective_name" type="row"/>
+                    <field name="id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        
+        <!-- Graph View for Implementation Roles -->
+        <record id="view_programme_directorate_rel_graph_role" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.graph.role</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <graph string="Relationships by Implementation Role" type="pie">
+                    <field name="implementation_role" type="row"/>
+                    <field name="id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        
+        <!-- Pivot View for Strategic Implementation Analysis -->
+        <record id="view_programme_directorate_rel_pivot" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.pivot</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <pivot string="Strategic Implementation Analysis">
+                    <field name="strategic_objective_name" type="row"/>
+                    <field name="directorate_name" type="col"/>
+                    <field name="id" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        
+        <!-- Strategic Implementation Analysis Action -->
+        <record id="action_strategic_implementation_analysis" model="ir.actions.act_window">
+            <field name="name">Strategic Implementation Analysis</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">pivot,graph,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_strategic')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_strategic_objective_list')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_strategic_objective': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Strategic Implementation Analysis
+                </p>
+                <p>
+                    Analyze how programmes are distributed across strategic objectives and
+                    which directorates are responsible for implementing each strategic area.
+                </p>
+            </field>
+        </record>
+
+        <!-- Workload Distribution Report Action -->
+        <record id="action_workload_distribution" model="ir.actions.act_window">
+            <field name="name">Directorate Workload Distribution</field>
+            <field name="res_model">programme.directorate.rel</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_role')}),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_programme_directorate_rel_tree')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_directorate': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Directorate Workload Analysis
+                </p>
+                <p>
+                    Analyze the distribution of programme implementation responsibilities
+                    across different directorates to identify workload balance.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

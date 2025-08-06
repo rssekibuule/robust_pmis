@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- KRAs for Infrastructure Development Strategic Objective -->
+        
+        <!-- KRA 1: Transport Infrastructure Development -->
+        <record id="kra_transport_infrastructure" model="key.result.area">
+            <field name="name">Transport Infrastructure Development</field>
+            <field name="description">Develop and maintain efficient transport infrastructure including roads, bridges, and public transit systems</field>
+            <field name="sequence">10</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 2: Urban Housing and Settlement Development -->
+        <record id="kra_urban_housing" model="key.result.area">
+            <field name="name">Urban Housing and Settlement Development</field>
+            <field name="description">Promote sustainable housing development and improve informal settlements</field>
+            <field name="sequence">20</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 3: Public Infrastructure Maintenance -->
+        <record id="kra_infrastructure_maintenance" model="key.result.area">
+            <field name="name">Public Infrastructure Maintenance</field>
+            <field name="description">Maintain and upgrade existing public infrastructure to ensure service delivery</field>
+            <field name="sequence">30</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 4: Smart City Infrastructure -->
+        <record id="kra_smart_city" model="key.result.area">
+            <field name="name">Smart City Infrastructure</field>
+            <field name="description">Develop ICT and digital infrastructure for smart city initiatives</field>
+            <field name="sequence">40</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KRA 5: Water and Sanitation Infrastructure -->
+        <record id="kra_water_sanitation" model="key.result.area">
+            <field name="name">Water and Sanitation Infrastructure</field>
+            <field name="description">Develop and maintain water supply and sanitation infrastructure systems</field>
+            <field name="sequence">50</field>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="active">True</field>
+        </record>
+
+    </data>
+</odoo>

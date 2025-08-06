@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- ========================================= -->
+        <!-- STRATEGIC OBJECTIVE 1: ECONOMIC GROWTH -->
+        <!-- ========================================= -->
+        
+        <!-- KRA 1.1: Revenue -->
+        <record id="kra_revenue" model="key.result.area">
+            <field name="name">Revenue</field>
+            <field name="strategic_objective_id" ref="strategic_objective_economic_growth"/>
+            <field name="sequence">10</field>
+            <field name="description">Revenue generation and collection for economic growth</field>
+        </record>
+        
+        <!-- KPI 1.1.1: Amount of LR generated (Bn) -->
+        <record id="kpi_lr_generated" model="key.performance.indicator">
+            <field name="name">Amount of LR generated (Bn)</field>
+            <field name="kra_id" ref="kra_revenue"/>
+            <field name="measurement_unit">Bn UGX</field>
+            <field name="baseline_value">114.3</field>
+            <field name="target_value">159.5</field>
+            <field name="current_value">114.3</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- KRA 1.2: Infrastructure Improvement -->
+        <record id="kra_infrastructure" model="key.result.area">
+            <field name="name">Infrastructure Improvement</field>
+            <field name="strategic_objective_id" ref="strategic_objective_economic_growth"/>
+            <field name="sequence">20</field>
+            <field name="description">Infrastructure development and maintenance</field>
+        </record>
+        
+        <!-- KPI 1.2.1: % of paved road network in good condition -->
+        <record id="kpi_paved_roads" model="key.performance.indicator">
+            <field name="name">% of paved road network in good condition</field>
+            <field name="kra_id" ref="kra_infrastructure"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">35.46</field>
+            <field name="target_value">62.4</field>
+            <field name="current_value">35.46</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- KPI 1.2.2: Proportion of city road network paved, % -->
+        <record id="kpi_road_network_paved" model="key.performance.indicator">
+            <field name="name">Proportion of city road network paved, %</field>
+            <field name="kra_id" ref="kra_infrastructure"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">36.5</field>
+            <field name="target_value">52.6</field>
+            <field name="current_value">36.5</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+        </record>
+        
+        <!-- KRA 1.3: Employment -->
+        <record id="kra_employment" model="key.result.area">
+            <field name="name">Employment</field>
+            <field name="strategic_objective_id" ref="strategic_objective_economic_growth"/>
+            <field name="sequence">30</field>
+            <field name="description">Employment creation and job opportunities</field>
+        </record>
+        
+        <!-- KPI 1.3.1: Kampala City unemployment rate -->
+        <record id="kpi_unemployment_rate" model="key.performance.indicator">
+            <field name="name">Kampala City unemployment rate</field>
+            <field name="kra_id" ref="kra_employment"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">14.6</field>
+            <field name="target_value">10.5</field>
+            <field name="current_value">14.6</field>
+            <field name="kpi_type">decreasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- KRA 1.4: ICT -->
+        <record id="kra_ict" model="key.result.area">
+            <field name="name">ICT</field>
+            <field name="strategic_objective_id" ref="strategic_objective_economic_growth"/>
+            <field name="sequence">40</field>
+            <field name="description">Information and Communication Technology development</field>
+        </record>
+        
+        <!-- KPI 1.4.1: % of total enterprises engaged in ICT related activities -->
+        <record id="kpi_ict_enterprises" model="key.performance.indicator">
+            <field name="name">% of total enterprises engaged in ICT related activities</field>
+            <field name="kra_id" ref="kra_ict"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">0</field>
+            <field name="current_value">0</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- KRA 1.5: Economic empowerment -->
+        <record id="kra_economic_empowerment" model="key.result.area">
+            <field name="name">Economic empowerment</field>
+            <field name="strategic_objective_id" ref="strategic_objective_economic_growth"/>
+            <field name="sequence">50</field>
+            <field name="description">Economic empowerment programs and initiatives</field>
+        </record>
+        
+        <!-- KPI 1.5.1: Proportion of eligible City population with access to economic empowerment programmes -->
+        <record id="kpi_economic_empowerment_access" model="key.performance.indicator">
+            <field name="name">Proportion of eligible City population with access to economic empowerment programmes</field>
+            <field name="kra_id" ref="kra_economic_empowerment"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">0</field>
+            <field name="current_value">0</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- KPI 1.5.2: Total Value of City priority agricultural commodities produced -->
+        <record id="kpi_agricultural_commodities" model="key.performance.indicator">
+            <field name="name">Total Value of City priority agricultural commodities produced</field>
+            <field name="kra_id" ref="kra_economic_empowerment"/>
+            <field name="measurement_unit">UGX</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">0</field>
+            <field name="current_value">0</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+        </record>
+        
+        <!-- KPI 1.5.3: Tourist arrivals -->
+        <record id="kpi_tourist_arrivals" model="key.performance.indicator">
+            <field name="name">Tourist arrivals</field>
+            <field name="kra_id" ref="kra_economic_empowerment"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">60000</field>
+            <field name="target_value">110000</field>
+            <field name="current_value">60000</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+        </record>
+        
+        <!-- ========================================= -->
+        <!-- STRATEGIC OBJECTIVE 2: PRODUCTIVITY & WELLBEING -->
+        <!-- ========================================= -->
+        
+        <!-- KRA 2.1: Education -->
+        <record id="kra_education" model="key.result.area">
+            <field name="name">Education</field>
+            <field name="strategic_objective_id" ref="strategic_objective_productivity_wellbeing"/>
+            <field name="sequence">10</field>
+            <field name="description">Education services and literacy improvement</field>
+        </record>
+        
+        <!-- KPI 2.1.1: Literacy rate (Lower Primary) -->
+        <record id="kpi_literacy_lower_primary" model="key.performance.indicator">
+            <field name="name">Literacy rate (Lower Primary)</field>
+            <field name="kra_id" ref="kra_education"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">80</field>
+            <field name="target_value">90</field>
+            <field name="current_value">80</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- KPI 2.1.2: Numeracy rate (Lower Primary) -->
+        <record id="kpi_numeracy_lower_primary" model="key.performance.indicator">
+            <field name="name">Numeracy rate (Lower Primary)</field>
+            <field name="kra_id" ref="kra_education"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">50</field>
+            <field name="target_value">90</field>
+            <field name="current_value">50</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+        </record>
+        
+        <!-- KPI 2.1.3: Completion rate in Primary % -->
+        <record id="kpi_completion_primary" model="key.performance.indicator">
+            <field name="name">Completion rate in Primary %</field>
+            <field name="kra_id" ref="kra_education"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">85</field>
+            <field name="target_value">90</field>
+            <field name="current_value">85</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+        </record>
+        
+        <!-- KPI 2.1.4: Survival rates Primary School level -->
+        <record id="kpi_survival_primary" model="key.performance.indicator">
+            <field name="name">Survival rates Primary School level</field>
+            <field name="kra_id" ref="kra_education"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">39.5</field>
+            <field name="target_value">44.5</field>
+            <field name="current_value">39.5</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">40</field>
+        </record>
+        
+        <!-- KRA 2.2: Health -->
+        <record id="kra_health" model="key.result.area">
+            <field name="name">Health</field>
+            <field name="strategic_objective_id" ref="strategic_objective_productivity_wellbeing"/>
+            <field name="sequence">20</field>
+            <field name="description">Health services and public health improvement</field>
+        </record>
+
+        <!-- KPI 2.2.1: Maternal deaths (per 100,000 live births) -->
+        <record id="kpi_maternal_deaths" model="key.performance.indicator">
+            <field name="name">Maternal deaths (per 100,000 live births)</field>
+            <field name="kra_id" ref="kra_health"/>
+            <field name="measurement_unit">per 100,000</field>
+            <field name="baseline_value">213</field>
+            <field name="target_value">180</field>
+            <field name="current_value">213</field>
+            <field name="kpi_type">decreasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- KPI 2.2.2: Perinatal mortality (per 1,000 live births) -->
+        <record id="kpi_perinatal_mortality" model="key.performance.indicator">
+            <field name="name">Perinatal mortality (per 1,000 live births)</field>
+            <field name="kra_id" ref="kra_health"/>
+            <field name="measurement_unit">per 1,000</field>
+            <field name="baseline_value">36</field>
+            <field name="target_value">30</field>
+            <field name="current_value">36</field>
+            <field name="kpi_type">decreasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- KPI 2.2.3: Infant mortality (per 1000 live births under 1 year) -->
+        <record id="kpi_infant_mortality" model="key.performance.indicator">
+            <field name="name">Infant mortality (per 1000 live births under 1 year)</field>
+            <field name="kra_id" ref="kra_health"/>
+            <field name="measurement_unit">per 1,000</field>
+            <field name="baseline_value">36</field>
+            <field name="target_value">16</field>
+            <field name="current_value">36</field>
+            <field name="kpi_type">decreasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <!-- KPI 2.2.4: Prevalence of HIV among adults between 15-49yrs -->
+        <record id="kpi_hiv_prevalence" model="key.performance.indicator">
+            <field name="name">Prevalence of HIV among adults between 15-49yrs</field>
+            <field name="kra_id" ref="kra_health"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">6.0</field>
+            <field name="target_value">5.13</field>
+            <field name="current_value">6.0</field>
+            <field name="kpi_type">decreasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- KPI 2.2.5: HIV viral load suppression rate among people living with HIV -->
+        <record id="kpi_hiv_viral_suppression" model="key.performance.indicator">
+            <field name="name">HIV viral load suppression rate among people living with HIV</field>
+            <field name="kra_id" ref="kra_health"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">96</field>
+            <field name="target_value">97</field>
+            <field name="current_value">96</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <!-- KPI 2.2.6: Mortality rate attributed to Non-Communicable diseases -->
+        <record id="kpi_ncd_mortality" model="key.performance.indicator">
+            <field name="name">Mortality rate attributed to Non-Communicable diseases</field>
+            <field name="kra_id" ref="kra_health"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">62</field>
+            <field name="target_value">55</field>
+            <field name="current_value">62</field>
+            <field name="kpi_type">decreasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">60</field>
+        </record>
+
+        <!-- KPI 2.2.7: Per capita OPD attendance -->
+        <record id="kpi_opd_attendance" model="key.performance.indicator">
+            <field name="name">Per capita OPD attendance</field>
+            <field name="kra_id" ref="kra_health"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">2.76</field>
+            <field name="target_value">1.5</field>
+            <field name="current_value">2.76</field>
+            <field name="kpi_type">target</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">70</field>
+        </record>
+
+        <!-- ========================================= -->
+        <!-- STRATEGIC OBJECTIVE 3: GOVERNANCE -->
+        <!-- ========================================= -->
+
+        <!-- KRA 3.1: Governance -->
+        <record id="kra_governance" model="key.result.area">
+            <field name="name">Governance</field>
+            <field name="strategic_objective_id" ref="strategic_objective_governance"/>
+            <field name="sequence">10</field>
+            <field name="description">Governance and oversight functions</field>
+        </record>
+
+        <!-- KPI 3.1.1: Disposal rate of cases in court -->
+        <record id="kpi_case_disposal_rate" model="key.performance.indicator">
+            <field name="name">Disposal rate of cases in court</field>
+            <field name="kra_id" ref="kra_governance"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">59.70</field>
+            <field name="target_value">69.70</field>
+            <field name="current_value">59.70</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- KPI 3.1.2: % of cases dropped or concluded in favor of KCCA -->
+        <record id="kpi_cases_favor_kcca" model="key.performance.indicator">
+            <field name="name">% of cases dropped or concluded in favor of KCCA</field>
+            <field name="kra_id" ref="kra_governance"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">71</field>
+            <field name="target_value">87</field>
+            <field name="current_value">71</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- KPI 3.1.3: Proportion of council recommendations on the Budget implemented (%) -->
+        <record id="kpi_council_recommendations" model="key.performance.indicator">
+            <field name="name">Proportion of council recommendations on the Budget implemented (%)</field>
+            <field name="kra_id" ref="kra_governance"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">20</field>
+            <field name="target_value">80</field>
+            <field name="current_value">20</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <!-- KPI 3.1.4: Proportion of ordinances enacted against bills presented -->
+        <record id="kpi_ordinances_enacted" model="key.performance.indicator">
+            <field name="name">Proportion of ordinances enacted against bills presented</field>
+            <field name="kra_id" ref="kra_governance"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">55</field>
+            <field name="target_value">85</field>
+            <field name="current_value">55</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- ========================================= -->
+        <!-- STRATEGIC OBJECTIVE 4: CLIMATE RESILIENCE -->
+        <!-- ========================================= -->
+
+        <!-- KRA 4.1: Resource mobilization -->
+        <record id="kra_resource_mobilization" model="key.result.area">
+            <field name="name">Resource mobilization</field>
+            <field name="strategic_objective_id" ref="strategic_objective_climate_resilience"/>
+            <field name="sequence">10</field>
+            <field name="description">Resource mobilization for climate resilience</field>
+        </record>
+
+        <!-- KPI 4.1.1: Proportion of City Annual budget financed by non-traditional sources -->
+        <record id="kpi_non_traditional_budget" model="key.performance.indicator">
+            <field name="name">Proportion of City Annual budget financed by non-traditional sources</field>
+            <field name="kra_id" ref="kra_resource_mobilization"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">5</field>
+            <field name="target_value">15</field>
+            <field name="current_value">5</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- KRA 4.2: Productive & sustainable environment -->
+        <record id="kra_productive_environment" model="key.result.area">
+            <field name="name">Productive &amp; sustainable environment</field>
+            <field name="strategic_objective_id" ref="strategic_objective_climate_resilience"/>
+            <field name="sequence">20</field>
+            <field name="description">Environmental sustainability and climate action</field>
+        </record>
+
+        <!-- KPI 4.2.1: Average outdoor Air quality index for Kampala City (PM2.5) -->
+        <record id="kpi_air_quality_index" model="key.performance.indicator">
+            <field name="name">Average outdoor Air quality index for Kampala City (PM2.5)</field>
+            <field name="kra_id" ref="kra_productive_environment"/>
+            <field name="measurement_unit">Index</field>
+            <field name="baseline_value">117</field>
+            <field name="target_value">100</field>
+            <field name="current_value">117</field>
+            <field name="kpi_type">decreasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- KPI 4.2.2: Percentage of solid waste was safely disposed -->
+        <record id="kpi_solid_waste_disposal" model="key.performance.indicator">
+            <field name="name">Percentage of solid waste was safely disposed</field>
+            <field name="kra_id" ref="kra_productive_environment"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">45</field>
+            <field name="target_value">85</field>
+            <field name="current_value">45</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- KPI 4.2.3: Percentage of waste recycled -->
+        <record id="kpi_waste_recycled" model="key.performance.indicator">
+            <field name="name">Percentage of waste recycled</field>
+            <field name="kra_id" ref="kra_productive_environment"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">5</field>
+            <field name="target_value">30</field>
+            <field name="current_value">5</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <!-- KRA 4.3: Reduced flooding in the city -->
+        <record id="kra_reduced_flooding" model="key.result.area">
+            <field name="name">Reduced flooding in the city</field>
+            <field name="strategic_objective_id" ref="strategic_objective_climate_resilience"/>
+            <field name="sequence">30</field>
+            <field name="description">Flood management and prevention</field>
+        </record>
+
+        <!-- KPI 4.3.1: Incidence of pluvial flooding in the City at critical flood spots (57 spots) -->
+        <record id="kpi_pluvial_flooding" model="key.performance.indicator">
+            <field name="name">Incidence of pluvial flooding in the City at critical flood spots (57 spots)</field>
+            <field name="kra_id" ref="kra_reduced_flooding"/>
+            <field name="measurement_unit">Number</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">0</field>
+            <field name="current_value">0</field>
+            <field name="kpi_type">decreasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- KRA 4.4: GG emissions -->
+        <record id="kra_gg_emissions" model="key.result.area">
+            <field name="name">GG emissions</field>
+            <field name="strategic_objective_id" ref="strategic_objective_climate_resilience"/>
+            <field name="sequence">40</field>
+            <field name="description">Greenhouse gas emissions management</field>
+        </record>
+
+        <!-- KPI 4.4.1: Reduction in House Gases GG emissions from BAU scenario -->
+        <record id="kpi_gg_emissions_reduction" model="key.performance.indicator">
+            <field name="name">Reduction in House Gases GG emissions from BAU scenario</field>
+            <field name="kra_id" ref="kra_gg_emissions"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">20</field>
+            <field name="current_value">0</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- ========================================= -->
+        <!-- STRATEGIC OBJECTIVE 5: INSTITUTIONAL CAPACITY -->
+        <!-- ========================================= -->
+
+        <!-- KRA 5.1: Institutional capacity -->
+        <record id="kra_institutional_capacity" model="key.result.area">
+            <field name="name">Institutional capacity</field>
+            <field name="strategic_objective_id" ref="strategic_objective_institutional_capacity"/>
+            <field name="sequence">10</field>
+            <field name="description">Building institutional capacity for organizational excellence</field>
+        </record>
+
+        <!-- KPI 5.1.1: Citizen satisfaction rating of the Kampala City Service delivery -->
+        <record id="kpi_citizen_satisfaction" model="key.performance.indicator">
+            <field name="name">Citizen satisfaction rating of the Kampala City Service delivery</field>
+            <field name="kra_id" ref="kra_institutional_capacity"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">37</field>
+            <field name="target_value">85</field>
+            <field name="current_value">37</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- KPI 5.1.2: Staffing levels, % -->
+        <record id="kpi_staffing_levels" model="key.performance.indicator">
+            <field name="name">Staffing levels, %</field>
+            <field name="kra_id" ref="kra_institutional_capacity"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">53</field>
+            <field name="target_value">80</field>
+            <field name="current_value">53</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- KPI 5.1.3: Staff retention rate -->
+        <record id="kpi_staff_retention" model="key.performance.indicator">
+            <field name="name">Staff retention rate</field>
+            <field name="kra_id" ref="kra_institutional_capacity"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">80</field>
+            <field name="current_value">0</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <!-- KPI 5.1.4: Proportion of projects implemented on time -->
+        <record id="kpi_projects_on_time" model="key.performance.indicator">
+            <field name="name">Proportion of projects implemented on time</field>
+            <field name="kra_id" ref="kra_institutional_capacity"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">0</field>
+            <field name="target_value">85</field>
+            <field name="current_value">0</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- KPI 5.1.5: % of planned budget released -->
+        <record id="kpi_budget_released" model="key.performance.indicator">
+            <field name="name">% of planned budget released</field>
+            <field name="kra_id" ref="kra_institutional_capacity"/>
+            <field name="measurement_unit">%</field>
+            <field name="baseline_value">98.4</field>
+            <field name="target_value">100</field>
+            <field name="current_value">98.4</field>
+            <field name="kpi_type">increasing</field>
+            <field name="frequency">annual</field>
+            <field name="sequence">50</field>
+        </record>
+
+    </data>
+</odoo>

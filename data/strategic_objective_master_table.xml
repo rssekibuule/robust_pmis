@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Strategic Objectives for Master Table Implementation -->
+        <!-- These correspond to the 5 rows in the master table -->
+        
+        <!-- Update Strategic Objective 1 (Row 1) - Economic Growth -->
+        <record id="strategic_objective_economic_growth" model="strategic.objective">
+            <field name="name">Strategic Objective 1: Enhance Kampala City economic Growth</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="description">
+                <![CDATA[
+                <p>Enhance Kampala City economic Growth through:</p>
+                <ul>
+                    <li>Agro-Industrialization</li>
+                    <li>Private Sector Development</li>
+                    <li>Integrated Transport Infrastructure and Services</li>
+                    <li>Development Plan Implementation</li>
+                    <li>Tourism Development</li>
+                    <li>Natural Resources, Environment, Climate Change, Water and Land Management</li>
+                    <li>Sustainable Urbanization and Housing</li>
+                    <li>Digital Transformation</li>
+                    <li>Sustainable Energy Development</li>
+                </ul>
+                <p>Implemented by 5 directorates: Production & Commercial Services, Engineering, Revenue Administration, Physical Planning, and ICT.</p>
+                ]]>
+            </field>
+        </record>
+        
+        <!-- Update Strategic Objective 2 (Row 2) - Productivity and Wellbeing -->
+        <record id="strategic_objective_productivity_wellbeing" model="strategic.objective">
+            <field name="name">Strategic Objective 2: Increase productivity, inclusiveness and wellbeing of Population</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="description">
+                <![CDATA[
+                <p>Increase productivity, inclusiveness and wellbeing of Population through:</p>
+                <ul>
+                    <li>Human Capital Development programme</li>
+                    <li>Sustainable Energy Development</li>
+                </ul>
+                <p>Implemented by 3 directorates: Public Health, Education & Sports, and Gender & Community Services.</p>
+                ]]>
+            </field>
+        </record>
+        
+        <!-- Update Strategic Objective 3 (Row 3) - Governance -->
+        <record id="strategic_objective_governance" model="strategic.objective">
+            <field name="name">Strategic Objective 3: Strengthen the oversight and governance function for effective service delivery by the city</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="description">
+                <![CDATA[
+                <p>Strengthen the oversight and governance function in the city through:</p>
+                <ul>
+                    <li>Legislation, Oversight and Representation</li>
+                    <li>Administration of Justice</li>
+                    <li>Governance and Security</li>
+                </ul>
+                <p>Implemented by 2 directorates: Legislative & Political Affairs and Legal Affairs.</p>
+                ]]>
+            </field>
+        </record>
+        
+        <!-- Update Strategic Objective 4 (Row 4) - Climate Resilience -->
+        <record id="strategic_objective_climate_resilience" model="strategic.objective">
+            <field name="name">Strategic Objective 4: Mainstream action on city climate resilience</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="description">
+                <![CDATA[
+                <p>Mainstream action on city climate resilience through:</p>
+                <ul>
+                    <li>Development Plan Implementation (cross-cutting)</li>
+                    <li>Digital Transformation (cross-cutting)</li>
+                </ul>
+                <p>Implemented by 2 directorates: Treasury Services and Human Resource & Organizational Development.</p>
+                ]]>
+            </field>
+        </record>
+        
+        <!-- Update Strategic Objective 5 (Row 5) - Institutional Capacity -->
+        <record id="strategic_objective_institutional_capacity" model="strategic.objective">
+            <field name="name">Strategic Objective 5: Strengthen institutional capacity to drive organizational excellence</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+            <field name="description">
+                <![CDATA[
+                <p>Strengthen institutional capacity to drive organizational excellence through:</p>
+                <ul>
+                    <li>Natural Resources, Environment, Climate Change, Water and Land Management (cross-cutting)</li>
+                    <li>Development Plan Implementation (cross-cutting)</li>
+                    <li>Public Sector Transformation</li>
+                </ul>
+                <p>Implemented by 4 directorates: Treasury Services, Human Resource & Organizational Development, Administration & ICT, and Internal Audit.</p>
+                ]]>
+            </field>
+        </record>
+        
+        <!-- Programme-Strategic Objective Relationships -->
+        <!-- Row 1 programmes linked to Strategic Objective 1 (Economic Growth) -->
+        <record id="strategic_objective_economic_growth" model="strategic.objective">
+            <field name="programme_ids" eval="[(4, ref('programme_agro_industrialization')),
+                                                (4, ref('programme_private_sector_dev')),
+                                                (4, ref('programme_transport_infrastructure')),
+                                                (4, ref('programme_dev_plan_implementation')),
+                                                (4, ref('programme_tourism_development')),
+                                                (4, ref('programme_natural_resources')),
+                                                (4, ref('programme_sustainable_urbanization')),
+                                                (4, ref('programme_digital_transformation')),
+                                                (4, ref('programme_sustainable_energy_dev'))]"/>
+        </record>
+
+        <!-- Row 2 programme linked to Strategic Objective 2 (Productivity & Wellbeing) -->
+        <record id="strategic_objective_productivity_wellbeing" model="strategic.objective">
+            <field name="programme_ids" eval="[(4, ref('programme_human_capital_dev')),
+                                                (4, ref('programme_sustainable_energy_dev'))]"/>
+        </record>
+
+        <!-- Row 3 programmes linked to Strategic Objective 3 (Governance) -->
+        <record id="strategic_objective_governance" model="strategic.objective">
+            <field name="programme_ids" eval="[(4, ref('programme_legislation_oversight')),
+                                                (4, ref('programme_admin_justice')),
+                                                (4, ref('programme_governance_security'))]"/>
+        </record>
+
+        <!-- Row 4 programmes linked to Strategic Objective 4 (Climate Resilience) -->
+        <record id="strategic_objective_climate_resilience" model="strategic.objective">
+            <field name="programme_ids" eval="[(4, ref('programme_dev_plan_implementation')),
+                                                (4, ref('programme_digital_transformation'))]"/>
+        </record>
+
+        <!-- Row 5 programmes linked to Strategic Objective 5 (Institutional Capacity) -->
+        <record id="strategic_objective_institutional_capacity" model="strategic.objective">
+            <field name="programme_ids" eval="[(4, ref('programme_natural_resources')),
+                                                (4, ref('programme_dev_plan_implementation')),
+                                                (4, ref('programme_public_sector_transformation'))]"/>
+        </record>
+        
+    </data>
+</odoo>

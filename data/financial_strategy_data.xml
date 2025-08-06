@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Strategic Plan Budget - Financial Strategy -->
+        <record id="financial_strategy_strategic_plan_budget" model="financial.strategy">
+            <field name="name">KCCA Strategic Plan Budget (FY2025/26 - FY2029/30)</field>
+            <field name="description"><![CDATA[
+                <p><strong>Strategic Plan Budget Overview</strong></p>
+                <p>This financial strategy outlines the comprehensive budget allocation for KCCA's strategic plan 
+                covering the period from FY2025/26 to FY2029/30.</p>
+                
+                <p><strong>Budget Categories:</strong></p>
+                <ul>
+                    <li><strong>Wage:</strong> Personnel costs and salaries</li>
+                    <li><strong>Non-Wage Recurrent:</strong> Operational expenses excluding personnel</li>
+                    <li><strong>Total Recurrent:</strong> Combined wage and non-wage recurrent costs</li>
+                    <li><strong>Total Development:</strong> Capital and development expenditure</li>
+                    <li><strong>Total Budget:</strong> Overall budget combining recurrent and development</li>
+                </ul>
+                
+                <p><strong>Currency:</strong> UGX Billions</p>
+                <p><strong>Total Strategic Plan Budget:</strong> UGX 9,543.05 Billion over 5 years</p>
+                
+                <h3>Budget Breakdown by Fiscal Year:</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>FY2025/26 (Approved)</th>
+                            <th>FY2026/27</th>
+                            <th>FY2027/28</th>
+                            <th>FY2028/29</th>
+                            <th>FY2029/30</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Wage</strong></td>
+                            <td>182.73</td>
+                            <td>193.66</td>
+                            <td>212.20</td>
+                            <td>213.58</td>
+                            <td>223.78</td>
+                            <td><strong>1,025.94</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Non-Wage Recurrent</strong></td>
+                            <td>149.14</td>
+                            <td>166.17</td>
+                            <td>195.41</td>
+                            <td>198.80</td>
+                            <td>204.83</td>
+                            <td><strong>914.35</strong></td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td><strong>Total Recurrent</strong></td>
+                            <td>331.87</td>
+                            <td>359.82</td>
+                            <td>407.61</td>
+                            <td>412.38</td>
+                            <td>428.61</td>
+                            <td><strong>1,940.29</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Development</strong></td>
+                            <td>1,257.80</td>
+                            <td>1,475.38</td>
+                            <td>1,493.13</td>
+                            <td>1,511.06</td>
+                            <td>1,865.39</td>
+                            <td><strong>7,602.76</strong></td>
+                        </tr>
+                        <tr class="table-success">
+                            <td><strong>Total Budget</strong></td>
+                            <td>1,589.67</td>
+                            <td>1,835.20</td>
+                            <td>1,900.74</td>
+                            <td>1,923.44</td>
+                            <td>2,294.00</td>
+                            <td><strong>9,543.05</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            ]]></field>
+            <field name="sequence">10</field>
+            <field name="active" eval="True"/>
+            <field name="status">approved</field>
+            <field name="start_date">2025-07-01</field>
+            <field name="end_date">2030-06-30</field>
+            
+            <!-- FY2025/26 (Approved) Budget Data -->
+            <field name="wage_fy2025_26">182.73</field>
+            <field name="non_wage_recurrent_fy2025_26">149.14</field>
+            <field name="total_development_fy2025_26">1257.80</field>
+            
+            <!-- FY2026/27 Budget Data -->
+            <field name="wage_fy2026_27">193.66</field>
+            <field name="non_wage_recurrent_fy2026_27">166.17</field>
+            <field name="total_development_fy2026_27">1475.38</field>
+            
+            <!-- FY2027/28 Budget Data -->
+            <field name="wage_fy2027_28">212.20</field>
+            <field name="non_wage_recurrent_fy2027_28">195.41</field>
+            <field name="total_development_fy2027_28">1493.13</field>
+            
+            <!-- FY2028/29 Budget Data -->
+            <field name="wage_fy2028_29">213.58</field>
+            <field name="non_wage_recurrent_fy2028_29">198.80</field>
+            <field name="total_development_fy2028_29">1511.06</field>
+            
+            <!-- FY2029/30 Budget Data -->
+            <field name="wage_fy2029_30">223.78</field>
+            <field name="non_wage_recurrent_fy2029_30">204.83</field>
+            <field name="total_development_fy2029_30">1865.39</field>
+        </record>
+        
+    </data>
+</odoo>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Division Performance Graph Views -->
+        
+        <!-- Performance Score by Division -->
+        <record id="view_division_programme_rel_graph_performance" model="ir.ui.view">
+            <field name="name">division.programme.rel.graph.performance</field>
+            <field name="model">division.programme.rel</field>
+            <field name="arch" type="xml">
+                <graph string="Division Performance Scores" type="bar">
+                    <field name="division_id" type="row"/>
+                    <field name="performance_score" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        
+        <!-- Programme Implementation Status -->
+        <record id="view_division_programme_rel_graph_status" model="ir.ui.view">
+            <field name="name">division.programme.rel.graph.status</field>
+            <field name="model">division.programme.rel</field>
+            <field name="arch" type="xml">
+                <graph string="Implementation Status Distribution" type="pie">
+                    <field name="implementation_status" type="row"/>
+                    <field name="id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        
+        <!-- Budget Utilization by Division -->
+        <record id="view_division_programme_rel_graph_budget" model="ir.ui.view">
+            <field name="name">division.programme.rel.graph.budget</field>
+            <field name="model">division.programme.rel</field>
+            <field name="arch" type="xml">
+                <graph string="Budget Utilization by Division" type="bar">
+                    <field name="division_id" type="row"/>
+                    <field name="budget_utilization" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        
+        <!-- Beneficiary Achievement by Programme -->
+        <record id="view_division_programme_rel_graph_beneficiaries" model="ir.ui.view">
+            <field name="name">division.programme.rel.graph.beneficiaries</field>
+            <field name="model">division.programme.rel</field>
+            <field name="arch" type="xml">
+                <graph string="Beneficiary Achievement by Programme" type="bar">
+                    <field name="programme_id" type="row"/>
+                    <field name="beneficiary_achievement" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        
+        <!-- Division Performance Pivot View -->
+        <record id="view_division_programme_rel_pivot" model="ir.ui.view">
+            <field name="name">division.programme.rel.pivot</field>
+            <field name="model">division.programme.rel</field>
+            <field name="arch" type="xml">
+                <pivot string="Division Performance Analysis">
+                    <field name="division_id" type="row"/>
+                    <field name="programme_id" type="col"/>
+                    <field name="performance_score" type="measure"/>
+                    <field name="completion_percentage" type="measure"/>
+                    <field name="budget_utilization" type="measure"/>
+                    <field name="beneficiary_achievement" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        
+        <!-- Division Performance Dashboard Kanban -->
+        <record id="view_division_performance_dashboard" model="ir.ui.view">
+            <field name="name">division.performance.dashboard</field>
+            <field name="model">division.programme.rel</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard" default_group_by="division_id">
+                    <field name="division_id"/>
+                    <field name="programme_id"/>
+                    <field name="performance_score"/>
+                    <field name="completion_percentage"/>
+                    <field name="budget_utilization"/>
+                    <field name="beneficiary_achievement"/>
+                    <field name="implementation_status"/>
+                    <field name="priority_level"/>
+                    <field name="is_on_track"/>
+                    <field name="requires_attention"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_content">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <strong><field name="programme_name"/></strong>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <span t-attf-class="badge #{record.performance_score.raw_value >= 80 ? 'badge-success' : 
+                                                                       record.performance_score.raw_value >= 50 ? 'badge-warning' : 'badge-danger'}">
+                                                <field name="performance_score" widget="percentage"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar" role="progressbar" 
+                                                     t-attf-style="width: #{record.completion_percentage.raw_value}%"
+                                                     t-attf-class="#{record.completion_percentage.raw_value >= 80 ? 'bg-success' : 
+                                                                     record.completion_percentage.raw_value >= 50 ? 'bg-warning' : 'bg-danger'}">
+                                                </div>
+                                            </div>
+                                            <small class="text-muted">
+                                                <field name="completion_percentage" widget="percentage"/> Complete
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-4 text-center">
+                                            <div class="o_kanban_primary_bottom">
+                                                <small class="text-muted">Budget</small><br/>
+                                                <strong><field name="budget_utilization" widget="percentage"/></strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <div class="o_kanban_primary_bottom">
+                                                <small class="text-muted">Beneficiaries</small><br/>
+                                                <strong><field name="beneficiary_achievement" widget="percentage"/></strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <div class="o_kanban_primary_bottom">
+                                                <small class="text-muted">Status</small><br/>
+                                                <span t-attf-class="badge badge-pill #{record.implementation_status.raw_value == 'completed' ? 'badge-success' : 
+                                                                                       record.implementation_status.raw_value == 'implementing' ? 'badge-primary' : 
+                                                                                       record.implementation_status.raw_value == 'suspended' ? 'badge-danger' : 'badge-secondary'}">
+                                                    <field name="implementation_status"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2" t-if="record.requires_attention.raw_value or record.is_on_track.raw_value">
+                                        <div class="col-12 text-center">
+                                            <span t-if="record.is_on_track.raw_value" class="badge badge-success">
+                                                ✅ On Track
+                                            </span>
+                                            <span t-if="record.requires_attention.raw_value" class="badge badge-warning">
+                                                ⚠️ Needs Attention
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Actions for Division Performance -->
+        
+        <!-- Main Division Performance Action -->
+        <record id="action_division_programme_performance" model="ir.actions.act_window">
+            <field name="name">Division Programme Performance</field>
+            <field name="res_model">division.programme.rel</field>
+            <field name="view_mode">kanban,list,form,graph,pivot</field>
+            <field name="search_view_id" ref="view_division_programme_rel_search"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_division': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Track Division Programme Performance
+                </p>
+                <p>
+                    Monitor how each KCCA division is performing across all programmes 
+                    with comprehensive metrics including performance scores, budget utilization, 
+                    and beneficiary achievement.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Division Performance Dashboard Action -->
+        <record id="action_division_performance_dashboard" model="ir.actions.act_window">
+            <field name="name">Division Performance Dashboard</field>
+            <field name="res_model">division.programme.rel</field>
+            <field name="view_mode">kanban,graph,pivot</field>
+            <field name="view_id" ref="view_division_performance_dashboard"/>
+            <field name="search_view_id" ref="view_division_programme_rel_search"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_group_by_division': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Division Performance Overview
+                </p>
+                <p>
+                    Get a comprehensive overview of how all KCCA divisions are performing 
+                    across their assigned programmes with visual analytics and key metrics.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Performance Analytics Action -->
+        <record id="action_division_performance_analytics" model="ir.actions.act_window">
+            <field name="name">Division Performance Analytics</field>
+            <field name="res_model">division.programme.rel</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_division_programme_rel_graph_performance')}),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_division_programme_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_division_programme_rel_list')})]"/>
+            <field name="context">{
+                'search_default_active': 1,
+                'search_default_high_performance': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Advanced Performance Analytics
+                </p>
+                <p>
+                    Analyze division performance with advanced charts, pivot tables, 
+                    and comparative analytics across programmes and divisions.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Budget Performance Action -->
+        <record id="action_division_budget_performance" model="ir.actions.act_window">
+            <field name="name">Division Budget Performance</field>
+            <field name="res_model">division.programme.rel</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_division_programme_rel_graph_budget')}),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_division_programme_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_division_programme_rel_list')})]"/>
+            <field name="context">{
+                'search_default_active': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Budget Utilization Analysis
+                </p>
+                <p>
+                    Track and analyze budget utilization across divisions and programmes 
+                    to ensure efficient resource allocation and spending.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Beneficiary Impact Action -->
+        <record id="action_division_beneficiary_impact" model="ir.actions.act_window">
+            <field name="name">Division Beneficiary Impact</field>
+            <field name="res_model">division.programme.rel</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_division_programme_rel_graph_beneficiaries')}),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_division_programme_rel_pivot')}),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_division_programme_rel_list')})]"/>
+            <field name="context">{
+                'search_default_active': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Beneficiary Impact Analysis
+                </p>
+                <p>
+                    Analyze the impact of programmes on beneficiaries across divisions 
+                    to measure effectiveness and reach of KCCA services.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

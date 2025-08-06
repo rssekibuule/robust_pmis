@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="strategic_objective_infrastructure_development" model="strategic.objective">
+            <field name="name">Infrastructure Development</field>
+            <field name="description">Develop and maintain city infrastructure including roads, transport, drainage, and smart city systems.</field>
+            <field name="sequence">99</field>
+            <field name="strategic_goal_id" ref="strategic_goal_kcca_main"/>
+        </record>
+    </data>
+</odoo>
