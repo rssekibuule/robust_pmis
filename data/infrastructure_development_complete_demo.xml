@@ -9,7 +9,7 @@
         <!-- First, ensure we have the strategic objective -->
 
         <!-- KRA 1: Transport Infrastructure Development -->
-        <record id="kra_transport_infrastructure_complete" model="key.result.area">
+        <record id="kra_transport_infrastructure_new" model="key.result.area">
             <field name="name">Transport Infrastructure Development</field>
             <field name="description">Develop and maintain efficient transport infrastructure including roads, bridges, and public transit systems</field>
             <field name="sequence">10</field>
