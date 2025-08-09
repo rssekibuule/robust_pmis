@@ -1,0 +1,837 @@
+/* KCCA Executive Performance Dashboard - Full Screen Layout */
+.o_fullscreen_dashboard {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 1000 !important;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    overflow: hidden !important;
+}
+
+/* Override Odoo's default constraints for full screen */
+.o_action_manager .o_action,
+.o_content,
+.o_form_view,
+.o_form_view .o_form_sheet_bg,
+.o_web_client .o_action_manager,
+.o_web_client .o_main_content {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Dashboard Container - Full Screen */
+.dashboard-container {
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Header Styles */
+.dashboard-header {
+    flex-shrink: 0 !important;
+    background: rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    color: white !important;
+    padding: 15px 25px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid rgba(255,255,255,0.2) !important;
+    z-index: 10 !important;
+}
+
+/* Main Grid Layout */
+.dashboard-container > div:last-child {
+    flex: 1 !important;
+    padding: 20px !important;
+    display: grid !important;
+    grid-template-columns: 2fr 3fr 2fr !important;
+    grid-template-rows: auto auto auto !important;
+    gap: 20px !important;
+    height: calc(100vh - 100px) !important;
+    overflow: auto !important;
+}
+
+/* Metric Cards */
+.metric-card {
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    transform: translateZ(0) !important;
+    will-change: transform !important;
+    border-radius: 15px !important;
+    padding: 25px !important;
+    text-align: center !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.metric-card:hover {
+    transform: translateY(-8px) scale(1.05) translateZ(0) !important;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25) !important;
+}
+
+.metric-card:active {
+    transform: translateY(-4px) scale(1.02) translateZ(0) !important;
+    transition-duration: 0.1s !important;
+}
+
+/* Chart Containers */
+.dashboard-container canvas {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+/* Left Column Styles */
+.dashboard-container > div:last-child > div:first-child {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+}
+
+/* Center Column Styles */
+.dashboard-container > div:last-child > div:nth-child(2) {
+    grid-column: 2 !important;
+    grid-row: 1 / span 3 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+}
+
+.dashboard-container > div:last-child > div:nth-child(2) > div:first-child {
+    flex: 2 !important;
+    background: white !important;
+    border-radius: 15px !important;
+    padding: 25px !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.dashboard-container > div:last-child > div:nth-child(2) > div:nth-child(2) {
+    flex: 1 !important;
+    background: white !important;
+    border-radius: 15px !important;
+    padding: 25px !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Right Column Styles */
+.dashboard-container > div:last-child > div:nth-child(3) {
+    grid-column: 3 !important;
+    grid-row: 1 / span 3 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+}
+
+/* Chart Container Positioning */
+.dashboard-container > div:last-child canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .dashboard-container > div:last-child {
+        grid-template-columns: 1fr 2fr 1fr !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .dashboard-container > div:last-child {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto auto auto auto !important;
+        gap: 15px !important;
+        overflow-y: auto !important;
+    }
+    
+    .dashboard-container > div:last-child > div:first-child,
+    .dashboard-container > div:last-child > div:nth-child(2),
+    .dashboard-container > div:last-child > div:nth-child(3) {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+    
+    .metric-card {
+        padding: 20px !important;
+        min-height: 120px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 10px 15px !important;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 1.4em !important;
+    }
+    
+    .dashboard-header p {
+        font-size: 0.8em !important;
+    }
+    
+    .dashboard-container > div:last-child {
+        padding: 15px !important;
+        gap: 10px !important;
+    }
+    
+    .metric-card {
+        padding: 15px !important;
+        min-height: 100px !important;
+    }
+}
+
+/* Remove default Odoo form styling */
+.o_form_view .o_form_sheet {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* Ensure full viewport coverage */
+html, body {
+    overflow: hidden !important;
+}
+
+/* Performance optimizations */
+* {
+    box-sizing: border-box !important;
+}
+
+.metric-card,
+.dashboard-container > div {
+    contain: layout style !important;
+    transform-style: flat !important;
+}
+
+/* Button Styles */
+button {
+    background: rgba(255,255,255,0.2) !important;
+    color: white !important;
+    border: none !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.9em !important;
+}
+
+button:hover {
+    background: rgba(255,255,255,0.3) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Chart hover effects */
+.dashboard-container > div:last-child > div:nth-child(2) > div:hover,
+.dashboard-container > div:last-child > div:nth-child(3) > div:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15) !important;
+}
+
+/* Smooth scrolling for overflow areas */
+.dashboard-container > div:last-child {
+    scroll-behavior: smooth !important;
+}
+
+/* Focus states for accessibility */
+.metric-card:focus {
+    outline: 3px solid rgba(255,255,255,0.5) !important;
+    outline-offset: 2px !important;
+}
+
+/* Simplified Hover Effects for Better Performance */
+.metric-card {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: translateZ(0); /* Force hardware acceleration */
+    will-change: transform;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px) translateZ(0);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.2) !important;
+}
+
+.metric-card:active {
+    transform: translateY(-2px) translateZ(0);
+    transition-duration: 0.1s;
+}
+
+/* Chart Container Optimized Hover */
+.dashboard-content > div > div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12) !important;
+}
+
+/* Responsive Grid System - Better Alignment */
+@media (min-width: 1200px) {
+    .metrics-grid {
+        grid-template-columns: repeat(6, 1fr) !important;
+        max-width: 1200px;
+        margin: 0 auto 30px auto;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .metrics-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        max-width: 960px;
+        margin: 0 auto 30px auto;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        max-width: 720px;
+        margin: 0 auto 30px auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+        max-width: 100%;
+        margin: 0 auto 25px auto;
+    }
+    
+    .metric-card {
+        min-height: 120px !important;
+        padding: 15px !important;
+        font-size: 0.9em;
+    }
+    
+    .metric-card div:nth-child(2) {
+        font-size: 2em !important;
+    }
+    
+    .metric-card div:nth-child(3) {
+        font-size: 2.2em !important;
+    }
+}
+
+/* Chart Grid Optimized */
+@media (min-width: 768px) {
+    .dashboard-content > div:last-child {
+        grid-template-columns: repeat(2, 1fr) !important;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .dashboard-content > div:last-child {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    .dashboard-content > div:last-child > div {
+        min-height: 250px !important;
+        padding: 20px !important;
+    }
+}
+
+/* Performance Optimizations */
+* {
+    transition-property: transform, box-shadow, opacity;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
+
+.metric-card,
+.dashboard-content > div > div {
+    contain: layout style;
+    transform-style: flat;
+}
+
+/* Remove expensive effects for better performance */
+.metric-card::before,
+.dashboard-content > div > div::before {
+    display: none;
+}
+
+/* Simplified animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.metric-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Focus states for accessibility */
+.metric-card:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .metric-card,
+    .dashboard-content > div > div,
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Container alignment fixes */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.metrics-grid,
+.dashboard-content > div:last-child {
+    width: 100%;
+    justify-items: center;
+}
+
+/* Ensure proper spacing */
+.dashboard-header {
+    text-align: center;
+    width: 100%;
+}
+
+/* Mobile-first approach for better performance */
+.dashboard-container {
+    width: 100%;
+    padding: 0 15px;
+}
+
+@media (min-width: 576px) {
+    .dashboard-container {
+        padding: 0 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    .dashboard-container {
+        padding: 0 30px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .dashboard-container {
+        padding: 0;
+    }
+}
+
+/* Header Styles */
+.o_dashboard_header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.o_dashboard_header h1 {
+    font-size: 3em;
+    margin: 0;
+    font-weight: 300;
+}
+
+.o_dashboard_header p {
+    font-size: 1.3em;
+    margin: 15px 0 0 0;
+    opacity: 0.9;
+}
+
+/* Card Styles with Hover Effects */
+.dashboard-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid;
+    margin-bottom: 20px;
+    height: 100%;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* Performance Cards */
+.performance-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.performance-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Chart Container Styles */
+.chart-container {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+    height: 100%;
+}
+
+/* Chart Canvas Specific Styles */
+canvas {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    box-sizing: border-box;
+}
+
+/* Chart Container Grid Fix - 2x2 Layout */
+.dashboard-content > div:last-child {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: 1fr 1fr !important;
+    gap: 20px !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto 30px auto !important;
+    height: 600px !important;
+}
+
+.dashboard-content > div:last-child > div {
+    background: white !important;
+    border-radius: 15px !important;
+    padding: 20px !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.dashboard-content > div:last-child > div > h3 {
+    margin: 0 0 15px 0 !important;
+    flex-shrink: 0 !important;
+}
+
+.dashboard-content > div:last-child > div > div:last-child {
+    flex: 1 !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 200px !important;
+    max-height: 100% !important;
+}
+
+.dashboard-content > div:last-child > div canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+}
+
+/* Responsive Chart Adjustments */
+@media (max-width: 991px) {
+    .dashboard-content > div:last-child {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: repeat(4, 300px) !important;
+        gap: 15px !important;
+        height: auto !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .dashboard-content > div:last-child {
+        grid-template-rows: repeat(4, 250px) !important;
+        padding: 0 10px !important;
+    }
+    
+    .dashboard-content > div:last-child > div {
+        padding: 15px !important;
+    }
+    
+    .dashboard-content > div:last-child > div > div:last-child {
+        min-height: 180px !important;
+    }
+}
+
+.chart-container h4, .chart-container h5 {
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    font-weight: 500;
+}
+
+.chart-container h4 i, .chart-container h5 i {
+    margin-right: 10px;
+}
+
+/* Performance Meter */
+.performance-meter {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.performance-bar {
+    background: #e9ecef;
+    height: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.performance-fill {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.8s ease;
+    position: relative;
+}
+
+.performance-fill.excellent {
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+}
+
+.performance-fill.good {
+    background: linear-gradient(90deg, #2196f3, #03a9f4);
+}
+
+.performance-fill.fair {
+    background: linear-gradient(90deg, #ff9800, #ffc107);
+}
+
+.performance-fill.poor {
+    background: linear-gradient(90deg, #f44336, #e91e63);
+}
+
+.performance-text {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* Quick Stats */
+.quick-stats {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+/* Action Buttons */
+.action-buttons {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.action-buttons h5 {
+    color: #333;
+    margin-bottom: 25px;
+    font-weight: 500;
+    font-size: 1.3em;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 15px 10px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.action-btn i {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.3em;
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+}
+
+.action-btn.success {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+}
+
+.action-btn.warning {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.action-btn.purple {
+    background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+}
+
+/* Chart Placeholder */
+.chart-placeholder {
+    text-align: center;
+    padding: 60px 40px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #ddd;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.chart-placeholder i {
+    font-size: 4em;
+    color: #ddd;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.chart-placeholder p {
+    color: #666;
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.chart-placeholder small {
+    color: #999;
+    font-size: 0.9em;
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 1200px) {
+    .col-md-2 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .o_dashboard_header h1 {
+        font-size: 2em;
+    }
+    
+    .o_dashboard_header p {
+        font-size: 1em;
+    }
+    
+    .col-md-2, .col-md-4, .col-md-6, .col-md-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .chart-container {
+        padding: 15px;
+        height: auto;
+    }
+    
+    .performance-card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Ensure proper centering */
+.o_web_client .o_action_manager .o_action {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+}
+
+.o_form_view .o_form_sheet_bg {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+}
+
+/* Loading animation */
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

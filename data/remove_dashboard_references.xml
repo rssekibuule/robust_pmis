@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="0">
-        <!-- Remove any remaining dashboard action references -->
-        <delete model="ir.actions.act_window" search="[('name', 'ilike', 'dashboard')]"/>
-        <delete model="ir.actions.client" search="[('tag', '=', 'kcca_dashboard')]"/>
-        <delete model="ir.actions.client" search="[('tag', '=', 'kcca_pmis_dashboard')]"/>
+        <!-- Remove legacy client dashboard actions ONLY (keep window actions) -->
+        <delete model="ir.actions.client" search="[('tag', 'in', ['kcca_dashboard','kcca_pmis_dashboard','strategic_programme_dashboard'])]"/>
         <delete model="ir.actions.client" search="[('name', 'ilike', 'kcca dashboard')]"/>
         <delete model="ir.actions.client" search="[('name', 'ilike', 'strategic performance dashboard')]"/>
         <delete model="ir.actions.client" search="[('name', 'ilike', 'performance dashboard')]"/>
@@ -20,12 +18,12 @@
 
         <!-- Removed invalid clear_caches function calls causing errors -->
 
-        <!-- Remove specific problematic actions -->
+        <!-- Remove specific problematic client actions -->
         <delete model="ir.actions.client" search="[('tag', '=', 'strategic_programme_dashboard')]"/>
         <delete model="ir.ui.menu" search="[('name', '=', 'Strategic-Programme Dashboard')]"/>
 
-        <!-- Clear template cache -->
-        <delete model="ir.ui.view" search="[('name', 'ilike', 'dashboard'), ('type', '=', 'qweb')]"/>
+        <!-- Clear legacy QWeb dashboards (keep backend form/kanban views) -->
+        <delete model="ir.ui.view" search="[('type', '=', 'qweb'), ('name', 'ilike', 'kcca%dashboard%')]"/>
 
         <!-- Clean up user action references -->
         <record id="base.user_admin" model="res.users">

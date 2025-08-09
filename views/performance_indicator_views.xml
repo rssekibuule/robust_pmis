@@ -146,6 +146,12 @@
                     <filter string="My Indicators" name="my_indicators"
                             domain="[('responsible_user_id', '=', uid)]"/>
 
+
+                        <!-- Context-aware Directorate Filter (from Dashboard) -->
+                        <separator/>
+                        <filter string="Directorate (Dashboard)" name="by_directorate"
+                                domain="[('parent_programme_id.implementing_directorate_ids', 'in', context.get('directorate_id'))]"/>
+
                     <!-- Group By Options -->
                     <group expand="0" string="Group By">
                         <filter string="Programme" name="group_by_programme" context="{'group_by': 'parent_programme_id'}"/>

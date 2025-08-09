@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Remove the special 'Territorial Divisions' directorate and decouple divisions -->
+        <delete id="directorate_territorial_divisions" model="kcca.directorate"/>
+
+        <!-- Ensure existing divisions no longer point to the removed directorate -->
+        <record id="division_central" model="kcca.division">
+            <field name="directorate_id" eval="False"/>
+        </record>
+        <record id="division_kawempe" model="kcca.division">
+            <field name="directorate_id" eval="False"/>
+        </record>
+        <record id="division_lubaga" model="kcca.division">
+            <field name="directorate_id" eval="False"/>
+        </record>
+        <record id="division_makindye" model="kcca.division">
+            <field name="directorate_id" eval="False"/>
+        </record>
+        <record id="division_nakawa" model="kcca.division">
+            <field name="directorate_id" eval="False"/>
+        </record>
+    </data>
+</odoo>
+

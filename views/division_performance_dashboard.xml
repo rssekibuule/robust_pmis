@@ -86,7 +86,7 @@
                     <field name="requires_attention"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_record">
                                 <div class="o_kanban_content">
                                     <div class="row">
                                         <div class="col-6">
@@ -183,8 +183,12 @@
         <record id="action_division_performance_dashboard" model="ir.actions.act_window">
             <field name="name">Division Performance Dashboard</field>
             <field name="res_model">division.programme.rel</field>
-            <field name="view_mode">kanban,graph,pivot</field>
-            <field name="view_id" ref="view_division_performance_dashboard"/>
+            <field name="view_mode">kanban,form,graph,pivot</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_division_performance_dashboard')}),
+                                          (0, 0, {'view_mode': 'form', 'view_id': ref('view_division_programme_rel_form')}),
+                                          (0, 0, {'view_mode': 'graph', 'view_id': ref('view_division_programme_rel_graph_performance')}),
+                                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_division_programme_rel_pivot')})]"/>
             <field name="search_view_id" ref="view_division_programme_rel_search"/>
             <field name="context">{
                 'search_default_active': 1,

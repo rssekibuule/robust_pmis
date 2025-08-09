@@ -18,59 +18,57 @@ with odoo.registry('robust_pmis').cursor() as cr:
     
     print("Populating KCCA Performance Management System with demo data...")
     
-    # 1. Create Strategic Goals
-    goal_data = [
-        {
-            'name': 'Improve Urban Infrastructure',
-            'description': 'Enhance road networks, drainage systems, and public facilities',
-            'active': True
-        },
-        {
-            'name': 'Enhance Service Delivery',
-            'description': 'Improve efficiency and quality of public services',
-            'active': True
-        },
-        {
-            'name': 'Strengthen Revenue Collection',
-            'description': 'Optimize tax collection and revenue generation',
-            'active': True
-        }
-    ]
-    
+    # 1. Create/Fetch Strategic Goals (idempotent)
     Strategic = env['strategic.goal']
     created_goals = []
-    for data in goal_data:
-        goal = Strategic.create(data)
+
+    # Prefer the XML-defined Infrastructure goal if present
+    infra_goal = False
+    try:
+        infra_goal = env.ref('robust_pmis.strategic_goal_improve_urban_infrastructure')
+    except Exception:
+        infra_goal = Strategic.search([('name', '=', 'Improve Urban Infrastructure')], limit=1)
+        if not infra_goal:
+            infra_goal = Strategic.create({
+                'name': 'Improve Urban Infrastructure',
+                'description': 'Enhance road networks, drainage systems, and public facilities',
+                'active': True,
+            })
+    created_goals.append(infra_goal)
+    print(f"Using Strategic Goal: {infra_goal.name} (ID: {infra_goal.id})")
+
+    # Ensure the other demo goals exist only once
+    for name, desc in [
+        ('Enhance Service Delivery', 'Improve efficiency and quality of public services'),
+        ('Strengthen Revenue Collection', 'Optimize tax collection and revenue generation'),
+    ]:
+        goal = Strategic.search([('name', '=', name)], limit=1)
+        if not goal:
+            goal = Strategic.create({'name': name, 'description': desc, 'active': True})
+            print(f"Created Strategic Goal: {goal.name}")
+        else:
+            print(f"Re-using Strategic Goal: {goal.name} (ID: {goal.id})")
         created_goals.append(goal)
-        print(f"Created Strategic Goal: {goal.name}")
-    
-    # Create KRAs (Key Result Areas) for each strategic goal
+
+    # Create/Fetch KRAs (Key Result Areas) idempotently
     KRA = env['key.result.area']
     created_kras = []
-    
-    kra_data = [
-        {
-            'name': 'Infrastructure Quality Management',
-            'description': 'Maintain and improve urban infrastructure standards',
-            'strategic_goal_id': created_goals[0].id,  # Improve Urban Infrastructure
-        },
-        {
-            'name': 'Service Excellence',
-            'description': 'Enhance quality and efficiency of public services',
-            'strategic_goal_id': created_goals[1].id,  # Enhance Service Delivery
-        },
-        {
-            'name': 'Revenue Optimization',
-            'description': 'Maximize revenue collection and financial efficiency',
-            'strategic_goal_id': created_goals[2].id,  # Strengthen Revenue Collection
-        }
+
+    kra_specs = [
+        ('Infrastructure Quality Management', 'Maintain and improve urban infrastructure standards', created_goals[0].id),
+        ('Service Excellence', 'Enhance quality and efficiency of public services', created_goals[1].id),
+        ('Revenue Optimization', 'Maximize revenue collection and financial efficiency', created_goals[2].id),
     ]
-    
-    for data in kra_data:
-        kra = KRA.create(data)
+
+    for name, desc, goal_id in kra_specs:
+        kra = KRA.search([('name', '=', name), ('strategic_goal_id', '=', goal_id)], limit=1)
+        if not kra:
+            kra = KRA.create({'name': name, 'description': desc, 'strategic_goal_id': goal_id})
+            print(f"Created KRA: {kra.name}")
+        else:
+            print(f"Re-using KRA: {kra.name} (ID: {kra.id})")
         created_kras.append(kra)
-        print(f"Created KRA: {kra.name}")
-    
+
     # 2. Create Directorates
     directorate_data = [
         {
@@ -254,9 +252,13 @@ with odoo.registry('robust_pmis').cursor() as cr:
     
     KPI = env['key.performance.indicator']
     for data in kpi_data:
-        kpi = KPI.create(data)
-        print(f"Created KPI: {kpi.name}")
-    
+        existing = KPI.search([('name', '=', data['name']), ('kra_id', '=', data['kra_id'])], limit=1)
+        if not existing:
+            kpi = KPI.create(data)
+            print(f"Created KPI: {kpi.name}")
+        else:
+            print(f"Re-using KPI: {existing.name} (ID: {existing.id})")
+
     # Commit the transaction
     cr.commit()
     

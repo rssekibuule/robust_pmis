@@ -2,3 +2,4 @@
 
 
 from . import portal_controller
+from . import dashboard_controller

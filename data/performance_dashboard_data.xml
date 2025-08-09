@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <data noupdate="1">
+  <data noupdate="0">
     <!-- Singleton dashboard record -->
     <record id="performance_dashboard_record" model="performance.dashboard">
-      <field name="name">Organization Performance</field>
+      <field name="name">KCCA Executive Performance Dashboard</field>
     </record>
+    
+    <!-- Force refresh of metrics -->
+    <function model="performance.dashboard" name="refresh_metrics">
+      <value eval="[ref('performance_dashboard_record')]"/>
+    </function>
   </data>
 </odoo>

@@ -122,24 +122,30 @@
                     <filter string="Completed" name="completed" domain="[('status', '=', 'completed')]"/>
                     <filter string="On Hold" name="on_hold" domain="[('status', '=', 'on_hold')]"/>
                     <separator/>
-                    <filter string="My PIAP Actions" name="my_actions" 
+                    <filter string="My PIAP Actions" name="my_actions"
                             domain="[('responsible_user_id', '=', uid)]"/>
                     <separator/>
-                    <filter string="Due This Month" name="due_this_month" 
+                    <filter string="Due This Month" name="due_this_month"
                             domain="[('end_date', '&lt;=', (context_today() + relativedelta(months=1)).strftime('%Y-%m-%d')), ('end_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
-                    <filter string="Overdue" name="overdue" 
+                    <filter string="Overdue" name="overdue"
                             domain="[('end_date', '&lt;', context_today().strftime('%Y-%m-%d')), ('status', '!=', 'completed')]"/>
                     <separator/>
+
+                        <!-- Context-aware Directorate Filter (from Dashboard) -->
+                        <separator/>
+                        <filter string="Directorate (Dashboard)" name="by_directorate"
+                                domain="[('programme_id.implementing_directorate_ids', 'in', context.get('directorate_id'))]"/>
+
                     <group expand="0" string="Group By">
-                        <filter string="Status" name="group_status" 
+                        <filter string="Status" name="group_status"
                                 context="{'group_by': 'status'}"/>
-                        <filter string="Output" name="group_output" 
+                        <filter string="Output" name="group_output"
                                 context="{'group_by': 'output_id'}"/>
-                        <filter string="Intervention" name="group_intervention" 
+                        <filter string="Intervention" name="group_intervention"
                                 context="{'group_by': 'intervention_id'}"/>
-                        <filter string="Programme" name="group_programme" 
+                        <filter string="Programme" name="group_programme"
                                 context="{'group_by': 'programme_id'}"/>
-                        <filter string="Responsible Person" name="group_responsible" 
+                        <filter string="Responsible Person" name="group_responsible"
                                 context="{'group_by': 'responsible_user_id'}"/>
                     </group>
                 </search>

@@ -141,6 +141,40 @@ class KeyPerformanceIndicator(models.Model):
         ('citizen', 'Citizen Satisfaction'),
         ('organizational', 'Organizational Performance')
     ], string='Thematic Area', help="Thematic area this KPI belongs to", default='organizational')
+    
+    # Hierarchical Classification Fields
+    classification_level = fields.Selection([
+        ('strategic', 'Strategic Level'),
+        ('operational', 'Operational Level'),
+        ('tactical', 'Tactical Level'),
+        ('programme', 'Programme Level'),
+        ('division', 'Division Level'),
+        ('directorate', 'Directorate Level')
+    ], string='Classification Level', default='strategic', 
+       help="The hierarchical level this KPI belongs to in the organization structure")
+    
+    parent_type = fields.Selection([
+        ('strategic_goal', 'Strategic Goal'),
+        ('strategic_objective', 'Strategic Objective'),
+        ('kra', 'Key Result Area'),
+        ('programme', 'Programme'),
+        ('division', 'Division'),
+        ('directorate', 'Directorate')
+    ], string='Parent Type', default='kra',
+       help="The type of entity this KPI directly relates to")
+       
+    # Programme structure linkage
+    programme_id = fields.Many2one(
+        'kcca.programme',
+        string='Related Programme',
+        help="Programme this KPI is directly related to"
+    )
+    
+    division_id = fields.Many2one(
+        'kcca.division',
+        string='Related Division',
+        help="Division this KPI is directly related to"
+    )
 
     # Direct Contribution Mapping
     contributing_programme_indicators = fields.Many2many(
@@ -258,6 +292,80 @@ class KeyPerformanceIndicator(models.Model):
                     )
 
         return result
+        
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Batch-aware create to set classification fields based on relationships"""
+        records = super(KeyPerformanceIndicator, self).create(vals_list)
+        # Compute classification fields for all created records in batch
+        for rec in records:
+            rec._compute_classification_fields()
+        return records
+
+    @api.depends('kra_id', 'programme_id', 'division_id', 'directorate_id')
+    def _compute_classification_fields(self):
+        """Compute classification level and parent type based on relationships"""
+        for record in self:
+            # Determine classification level and parent type
+            if record.kra_id:
+                # Check if KRA is linked to objective or directly to goal
+                if record.kra_id.strategic_objective_id:
+                    record.classification_level = 'strategic'
+                    record.parent_type = 'strategic_objective'
+                elif record.kra_id.strategic_goal_id:
+                    record.classification_level = 'strategic'
+                    record.parent_type = 'strategic_goal'
+                else:
+                    record.classification_level = 'strategic'
+                    record.parent_type = 'kra'
+            elif record.programme_id:
+                record.classification_level = 'programme'
+                record.parent_type = 'programme'
+            elif record.division_id:
+                record.classification_level = 'division'
+                record.parent_type = 'division'
+            elif record.directorate_id:
+                record.classification_level = 'directorate'
+                record.parent_type = 'directorate'
+            else:
+                record.classification_level = 'strategic'
+                record.parent_type = 'kra'
+    
+    # Strategic-Operational-Tactical Helper Methods
+    def get_hierarchy_path(self):
+        """Return the full hierarchical path of this KPI"""
+        path = []
+        
+        if self.parent_type == 'strategic_goal' and self.kra_id and self.kra_id.strategic_goal_id:
+            path.append(('Strategic Goal', self.kra_id.strategic_goal_id.name))
+            path.append(('KRA', self.kra_id.name))
+            
+        elif self.parent_type == 'strategic_objective' and self.kra_id and self.kra_id.strategic_objective_id:
+            path.append(('Strategic Goal', self.kra_id.strategic_objective_id.strategic_goal_id.name))
+            path.append(('Strategic Objective', self.kra_id.strategic_objective_id.name))
+            path.append(('KRA', self.kra_id.name))
+            
+        elif self.parent_type == 'kra' and self.kra_id:
+            # For KRAs not linked to objectives or goals directly
+            path.append(('KRA', self.kra_id.name))
+            
+        elif self.parent_type == 'programme' and self.programme_id:
+            # For programme-level KPIs
+            if self.programme_id.division_id:
+                path.append(('Directorate', self.programme_id.division_id.directorate_id.name))
+                path.append(('Division', self.programme_id.division_id.name))
+            elif self.programme_id.directorate_id:
+                path.append(('Directorate', self.programme_id.directorate_id.name))
+            path.append(('Programme', self.programme_id.name))
+            
+        elif self.parent_type == 'division' and self.division_id:
+            path.append(('Directorate', self.division_id.directorate_id.name))
+            path.append(('Division', self.division_id.name))
+            
+        elif self.parent_type == 'directorate' and self.directorate_id:
+            path.append(('Directorate', self.directorate_id.name))
+            
+        return path
     
     def update_current_value(self, new_value):
         """Method to update current value and trigger recalculation"""

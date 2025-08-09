@@ -166,7 +166,7 @@ class ProgrammeDirectorateRel(models.Model):
 
                 # Count intermediate outcomes
                 intermediate_outcomes = self.env['intermediate.outcome'].search([
-                    ('programme_objective_id.programme_id', '=', programme.id)
+                    ('objective_id.programme_id', '=', programme.id)
                 ])
                 record.intermediate_outcome_count = len(intermediate_outcomes)
 
@@ -403,7 +403,7 @@ class ProgrammeDirectorateRel(models.Model):
         # Get programme hierarchy
         programme = self.programme_id
         intermediate_outcomes = self.env['intermediate.outcome'].search([
-            ('programme_objective_id.programme_id', '=', programme.id)
+            ('objective_id.programme_id', '=', programme.id)
         ])
         interventions = self.env['intervention'].search([
             ('outcome_id', 'in', intermediate_outcomes.ids)
@@ -444,7 +444,7 @@ class ProgrammeDirectorateRel(models.Model):
         # Get programme hierarchy
         programme = self.programme_id
         intermediate_outcomes = self.env['intermediate.outcome'].search([
-            ('programme_objective_id.programme_id', '=', programme.id)
+            ('objective_id.programme_id', '=', programme.id)
         ])
         interventions = self.env['intervention'].search([
             ('outcome_id', 'in', intermediate_outcomes.ids)
@@ -477,7 +477,7 @@ class ProgrammeDirectorateRel(models.Model):
         # Get programme hierarchy
         programme = self.programme_id
         intermediate_outcomes = self.env['intermediate.outcome'].search([
-            ('programme_objective_id.programme_id', '=', programme.id)
+            ('objective_id.programme_id', '=', programme.id)
         ])
         interventions = self.env['intervention'].search([
             ('outcome_id', 'in', intermediate_outcomes.ids)
@@ -507,7 +507,7 @@ class ProgrammeDirectorateRel(models.Model):
         # Get programme hierarchy
         programme = self.programme_id
         intermediate_outcomes = self.env['intermediate.outcome'].search([
-            ('programme_objective_id.programme_id', '=', programme.id)
+            ('objective_id.programme_id', '=', programme.id)
         ])
 
         domain = [('outcome_id', 'in', intermediate_outcomes.ids)]
@@ -532,7 +532,7 @@ class ProgrammeDirectorateRel(models.Model):
             return
 
         programme = self.programme_id
-        domain = [('programme_objective_id.programme_id', '=', programme.id)]
+        domain = [('objective_id.programme_id', '=', programme.id)]
 
         return {
             'name': f'Intermediate Outcomes - {programme.name}',

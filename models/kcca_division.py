@@ -43,12 +43,12 @@ class KCCADivision(models.Model):
     directorate_id = fields.Many2one(
         'kcca.directorate',
         string='Directorate',
-        required=True,
-        ondelete='cascade',
+        required=False,
+        ondelete='set null',
         tracking=True,
-        help="Parent directorate"
+        help="Parent directorate (optional for territorial divisions)"
     )
-    
+
     programme_ids = fields.One2many(
         'kcca.programme',
         'division_id',

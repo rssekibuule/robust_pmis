@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_performance_dashboard_form" model="ir.ui.view">
+      <field name="name">performance.dashboard.form</field>
+      <field name="model">performance.dashboard</field>
+      <field name="arch" type="xml">
+        <form string="KCCA Executive Performance Dashboard" class="o_dashboard_fullscreen">
+          <div class="kcca-executive-dashboard">
+            <!-- Compact Header -->
+            <div class="dashboard-header">
+              <h1>🏛️ KCCA Executive Dashboard</h1>
+              <p>Strategic Performance Intelligence • Real-time Insights • Executive Decision Support</p>
+            </div>
+            
+            <!-- Main Dashboard Content -->
+            <div class="dashboard-content">
+              
+              <!-- Top Metrics Row -->
+              <div class="metrics-row">
+                <!-- Strategic Goals -->
+                <div class="metric-card strategic-goals" onclick="window.open('/web#action=robust_pmis.action_strategic_goal', '_self')">
+                  <div class="metric-icon">🎯</div>
+                  <div class="metric-number"><field name="total_strategic_goals" readonly="1"/></div>
+                  <div class="metric-title">Strategic Goals</div>
+                  <div class="metric-subtitle">Organization-wide</div>
+                </div>
+                
+                <!-- Key Result Areas -->
+                <div class="metric-card key-results" onclick="window.open('/web#action=robust_pmis.action_key_result_area', '_self')">
+                  <div class="metric-icon">📋</div>
+                  <div class="metric-number"><field name="total_kras" readonly="1"/></div>
+                  <div class="metric-title">Key Result Areas</div>
+                  <div class="metric-subtitle">Focus Areas</div>
+                </div>
+                
+                <!-- Performance Indicators -->
+                <div class="metric-card performance-indicators" onclick="window.open('/web#action=robust_pmis.action_key_performance_indicator', '_self')">
+                  <div class="metric-icon">📊</div>
+                  <div class="metric-number"><field name="total_kpis" readonly="1"/></div>
+                  <div class="metric-title">Performance Indicators</div>
+                  <div class="metric-subtitle">Metrics</div>
+                </div>
+                
+                <!-- Active Programmes -->
+                <div class="metric-card programmes" onclick="window.open('/web#action=robust_pmis.action_kcca_programme', '_self')">
+                  <div class="metric-icon">📁</div>
+                  <div class="metric-number"><field name="total_programmes" readonly="1"/></div>
+                  <div class="metric-title">Active Programmes</div>
+                  <div class="metric-subtitle">Implementation</div>
+                </div>
+              </div>
+              
+              <!-- Charts Section -->
+              <div class="charts-section">
+                <!-- Performance Overview Chart -->
+                <div class="chart-container large">
+                  <h3>📈 Strategic Goals Performance Overview</h3>
+                  <div class="chart-wrapper">
+                    <canvas id="performanceOverviewChart"></canvas>
+                  </div>
+                </div>
+                
+                <!-- Performance Trends -->
+                <div class="chart-container">
+                  <h3>📊 KRA Performance Trends</h3>
+                  <div class="chart-wrapper">
+                    <canvas id="trendsChart"></canvas>
+                  </div>
+                </div>
+                
+                <!-- Distribution Chart -->
+                <div class="chart-container">
+                  <h3>🎯 Performance Distribution</h3>
+                  <div class="chart-wrapper">
+                    <canvas id="distributionChart"></canvas>
+                  </div>
+                </div>
+                
+                <!-- Organization Structure -->
+                <div class="chart-container organization">
+                  <h3>🏢 Organization Structure</h3>
+                  <div class="org-stats">
+                    <div class="org-item" onclick="window.open('/web#action=robust_pmis.action_kcca_directorate', '_self')">
+                      <span class="org-label">Directorates</span>
+                      <span class="org-number"><field name="total_directorates" readonly="1"/></span>
+                    </div>
+                    <div class="org-item" onclick="window.open('/web#action=robust_pmis.action_kcca_division', '_self')">
+                      <span class="org-label">Divisions</span>
+                      <span class="org-number"><field name="total_divisions" readonly="1"/></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </form>
+      </field>
+    </record>
+    
+    <!-- Action for unified performance dashboard -->
+    <record id="action_performance_dashboard_unified" model="ir.actions.act_window">
+      <field name="name">Organization Performance Dashboard</field>
+      <field name="res_model">performance.dashboard</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_performance_dashboard_form"/>
+      <field name="res_id" ref="performance_dashboard_record"/>
+      <field name="target">current</field>
+    </record>
+
+    <!-- Menu entry as FIRST item under KCCA Performance Management -->
+    <menuitem id="menu_performance_dashboard_unified" parent="menu_kcca_pmis_root"
+              name="📊 Executive Dashboard" action="action_performance_dashboard_unified"
+              sequence="5"/>
+  </data>
+</odoo>

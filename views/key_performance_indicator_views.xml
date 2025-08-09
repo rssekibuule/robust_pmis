@@ -17,6 +17,8 @@
                     <field name="name" readonly="1"/>
                     <field name="kra_id" readonly="1"/>
                     <field name="directorate_id" readonly="1"/>
+                    <field name="classification_level" readonly="1"/>
+                    <field name="parent_type" readonly="1"/>
                     <field name="baseline_value" readonly="1"/>
                     <field name="current_value"/>
                     <field name="target_value" readonly="1"/>
@@ -57,6 +59,17 @@
                                 <field name="achievement_percentage" widget="progressbar"/>
                                 <field name="kpi_type"/>
                                 <field name="frequency"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Organizational Classification">
+                            <group>
+                                <field name="classification_level"/>
+                                <field name="parent_type"/>
+                            </group>
+                            <group>
+                                <field name="programme_id" invisible="parent_type != 'programme'"/>
+                                <field name="division_id" invisible="parent_type != 'division'"/>
                             </group>
                         </group>
 
@@ -190,6 +203,23 @@
                     <filter string="Monthly" name="freq_monthly" domain="[('frequency', '=', 'monthly')]"/>
                     <filter string="Quarterly" name="freq_quarterly" domain="[('frequency', '=', 'quarterly')]"/>
                     <filter string="Annual" name="freq_annual" domain="[('frequency', '=', 'annual')]"/>
+                    
+                    <!-- Classification Filters -->
+                    <separator string="Classification Filters"/>
+                    <filter string="Strategic Level" name="level_strategic" domain="[('classification_level', '=', 'strategic')]"/>
+                    <filter string="Operational Level" name="level_operational" domain="[('classification_level', '=', 'operational')]"/>
+                    <filter string="Tactical Level" name="level_tactical" domain="[('classification_level', '=', 'tactical')]"/>
+                    <filter string="Programme Level" name="level_programme" domain="[('classification_level', '=', 'programme')]"/>
+                    <filter string="Division Level" name="level_division" domain="[('classification_level', '=', 'division')]"/>
+                    <filter string="Directorate Level" name="level_directorate" domain="[('classification_level', '=', 'directorate')]"/>
+                    
+                    <separator/>
+                    <filter string="Strategic Goal KPIs" name="parent_strategic_goal" domain="[('parent_type', '=', 'strategic_goal')]"/>
+                    <filter string="Strategic Objective KPIs" name="parent_strategic_objective" domain="[('parent_type', '=', 'strategic_objective')]"/>
+                    <filter string="KRA KPIs" name="parent_kra" domain="[('parent_type', '=', 'kra')]"/>
+                    <filter string="Programme KPIs" name="parent_programme" domain="[('parent_type', '=', 'programme')]"/>
+                    <filter string="Division KPIs" name="parent_division" domain="[('parent_type', '=', 'division')]"/>
+                    <filter string="Directorate KPIs" name="parent_directorate" domain="[('parent_type', '=', 'directorate')]"/>
 
                     <!-- Group By Options -->
                     <group expand="0" string="Group By">
@@ -200,7 +230,13 @@
                         <filter string="KPI Type" name="group_by_type" context="{'group_by': 'kpi_type'}"/>
                         <filter string="Frequency" name="group_by_frequency" context="{'group_by': 'frequency'}"/>
                         <filter string="Measurement Unit" name="group_by_unit" context="{'group_by': 'measurement_unit'}"/>
-
+                        <!-- New Hierarchy Classification Groups -->
+                        <separator/>
+                        <filter string="Classification Level" name="group_by_level" context="{'group_by': 'classification_level'}"/>
+                        <filter string="Parent Type" name="group_by_parent_type" context="{'group_by': 'parent_type'}"/>
+                        <filter string="Programme" name="group_by_programme" context="{'group_by': 'programme_id'}"/>
+                        <filter string="Division" name="group_by_division" context="{'group_by': 'division_id'}"/>
+                        <filter string="Thematic Area" name="group_by_thematic" context="{'group_by': 'thematic_area'}"/>
                     </group>
                 </search>
             </field>

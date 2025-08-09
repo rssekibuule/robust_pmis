@@ -67,7 +67,7 @@
                     <field name="active"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_record">
                                 <div class="o_kanban_content">
                                     <div class="row">
                                         <div class="col-6">
@@ -115,9 +115,10 @@
         <record id="action_directorate_performance_dashboard" model="ir.actions.act_window">
             <field name="name">Directorate Performance Dashboard</field>
             <field name="res_model">programme.directorate.rel</field>
-            <field name="view_mode">kanban,graph,pivot,list</field>
+            <field name="view_mode">kanban,form,graph,pivot,list</field>
             <field name="view_ids" eval="[(5, 0, 0),
                                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_directorate_performance_dashboard')}),
+                                          (0, 0, {'view_mode': 'form', 'view_id': ref('view_programme_directorate_rel_form')}),
                                           (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_performance')}),
                                           (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
                                           (0, 0, {'view_mode': 'list', 'view_id': ref('view_programme_directorate_rel_tree')})]"/>

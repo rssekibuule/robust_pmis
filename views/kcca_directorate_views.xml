@@ -149,12 +149,8 @@
                                     invisible="division_count == 0">
                                 <field name="division_count" widget="statinfo" string="Divisions"/>
                             </button>
-                            <button name="action_view_related_territorial_divisions" type="object"
-                                    class="oe_stat_button" icon="fa-map-marker"
-                                    invisible="division_count > 0">
-                                <field name="related_divisions_count" widget="statinfo" string="Territorial Divisions"/>
-                            </button>
-                            <button name="action_view_programmes" type="object" 
+                            <!-- Removed related territorial divisions stat button as requested -->
+                            <button name="action_view_programmes" type="object"
                                     class="oe_stat_button" icon="fa-tasks">
                                 <field name="programme_count" widget="statinfo" string="Programmes"/>
                             </button>
@@ -208,21 +204,7 @@
                                     </list>
                                 </field>
                             </page>
-                            <page string="Related Territorial Divisions" invisible="division_ids">
-                                <div class="alert alert-info" role="alert">
-                                    <strong>Territorial Implementation:</strong> This directorate implements programmes across all KCCA territorial divisions.
-                                    The divisions listed below implement programmes that this directorate is responsible for.
-                                </div>
-                                <field name="related_territorial_divisions">
-                                    <list>
-                                        <field name="name"/>
-                                        <field name="code"/>
-                                        <field name="programme_count" string="Total Programmes"/>
-                                        <field name="overall_performance" widget="progressbar" string="Performance"/>
-                                        <field name="directorate_id" string="Parent Directorate"/>
-                                    </list>
-                                </field>
-                            </page>
+                            <!-- Removed 'Related Territorial Divisions' tab as requested -->
                             <page string="Primary Programmes">
                                 <field name="direct_programme_ids">
                                     <list editable="bottom">

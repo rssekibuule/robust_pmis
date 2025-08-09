@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Action for Strategic KPIs -->
+        <record id="action_strategic_kpi_with_programmes" model="ir.actions.act_window">
+            <field name="name">Strategic KPIs</field>
+            <field name="res_model">key.performance.indicator</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="domain">[('active', '=', True)]</field>
+            <field name="context">{'default_active': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Strategic KPI!
+                </p>
+                <p>
+                    Strategic KPIs are linked to Key Result Areas (KRAs) and measure progress towards strategic objectives.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action for Programme Indicators as KPIs -->
+        <record id="action_programme_indicators_as_kpis" model="ir.actions.act_window">
+            <field name="name">Programme KPIs</field>
+            <field name="res_model">performance.indicator</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="domain">[('active', '=', True)]</field>
+            <field name="context">{'default_active': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Programme KPI!
+                </p>
+                <p>
+                    Programme KPIs measure performance at the programme, outcome, output, or action level.
+                </p>
+            </field>
+        </record>
+
+        <!-- Performance Indicator Enhanced List View for KPI Context -->
+        <record id="view_performance_indicator_kpi_list" model="ir.ui.view">
+            <field name="name">performance.indicator.kpi.list</field>
+            <field name="model">performance.indicator</field>
+            <field name="arch" type="xml">
+                <list string="Programme KPIs" decoration-muted="not active"
+                      decoration-success="status == 'achieved'"
+                      decoration-info="status == 'on_track'"
+                      decoration-warning="status == 'at_risk'"
+                      decoration-danger="status == 'behind'"
+                      editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" readonly="1"/>
+                    <field name="parent_programme_id" readonly="1" string="Programme"/>
+                    <field name="outcome_id" readonly="1" string="Outcome"/>
+                    <field name="results_chain_level" readonly="1"/>
+                    <field name="baseline_value" readonly="1"/>
+                    <field name="current_value"/>
+                    <field name="target_value" readonly="1"/>
+                    <field name="measurement_unit" readonly="1"/>
+                    <field name="achievement_percentage" widget="progressbar" readonly="1"/>
+                    <field name="status" readonly="1"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Menu Structure for Unified KPI Management -->
+        <menuitem id="menu_kpi_management"
+                  name="KPI Management"
+                  parent="menu_kcca_pmis_root"
+                  sequence="15"/>
+
+        <menuitem id="menu_strategic_kpis"
+                  name="Strategic KPIs (108)"
+                  parent="menu_kpi_management"
+                  action="action_strategic_kpi_with_programmes"
+                  sequence="1"/>
+
+        <menuitem id="menu_programme_kpis"
+                  name="Programme KPIs"
+                  parent="menu_kpi_management"
+                  action="action_programme_indicators_as_kpis"
+                  sequence="2"/>
+
+    </data>
+</odoo>

@@ -42,11 +42,12 @@ Hierarchical Structure:
         # Security
         'security/kcca_pmis_security.xml',
         # Note: ir.model.access.csv will be added after models are loaded
-        
+
         # Data
         'data/strategic_goal_data.xml',
         'data/directorate_data.xml',
         'data/kcca_divisions_data.xml',
+        'data/remove_territorial_directorate.xml',
         'data/programme_data.xml',
         'data/strategic_objective_master_table.xml',
         'data/kra_kpi_data.xml',
@@ -66,7 +67,7 @@ Hierarchical Structure:
 
         # Infrastructure strategic goal and objective
         'data/infrastructure_strategic_goal.xml',
-        
+
         # Demo data for Infrastructure Development objective
         'data/strategic_objective_infrastructure.xml',
         'data/demo_infrastructure_kra_kpi.xml',
@@ -80,11 +81,11 @@ Hierarchical Structure:
         'views/key_result_area_views.xml',
         'views/key_performance_indicator_views.xml',
         'views/kra_kpi_dashboard.xml',
-        
+
         # Views - Organizational Structure
         'views/kcca_directorate_views.xml',
         'views/kcca_division_views.xml',
-        
+
         # Views - Programme Management
         'views/kcca_programme_views.xml',
         'views/programme_objective_views.xml',
@@ -122,6 +123,9 @@ Hierarchical Structure:
         'views/kpi_linkage_dashboard.xml',
         'views/strategic_programme_analytics_views.xml',
 
+        # Unified KPI Management
+        'views/unified_kpi_views.xml',
+
         # Wizards
         'wizards/kpi_linkage_wizard_views.xml',
         'wizards/strategic_programme_report_wizard_views.xml',
@@ -141,6 +145,7 @@ Hierarchical Structure:
         'reports/performance_reports.xml',
 
         # Unified Performance Dashboard
+        'data/performance_dashboard_data.xml',
         'views/performance_dashboard_views.xml',
         # Main Menus (loaded after all views and actions are defined)
         'views/kcca_pmis_menus.xml',
@@ -150,8 +155,8 @@ Hierarchical Structure:
 
         # Security (loaded after models)
         'security/ir.model.access.csv',
-        # Dashboard data
-        'data/performance_dashboard_data.xml',
+        # Dashboard data - commented out due to method signature issues
+        # 'data/performance_dashboard_data.xml',
     ],
     'demo': [
         # No demo data - using real data only
@@ -160,11 +165,15 @@ Hierarchical Structure:
         'web.assets_backend': [
             'robust_pmis/static/src/css/kcca_pmis.css',
             'robust_pmis/static/src/css/financial_strategy.css',
+            'robust_pmis/static/src/css/dashboard_clean.css',
             'robust_pmis/static/src/js/form_layout_override.js',
+            # Ensure Chart.js is loaded before any charts code
+            'web/static/lib/Chart/Chart.js',
             'robust_pmis/static/src/js/kcca_directorate_charts.js',
-            'robust_pmis/static/src/js/performance_dashboard.js',
+            # Updated dashboard for Odoo 18 compatibility
+            'robust_pmis/static/src/js/performance_dashboard_form.js',
             'robust_pmis/static/src/xml/kcca_directorate_charts.xml',
-            'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js',
+
         ],
         'web.assets_frontend': [
             'robust_pmis/static/src/css/portal.css',

@@ -9,24 +9,11 @@
                   action="action_programme_directorate_rel"
                   sequence="25"/>
         
-        <!-- Strategic Objective Dashboard Menu -->
-        <menuitem id="menu_strategic_objective_dashboard"
-                  name="Strategic Implementation Dashboard"
-                  parent="menu_strategic_framework"
-                  action="action_strategic_objective_dashboard"
-                  sequence="50"/>
-        
         <!-- Add submenu under Organizational Structure -->
         <menuitem id="menu_implementation_structure"
                   name="Implementation Structure"
                   parent="menu_organizational_structure"
                   sequence="30"/>
-        
-        <menuitem id="menu_programme_directorate_relationships_org"
-                  name="Programme-Directorate Matrix"
-                  parent="menu_implementation_structure"
-                  action="action_programme_directorate_rel"
-                  sequence="10"/>
         
         <!-- Add to Reports menu -->
         <menuitem id="menu_strategic_implementation_reports"

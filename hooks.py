@@ -1,16 +1,53 @@
 # -*- coding: utf-8 -*-
 
+
+# Safety cleanup to avoid duplicate Strategic Goals seeded by demo scripts
+def cleanup_duplicate_goals(env):
+    """Remove duplicate strategic goals by name, keeping the XML-defined one when available."""
+    SG = env['strategic.goal']
+
+    def dedupe(name, xmlid=None):
+        keep = False
+        if xmlid:
+            try:
+                keep = env.ref(xmlid)
+            except Exception:
+                keep = False
+        if not keep:
+            keep = SG.search([('name', '=', name)], limit=1)
+        if not keep:
+            return 0
+        dups = SG.search([('name', '=', name), ('id', '!=', keep.id)])
+        count = len(dups)
+        if count:
+            print(f"[post_init] Removing {count} duplicate Strategic Goal(s) for '{name}' (keeping ID {keep.id})")
+            dups.unlink()
+        return count
+
+    removed = 0
+    removed += dedupe('Improve Urban Infrastructure', 'robust_pmis.strategic_goal_improve_urban_infrastructure')
+    # Also ensure demo-only goals don't duplicate if the script was run repeatedly
+    removed += dedupe('Enhance Service Delivery')
+    removed += dedupe('Strengthen Revenue Collection')
+    print(f"[post_init] Duplicate cleanup complete. Removed {removed} duplicate goal(s).")
+    return True
+
 def post_init_hook(env):
-    """Post-installation hook to create transport infrastructure data"""
-    
+    """Post-installation hook to create transport infrastructure data and cleanup duplicates"""
+    # Always perform duplicate cleanup first to keep data consistent
+    try:
+        cleanup_duplicate_goals(env)
+    except Exception as e:
+        print(f"[post_init] Duplicate cleanup failed: {e}")
+
     # Check if transport programme already exists
     existing_programme = env['kcca.programme'].search([('code', '=', 'ITIS')], limit=1)
     if existing_programme:
         print(f"Transport Infrastructure Programme already exists: {existing_programme.name}")
         return
-    
+
     print("Creating Transport Infrastructure Programme...")
-    
+
     # Create the transport infrastructure programme
     programme = env['kcca.programme'].create({
         'name': 'Integrated Transport Infrastructure and Services',
@@ -26,7 +63,7 @@ def post_init_hook(env):
         <p><strong>Total Budget:</strong> 1,487.50 UGX Billion across FY2022/23 to FY2026/27</p>''',
         'sequence': 1,
     })
-    
+
     # Create programme objective
     objective = env['programme.objective'].create({
         'name': 'To develop an inter-modal and seamless transport infrastructure and services',
@@ -34,7 +71,7 @@ def post_init_hook(env):
         'sequence': 1,
         'description': 'Single programme objective under which all intermediate outcomes are organized',
     })
-    
+
     # Create intermediate outcomes
     outcome1 = env['intermediate.outcome'].create({
         'name': 'Reduced travel time',
@@ -42,21 +79,21 @@ def post_init_hook(env):
         'sequence': 1,
         'description': 'Achieve reduced travel time through strategic transport infrastructure development',
     })
-    
+
     outcome2 = env['intermediate.outcome'].create({
         'name': 'Increased stock of transport infrastructure',
         'objective_id': objective.id,
         'sequence': 2,
         'description': 'Increase the stock of transport infrastructure through capacity enhancement',
     })
-    
+
     outcome3 = env['intermediate.outcome'].create({
         'name': 'Reduced fatalities',
         'objective_id': objective.id,
         'sequence': 3,
         'description': 'Reduce road fatalities through enhanced transport safety measures',
     })
-    
+
     # Create performance indicators for outcomes
     env['performance.indicator'].create({
         'name': 'Average Travel time (Min/Km) on KCCA Road',
@@ -67,7 +104,7 @@ def post_init_hook(env):
         'indicator_type': 'decreasing',
         'sequence': 1,
     })
-    
+
     env['performance.indicator'].create({
         'name': 'Proportion of Commuters using mass public transport (Rail & BRT)',
         'outcome_id': outcome1.id,
@@ -77,7 +114,7 @@ def post_init_hook(env):
         'indicator_type': 'increasing',
         'sequence': 2,
     })
-    
+
     env['performance.indicator'].create({
         'name': 'Proportion of city road network paved',
         'outcome_id': outcome2.id,
@@ -87,7 +124,7 @@ def post_init_hook(env):
         'indicator_type': 'increasing',
         'sequence': 1,
     })
-    
+
     env['performance.indicator'].create({
         'name': 'Km of City Roads Paved',
         'outcome_id': outcome2.id,
@@ -97,7 +134,7 @@ def post_init_hook(env):
         'indicator_type': 'increasing',
         'sequence': 2,
     })
-    
+
     env['performance.indicator'].create({
         'name': 'Fatalities per 100,000 persons (Roads)',
         'outcome_id': outcome3.id,
@@ -107,7 +144,7 @@ def post_init_hook(env):
         'indicator_type': 'decreasing',
         'sequence': 1,
     })
-    
+
     env['performance.indicator'].create({
         'name': 'Proportion of paved road network with street lights',
         'outcome_id': outcome3.id,
@@ -117,51 +154,51 @@ def post_init_hook(env):
         'indicator_type': 'increasing',
         'sequence': 2,
     })
-    
+
     # Create interventions
     intervention1 = env['intervention'].create({
         'name': 'Construct and upgrade strategic transport infrastructure',
         'outcome_id': outcome1.id,
         'sequence': 1,
     })
-    
+
     intervention2 = env['intervention'].create({
         'name': 'Increase capacity of existing transport infrastructure and services',
         'outcome_id': outcome2.id,
         'sequence': 1,
     })
-    
+
     intervention3 = env['intervention'].create({
         'name': 'Enhance transport safety',
         'outcome_id': outcome3.id,
         'sequence': 1,
     })
-    
+
     # Create outputs
     output1 = env['output'].create({
         'name': 'Strategic transport infrastructure constructed and upgraded',
         'intervention_id': intervention1.id,
         'sequence': 1,
     })
-    
+
     output2 = env['output'].create({
         'name': 'Capacity of existing road transport infrastructure and services increased',
         'intervention_id': intervention2.id,
         'sequence': 1,
     })
-    
+
     output3_1 = env['output'].create({
         'name': 'Road Transport Safety Enhanced',
         'intervention_id': intervention3.id,
         'sequence': 1,
     })
-    
+
     output3_2 = env['output'].create({
         'name': 'Transport safety capacity strengthened',
         'intervention_id': intervention3.id,
         'sequence': 2,
     })
-    
+
     # Create sample PIAP actions with budget data
     piap_actions_data = [
         {
@@ -203,7 +240,7 @@ def post_init_hook(env):
             'measurement_unit': 'Number of staff',
         },
     ]
-    
+
     for i, action_data in enumerate(piap_actions_data, 1):
         env['piap.action'].create({
             'name': action_data['name'],
@@ -218,7 +255,7 @@ def post_init_hook(env):
             'measurement_unit': action_data.get('measurement_unit', ''),
             'status': 'in_progress',
         })
-    
+
     print(f"✅ Transport Infrastructure Programme created successfully!")
     print(f"   Programme: {programme.name}")
     print(f"   Objectives: 1")
@@ -227,3 +264,36 @@ def post_init_hook(env):
     print(f"   Outputs: 4")
     print(f"   PIAP Actions: {len(piap_actions_data)}")
     print(f"   Performance Indicators: 6")
+
+def update_kpi_classifications(env):
+    """
+    Update KPI classification fields based on existing relationships.
+    This function can be called manually to update KPI classifications.
+    """
+    print("Updating KPI classification fields...")
+
+    # Get all KPIs
+    kpis = env['key.performance.indicator'].search([])
+    print(f"Found {len(kpis)} KPIs to update classifications for")
+
+    # Update classification fields
+    count = 0
+    for kpi in kpis:
+        kpi._compute_classification_fields()
+        count += 1
+        if count % 100 == 0:
+            print(f"Processed {count}/{len(kpis)} KPIs")
+
+    # Log results
+    env.cr.execute("""
+        SELECT classification_level, parent_type, COUNT(*)
+        FROM key_performance_indicator
+        GROUP BY classification_level, parent_type
+    """)
+    results = env.cr.fetchall()
+    for level, parent_type, count in results:
+        print(f"Updated {count} KPIs with level: {level}, parent_type: {parent_type}")
+
+    print(f"✅ Successfully updated classifications for {len(kpis)} KPIs")
+
+    return True

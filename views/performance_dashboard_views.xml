@@ -1,54 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-    <!-- Action for unified performance dashboard -->
-    <record id="action_performance_dashboard_unified" model="ir.actions.act_window">
-      <field name="name">Organization Performance</field>
-      <field name="res_model">performance.dashboard</field>
-      <field name="view_mode">form</field>
-      <!-- Removed explicit view_id to use default form view and avoid XML ID errors -->
-      <field name="target">current</field>
-    </record>
-
-    <!-- Form view displaying aggregated metrics -->
     <record id="view_performance_dashboard_form" model="ir.ui.view">
       <field name="name">performance.dashboard.form</field>
       <field name="model">performance.dashboard</field>
       <field name="arch" type="xml">
-        <form string="Organization Performance" class="o_performance_dashboard">
-          <sheet>
-            <!-- Summary Metrics -->
-            <group>
-              <field name="total_goals"/>
-              <field name="total_kpis"/>
-              <field name="avg_kpi_performance"/>
-              <field name="total_programmes"/>
-              <field name="avg_programme_performance"/>
-              <field name="total_directorates"/>
-              <field name="avg_directorate_performance"/>
-              <field name="total_divisions"/>
-              <field name="avg_division_performance"/>
-            </group>
-            <!-- Performance Overview Chart -->
-            <div class="o_dashboard_chart" style="width:100%; max-width:800px; margin:20px auto;">
-              <canvas id="performance_overview_chart" width="800" height="400"></canvas>
+        <form string="KCCA Executive Performance Dashboard" class="o_dashboard_fullscreen" js_class="performance_dashboard_form">
+          <div class="kcca-executive-dashboard">
+            <!-- Interactive Header -->
+            <div class="dashboard-header">
+              <div class="header-content">
+                <div class="header-left">
+                  <h1>🏛️ KCCA Executive Dashboard</h1>
+                  <p>Strategic Performance Intelligence • Real-time Insights • Executive Decision Support</p>
+                </div>
+              </div>
             </div>
-            <!-- Performance Distribution Pie Chart -->
-            <div class="o_dashboard_chart" style="width:100%; max-width:600px; margin:20px auto;">
-              <canvas id="performance_distribution_pie" width="600" height="300"></canvas>
+
+            <!-- Main Dashboard Content -->
+            <div class="dashboard-content">
+
+              <!-- Performance Summary Banner -->
+              <div class="performance-summary-banner">
+                <div class="summary-item">
+                  <div class="summary-title">Overall Performance</div>
+                  <div class="summary-value"><field name="avg_kpi_performance" widget="progressbar" options="{'editable': false}"/></div>
+                </div>
+                <div class="summary-item">
+                  <div class="summary-title">KRA Achievement</div>
+                  <div class="summary-value"><field name="avg_kra_performance" widget="progressbar" options="{'editable': false}"/></div>
+                </div>
+                <div class="summary-item">
+                  <div class="summary-title">Programme Progress</div>
+                  <div class="summary-value"><field name="avg_programme_performance" widget="progressbar" options="{'editable': false}"/></div>
+                </div>
+                <div class="timestamp-info">
+                  <div id="dashboard-timestamp">Last Updated: <span></span></div>
+                  <a id="refresh-dashboard" class="refresh-button" href="#"><i class="fa fa-refresh"></i> Refresh</a>
+                </div>
+              </div>
+
+              <!-- Filter Bar -->
+              <div class="filters-row">
+                <div class="filter-group">
+                  <span class="o_form_label">Data</span>
+                  <select id="filter-data-type">
+                    <option value="all">All</option>
+                    <option value="strategic">Strategic KPIs</option>
+                    <option value="programme">Programme Indicators</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <span class="o_form_label">Scope</span>
+                  <select id="filter-scope">
+                    <option value="organization">Organization</option>
+                    <option value="strategic_goal">Strategic Goal</option>
+                    <option value="strategic_objective">Strategic Objective</option>
+                    <option value="programme">Programme</option>
+                    <option value="directorate">Directorate</option>
+                    <option value="division">Division</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <span class="o_form_label">Entity</span>
+                  <select id="filter-entity">
+                    <option value="all">All</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <span class="o_form_label">Performance</span>
+                  <select id="filter-performance">
+                    <option value="all">All</option>
+                    <option value="excellent">Excellent (>=90%)</option>
+                    <option value="good">Good (70–89%)</option>
+                    <option value="fair">Fair (50–69%)</option>
+                    <option value="poor">Poor (&lt;50%)</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <span class="o_form_label">Period</span>
+                  <select id="filter-period">
+                    <option value="fy">FY 2024/25</option>
+                    <option value="q1">Q1</option>
+                    <option value="q2">Q2</option>
+                    <option value="q3">Q3</option>
+                    <option value="q4">Q4</option>
+                  </select>
+                </div>
+                <a id="apply-filters" class="btn btn-primary" role="button" href="#">Apply</a>
+              </div>
+
+              <!-- Quick Actions (clean, clickable buttons) -->
+              <div class="quick-actions">
+                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_strategic_kpi_with_programmes">
+                  <span class="qi-icon">📈</span><span class="qi-label">All KPIs</span>
+                </div>
+                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_programme_objective_indicators">
+                  <span class="qi-icon">🎯</span><span class="qi-label">Programme-Objective Indicators</span>
+                </div>
+                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_piap_action">
+                  <span class="qi-icon">🧩</span><span class="qi-label">PIAP Actions</span>
+                </div>
+                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_directorate_performance_dashboard">
+                  <span class="qi-icon">🏢</span><span class="qi-label">Directorate Dashboard</span>
+                </div>
+                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_division_performance_dashboard">
+                  <span class="qi-icon">🏘️</span><span class="qi-label">Division Dashboard</span>
+                </div>
+                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_strategic_plan_budget">
+                  <span class="qi-icon">💰</span><span class="qi-label">Strategic Plan Budget</span>
+                </div>
+              </div>
+
+              <!-- Executive KPI Scorecards (Modern Gauges) -->
+              <div class="executive-scorecards">
+                <div class="gauge-card" tabindex="0">
+                  <div class="gauge-header">
+                    <span class="gauge-title">Overall Performance</span>
+                    <span class="gauge-sub">Avg of all KPIs</span>
+                  </div>
+                  <div class="gauge-canvas"><canvas id="gaugeOverall"></canvas></div>
+                </div>
+                <div class="gauge-card" tabindex="0">
+                  <div class="gauge-header">
+                    <span class="gauge-title">KRA Achievement</span>
+                    <span class="gauge-sub">Across KRAs</span>
+                  </div>
+                  <div class="gauge-canvas"><canvas id="gaugeKRA"></canvas></div>
+                </div>
+                <div class="gauge-card" tabindex="0">
+                  <div class="gauge-header">
+                    <span class="gauge-title">Programme Progress</span>
+                    <span class="gauge-sub">Delivery status</span>
+                  </div>
+                  <div class="gauge-canvas"><canvas id="gaugeProgramme"></canvas></div>
+                </div>
+                <div class="gauge-card" tabindex="0">
+                  <div class="gauge-header">
+                    <span class="gauge-title">Portfolio Health</span>
+                    <span class="gauge-sub">On-track share</span>
+                  </div>
+                  <div class="gauge-canvas"><canvas id="gaugePortfolio"></canvas></div>
+                </div>
+              </div>
+
+              <!-- Charts Section -->
+              <div class="charts-section">
+
+                <!-- Strategic Goals Achievement (repositioned) -->
+                <div class="chart-container">
+                  <h3>🎯 Strategic Goals Achievement by Goal (%)</h3>
+                  <div class="chart-wrapper">
+                    <canvas id="performanceOverviewChart"></canvas>
+                  </div>
+                </div>
+
+                <div class="chart-container">
+                  <h3>📊 KRA Performance Trends</h3>
+                  <div class="chart-wrapper">
+                    <canvas id="trendsChart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Directorate and Division Contributions Row -->
+                <div class="charts-row two-up span-all">
+                  <!-- Directorate Contributions vs Targets -->
+                  <div class="chart-container">
+                    <h3>🏢 Directorate Contributions vs Targets</h3>
+                    <div class="chart-wrapper">
+                      <canvas id="directorateContribChart"></canvas>
+                    </div>
+                  </div>
+
+                  <!-- Division Progress vs Targets -->
+                  <div class="chart-container">
+                    <h3>🏘️ Division Progress vs Targets</h3>
+                    <div class="chart-wrapper">
+                      <canvas id="divisionContribChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Top Performers & Structure -->
+                <div class="top-performers-container">
+                  <!-- Top Performers -->
+                  <div class="chart-container top-performers">
+                    <h3>🏆 Top Performing KPIs</h3>
+                    <div class="top-performers-list" id="topPerformersList">
+                      <!-- Will be populated by JavaScript -->
+                    </div>
+                  </div>
+
+                  <!-- Organization Structure -->
+                  <div class="chart-container organization">
+                    <h3>🏢 Organization Structure</h3>
+                    <div class="org-stats">
+                      <div class="org-item" onclick="window.open('/web#action=robust_pmis.action_kcca_directorate', '_self')">
+                        <div class="org-text">
+                          <span class="org-label">Directorates</span>
+                          <span class="org-sub">Click to view list</span>
+                        </div>
+                        <span class="org-number badge"><field name="total_directorates" readonly="1"/></span>
+                        <span class="org-chevron">›</span>
+                      </div>
+                      <div class="org-item" onclick="window.open('/web#action=robust_pmis.action_kcca_division', '_self')">
+                        <div class="org-text">
+                          <span class="org-label">Divisions</span>
+                          <span class="org-sub">Click to view list</span>
+                        </div>
+                        <span class="org-number badge"><field name="total_divisions" readonly="1"/></span>
+                        <span class="org-chevron">›</span>
+                      </div>
+                      <div class="org-item" onclick="window.open('/web#action=robust_pmis.action_kcca_programme', '_self')">
+                        <div class="org-text">
+                          <span class="org-label">Programmes</span>
+                          <span class="org-sub">Click to view list</span>
+                        </div>
+                        <span class="org-number badge"><field name="total_programmes" readonly="1"/></span>
+                        <span class="org-chevron">›</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <!-- Performance Trends Line Chart -->
-            <div class="o_dashboard_chart" style="width:100%; max-width:800px; margin:20px auto;">
-              <canvas id="performance_line_chart" width="800" height="400"></canvas>
-            </div>
-          </sheet>
+          </div>
         </form>
       </field>
     </record>
 
-    <!-- Menu entry under KCCA Performance Management -->
+    <!-- Action for unified performance dashboard -->
+    <record id="action_performance_dashboard_unified" model="ir.actions.act_window">
+      <field name="name">Organization Performance Dashboard</field>
+      <field name="res_model">performance.dashboard</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_performance_dashboard_form"/>
+      <field name="res_id" ref="performance_dashboard_record"/>
+      <field name="target">current</field>
+    </record>
+
+    <!-- Menu entry as FIRST item under KCCA Performance Management -->
     <menuitem id="menu_performance_dashboard_unified" parent="menu_kcca_pmis_root"
-              name="Organization Performance" action="action_performance_dashboard_unified"
-              sequence="45"/>
+              name="📊 Executive Dashboard" action="action_performance_dashboard_unified"
+              sequence="5"/>
   </data>
 </odoo>

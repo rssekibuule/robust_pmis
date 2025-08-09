@@ -238,19 +238,29 @@ class PerformanceAlert(models.Model):
                 message_type='email'
             )
         
-        # Create activities for critical/urgent alerts
+        # Create activities for critical/urgent alerts (guard if activity exists)
         if self.severity in ['critical', 'urgent']:
-            for user in recipients:
-                self.activity_schedule(
-                    'mail.mail_activity_data_todo',
-                    user_id=user.id,
-                    summary=f"Handle {self.severity} alert: {self.name}",
-                    note=self.description,
-                    date_deadline=date.today() + timedelta(days=1)
-                )
-        
+            # Ensure the default TODO activity type exists before scheduling
+            ActivityType = self.env['mail.activity.type']
+            todo_type = ActivityType.search([('xml_id', '=', 'mail.mail_activity_data_todo')], limit=1)
+            if not todo_type:
+                # Fallback by external id lookup to avoid crash in partially loaded environments
+                try:
+                    todo_type = self.env.ref('mail.mail_activity_data_todo')
+                except Exception:
+                    todo_type = False
+            if todo_type:
+                for user in recipients:
+                    self.activity_schedule(
+                        'mail.mail_activity_data_todo',
+                        user_id=user.id,
+                        summary=f"Handle {self.severity} alert: {self.name}",
+                        note=self.description,
+                        date_deadline=date.today() + timedelta(days=1)
+                    )
+
         self.notification_sent = True
-    
+
     def _get_alert_recipients(self):
         """Get list of users who should receive this alert"""
         recipients = self.env['res.users']
