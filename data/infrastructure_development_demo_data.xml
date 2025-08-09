@@ -7,14 +7,7 @@
         <!-- =================================================== -->
         
         <!-- KRA 1: Transport Infrastructure Development -->
-        <record id="kra_transport_infrastructure_new" model="key.result.area">
-            <field name="name">Transport Infrastructure Development</field>
-            <field name="description">Develop and maintain efficient transport infrastructure including roads, bridges, and public transit systems</field>
-            <field name="sequence">10</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
-            <field name="active">True</field>
-        </record>
-        
+
         <!-- KPIs for Transport Infrastructure -->
         <record id="kpi_roads_constructed_new" model="key.performance.indicator">
             <field name="name">Kilometers of Roads Constructed</field>
