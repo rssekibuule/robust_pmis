@@ -10,6 +10,11 @@ class KeyPerformanceIndicator(models.Model):
     _order = 'sequence, name'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    _sql_constraints = [
+        ('kpi_unique_by_kra', 'unique(kra_id, name)',
+         'KPI names must be unique within each KRA.'),
+    ]
+
     name = fields.Char(
         string='KPI Name',
         required=True,

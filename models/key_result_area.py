@@ -10,6 +10,14 @@ class KeyResultArea(models.Model):
     _order = 'sequence, name'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    _sql_constraints = [
+        # Enforce uniqueness of KRA names within each parent scope
+        ('kra_unique_by_objective', 'unique(strategic_objective_id, name)',
+         'KRA names must be unique within each Strategic Objective.'),
+        ('kra_unique_by_goal', 'unique(strategic_goal_id, name)',
+         'KRA names must be unique within each Strategic Goal (when not under an Objective).'),
+    ]
+
     name = fields.Char(
         string='Key Result Area',
         required=True,
