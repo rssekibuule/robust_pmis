@@ -134,7 +134,7 @@
         </record>
 
         <!-- KRA 3: Water and Sanitation Infrastructure -->
-        <record id="kra_water_sanitation_complete" model="key.result.area">
+        <record id="kra_water_sanitation_new" model="key.result.area">
             <field name="name">Water and Sanitation Infrastructure</field>
             <field name="description">Develop and maintain water supply and sanitation infrastructure systems</field>
             <field name="sequence">30</field>
@@ -146,7 +146,7 @@
         <record id="kpi_water_supply_coverage" model="key.performance.indicator">
             <field name="name">Water Supply Coverage</field>
             <field name="description">Percentage of city population with access to clean water supply</field>
-            <field name="kra_id" ref="kra_water_sanitation_complete"/>
+            <field name="kra_id" ref="kra_water_sanitation_new"/>
             <field name="measurement_unit">%</field>
             <field name="baseline_value">65</field>
             <field name="target_value">90</field>
@@ -161,7 +161,7 @@
         <record id="kpi_sewerage_coverage" model="key.performance.indicator">
             <field name="name">Sewerage System Coverage</field>
             <field name="description">Percentage of city areas connected to sewerage system</field>
-            <field name="kra_id" ref="kra_water_sanitation_complete"/>
+            <field name="kra_id" ref="kra_water_sanitation_new"/>
             <field name="measurement_unit">%</field>
             <field name="baseline_value">35</field>
             <field name="target_value">70</field>
@@ -176,7 +176,7 @@
         <record id="kpi_drainage_systems" model="key.performance.indicator">
             <field name="name">Drainage Systems Upgraded</field>
             <field name="description">Kilometers of drainage systems upgraded or newly constructed</field>
-            <field name="kra_id" ref="kra_water_sanitation_complete"/>
+            <field name="kra_id" ref="kra_water_sanitation_new"/>
             <field name="measurement_unit">Km</field>
             <field name="baseline_value">20</field>
             <field name="target_value">60</field>
