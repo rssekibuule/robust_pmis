@@ -32,11 +32,58 @@ def cleanup_duplicate_goals(env):
     print(f"[post_init] Duplicate cleanup complete. Removed {removed} duplicate goal(s).")
     return True
 
+# Safety cleanup for duplicate Strategic Objectives within a Strategic Goal
+# Ensures uniqueness by (goal, name) and preserves KRAs/KPIs by migrating them
+# to the preferred canonical objective when possible.
+def cleanup_duplicate_objectives(env):
+    SO = env['strategic.objective']
+    KRA = env['key.result.area']
+
+    def dedupe(goal_xmlid, keep_xmlid, name):
+        try:
+            goal = env.ref(goal_xmlid)
+        except Exception:
+            return 0
+        try:
+            keep = env.ref(keep_xmlid)
+        except Exception:
+            keep = SO.search([
+                ('strategic_goal_id', '=', goal.id), ('name', '=', name)
+            ], limit=1)
+            if not keep:
+                return 0
+        dups = SO.search([
+            ('strategic_goal_id', '=', goal.id), ('name', '=', name), ('id', '!=', keep.id)
+        ])
+        moved = 0
+        deleted = 0
+        for dup in dups:
+            # Reassign KRAs to the canonical objective to preserve data
+            if dup.kra_ids:
+                dup.kra_ids.write({'strategic_objective_id': keep.id})
+                moved += len(dup.kra_ids)
+            dup.unlink()
+            deleted += 1
+        if deleted:
+            print(f"[post_init] Objectives deduped for goal '{goal.name}': kept {keep.id}, moved {moved} KRAs, deleted {deleted} dup(s)")
+        return deleted
+
+    removed = 0
+    removed += dedupe(
+        'robust_pmis.strategic_goal_improve_urban_infrastructure',
+        'robust_pmis.strategic_objective_infrastructure_development_main',
+        'Infrastructure Development'
+    )
+    print(f"[post_init] Duplicate objective cleanup complete. Removed {removed} duplicate objective(s).")
+    return True
+
+
 def post_init_hook(env):
     """Post-installation hook to create transport infrastructure data and cleanup duplicates"""
     # Always perform duplicate cleanup first to keep data consistent
     try:
         cleanup_duplicate_goals(env)
+        cleanup_duplicate_objectives(env)
     except Exception as e:
         print(f"[post_init] Duplicate cleanup failed: {e}")
 
