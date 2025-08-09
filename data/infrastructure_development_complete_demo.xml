@@ -21,7 +21,7 @@
         <record id="kpi_roads_constructed" model="key.performance.indicator">
             <field name="name">Kilometers of New Roads Constructed</field>
             <field name="description">Total kilometers of new roads constructed annually</field>
-            <field name="kra_id" ref="kra_transport_infrastructure_complete"/>
+            <field name="kra_id" ref="kra_transport_infrastructure_new"/>
             <field name="measurement_unit">Km</field>
             <field name="baseline_value">0</field>
             <field name="target_value">50</field>
@@ -36,7 +36,7 @@
         <record id="kpi_roads_rehabilitated" model="key.performance.indicator">
             <field name="name">Kilometers of Roads Rehabilitated</field>
             <field name="description">Total kilometers of existing roads rehabilitated and upgraded</field>
-            <field name="kra_id" ref="kra_transport_infrastructure_complete"/>
+            <field name="kra_id" ref="kra_transport_infrastructure_new"/>
             <field name="measurement_unit">Km</field>
             <field name="baseline_value">15</field>
             <field name="target_value">100</field>
@@ -51,7 +51,7 @@
         <record id="kpi_bridges_constructed" model="key.performance.indicator">
             <field name="name">Number of Bridges Constructed/Rehabilitated</field>
             <field name="description">Total number of bridges constructed or rehabilitated</field>
-            <field name="kra_id" ref="kra_transport_infrastructure_complete"/>
+            <field name="kra_id" ref="kra_transport_infrastructure_new"/>
             <field name="measurement_unit">Number</field>
             <field name="baseline_value">2</field>
             <field name="target_value">8</field>
@@ -66,7 +66,7 @@
         <record id="kpi_public_transport_coverage" model="key.performance.indicator">
             <field name="name">Public Transport Coverage</field>
             <field name="description">Percentage of city areas covered by public transport services</field>
-            <field name="kra_id" ref="kra_transport_infrastructure_complete"/>
+            <field name="kra_id" ref="kra_transport_infrastructure_new"/>
             <field name="measurement_unit">%</field>
             <field name="baseline_value">45</field>
             <field name="target_value">80</field>
