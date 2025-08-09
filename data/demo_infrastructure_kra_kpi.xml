@@ -4,35 +4,35 @@
     <!-- Replace 'strategic_objective_infrastructure' with the actual external id if different -->
     <record id="demo_kra_1" model="key.result.area">
         <field name="name">Road Network Expansion</field>
-        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
         <field name="description">Expand and upgrade the city's road network</field>
         <field name="sequence">10</field>
         <field name="active">True</field>
     </record>
     <record id="demo_kra_2" model="key.result.area">
         <field name="name">Public Transport Enhancement</field>
-        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
         <field name="description">Enhance public transport system</field>
         <field name="sequence">20</field>
         <field name="active">True</field>
     </record>
     <record id="demo_kra_3" model="key.result.area">
         <field name="name">Urban Drainage Improvement</field>
-        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
         <field name="description">Improve urban drainage systems</field>
         <field name="sequence">30</field>
         <field name="active">True</field>
     </record>
     <record id="demo_kra_4" model="key.result.area">
         <field name="name">Non-Motorized Transport Promotion</field>
-        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
         <field name="description">Promote walking and cycling infrastructure</field>
         <field name="sequence">40</field>
         <field name="active">True</field>
     </record>
     <record id="demo_kra_5" model="key.result.area">
         <field name="name">Smart Infrastructure Deployment</field>
-        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+        <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
         <field name="description">Deploy smart city infrastructure</field>
         <field name="sequence">50</field>
         <field name="active">True</field>
