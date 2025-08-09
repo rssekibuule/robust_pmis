@@ -7,13 +7,6 @@
         <!-- ========================================= -->
         
         <!-- First, ensure we have the strategic objective -->
-        <record id="strategic_objective_infrastructure_development_complete" model="strategic.objective">
-            <field name="name">Infrastructure Development</field>
-            <field name="description">Develop and maintain robust infrastructure systems including transport, housing, utilities, and digital infrastructure to support sustainable urban development</field>
-            <field name="strategic_goal_id" ref="strategic_goal_improve_urban_infrastructure"/>
-            <field name="sequence">10</field>
-            <field name="active">True</field>
-        </record>
 
         <!-- KRA 1: Transport Infrastructure Development -->
         <record id="kra_transport_infrastructure_complete" model="key.result.area">
