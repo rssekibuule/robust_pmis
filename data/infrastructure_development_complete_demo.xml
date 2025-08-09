@@ -34,7 +34,7 @@
         </record>
 
         <record id="kpi_roads_rehabilitated" model="key.performance.indicator">
-            <field name="name">Kilometers of Roads Rehabilitated</field>
+            <field name="name">Kilometers of Roads Rehabilitated (Cumulative)</field>
             <field name="description">Total kilometers of existing roads rehabilitated and upgraded</field>
             <field name="kra_id" ref="kra_transport_infrastructure_new"/>
             <field name="measurement_unit">Km</field>
