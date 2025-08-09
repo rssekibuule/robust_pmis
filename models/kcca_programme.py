@@ -10,6 +10,11 @@ class KCCAProgramme(models.Model):
     _order = 'sequence, name'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    _sql_constraints = [
+        ('programme_name_unique', 'unique(name)',
+         'Programme names must be unique.'),
+    ]
+
     name = fields.Char(
         string='Programme Name',
         required=True,
