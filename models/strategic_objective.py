@@ -10,6 +10,11 @@ class StrategicObjective(models.Model):
     _order = 'sequence, name'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    _sql_constraints = [
+        ('unique_objective_per_goal', 'unique(strategic_goal_id, name)',
+         'Strategic Objective names must be unique within each Strategic Goal.'),
+    ]
+
     name = fields.Char(
         string='Strategic Objective',
         required=True,
