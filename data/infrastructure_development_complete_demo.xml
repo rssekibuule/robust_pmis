@@ -189,7 +189,7 @@
         </record>
 
         <!-- KRA 4: Digital Infrastructure -->
-        <record id="kra_digital_infrastructure_complete" model="key.result.area">
+        <record id="kra_digital_infrastructure_new" model="key.result.area">
             <field name="name">Digital Infrastructure</field>
             <field name="description">Develop ICT and digital infrastructure for smart city initiatives</field>
             <field name="sequence">40</field>
@@ -201,7 +201,7 @@
         <record id="kpi_fiber_optic_coverage" model="key.performance.indicator">
             <field name="name">Fiber Optic Network Coverage</field>
             <field name="description">Percentage of city areas covered by fiber optic network</field>
-            <field name="kra_id" ref="kra_digital_infrastructure_complete"/>
+            <field name="kra_id" ref="kra_digital_infrastructure_new"/>
             <field name="measurement_unit">%</field>
             <field name="baseline_value">25</field>
             <field name="target_value">75</field>
@@ -216,7 +216,7 @@
         <record id="kpi_wifi_hotspots" model="key.performance.indicator">
             <field name="name">Public WiFi Hotspots Installed</field>
             <field name="description">Number of public WiFi hotspots installed in strategic locations</field>
-            <field name="kra_id" ref="kra_digital_infrastructure_complete"/>
+            <field name="kra_id" ref="kra_digital_infrastructure_new"/>
             <field name="measurement_unit">Number</field>
             <field name="baseline_value">10</field>
             <field name="target_value">50</field>
@@ -231,7 +231,7 @@
         <record id="kpi_smart_traffic_lights" model="key.performance.indicator">
             <field name="name">Smart Traffic Management Systems</field>
             <field name="description">Number of smart traffic lights and management systems installed</field>
-            <field name="kra_id" ref="kra_digital_infrastructure_complete"/>
+            <field name="kra_id" ref="kra_digital_infrastructure_new"/>
             <field name="measurement_unit">Number</field>
             <field name="baseline_value">5</field>
             <field name="target_value">25</field>
