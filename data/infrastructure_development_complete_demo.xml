@@ -13,7 +13,7 @@
             <field name="name">Transport Infrastructure Development</field>
             <field name="description">Develop and maintain efficient transport infrastructure including roads, bridges, and public transit systems</field>
             <field name="sequence">10</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="active">True</field>
         </record>
 
@@ -83,7 +83,7 @@
             <field name="name">Urban Housing Development</field>
             <field name="description">Promote sustainable housing development and improve informal settlements</field>
             <field name="sequence">20</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="active">True</field>
         </record>
 
@@ -138,7 +138,7 @@
             <field name="name">Water and Sanitation Infrastructure</field>
             <field name="description">Develop and maintain water supply and sanitation infrastructure systems</field>
             <field name="sequence">30</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="active">True</field>
         </record>
 
@@ -193,7 +193,7 @@
             <field name="name">Digital Infrastructure</field>
             <field name="description">Develop ICT and digital infrastructure for smart city initiatives</field>
             <field name="sequence">40</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="active">True</field>
         </record>
 
@@ -248,7 +248,7 @@
             <field name="name">Energy Infrastructure</field>
             <field name="description">Develop sustainable energy infrastructure and improve energy efficiency</field>
             <field name="sequence">50</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_complete"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="active">True</field>
         </record>
 
