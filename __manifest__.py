@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'KCCA Performance Management Information System',
-    'version': '18.0.1.0.1',
+    'version': '18.0.1.0.2',
     'category': 'Human Resources/Performance',
     'summary': 'Comprehensive Performance Management System for KCCA',
     'description': """
