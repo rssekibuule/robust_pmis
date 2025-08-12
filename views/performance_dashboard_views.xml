@@ -101,9 +101,9 @@
                 <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_piap_action">
                   <span class="qi-icon">🧩</span><span class="qi-label">PIAP Actions</span>
                 </div>
-                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_directorate_performance_dashboard">
+                <a class="quick-link" tabindex="0" href="/web#action=robust_pmis.action_directorate_performance_dashboard">
                   <span class="qi-icon">🏢</span><span class="qi-label">Directorate Dashboard</span>
-                </div>
+                </a>
                 <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_division_performance_dashboard">
                   <span class="qi-icon">🏘️</span><span class="qi-label">Division Dashboard</span>
                 </div>

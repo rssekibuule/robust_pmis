@@ -48,6 +48,8 @@
                             <group string="Basic Information">
                                 <field name="outcome_id"/>
                                 <field name="responsible_user_id"/>
+                                <field name="responsible_directorate_id"/>
+                                <field name="responsible_division_id"/>
                                 <field name="sequence"/>
                                 <field name="indicator_type"/>
                                 <field name="thematic_area"/>

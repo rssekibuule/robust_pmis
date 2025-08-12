@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
+
         <!-- Directorate Performance Graph Views -->
-        
+
         <!-- Performance Score by Directorate -->
         <record id="view_programme_directorate_rel_graph_performance" model="ir.ui.view">
             <field name="name">programme.directorate.rel.graph.performance</field>
             <field name="model">programme.directorate.rel</field>
             <field name="arch" type="xml">
-                <graph string="Directorate Performance Scores" type="bar">
+                <graph string="Directorate KPI Achievement" type="bar">
                     <field name="directorate_id" type="row"/>
-                    <field name="responsibility_percentage" type="measure"/>
+                    <field name="normalized_achievement_percent" type="measure"/>
                 </graph>
             </field>
         </record>
-        
+
         <!-- Implementation Status by Directorate -->
         <record id="view_programme_directorate_rel_graph_status" model="ir.ui.view">
             <field name="name">programme.directorate.rel.graph.status</field>
@@ -27,7 +27,7 @@
                 </graph>
             </field>
         </record>
-        
+
         <!-- Programme Distribution by Directorate -->
         <record id="view_programme_directorate_rel_graph_distribution" model="ir.ui.view">
             <field name="name">programme.directorate.rel.graph.distribution</field>
@@ -39,7 +39,7 @@
                 </graph>
             </field>
         </record>
-        
+
         <!-- Directorate Performance Pivot View -->
         <record id="view_programme_directorate_rel_pivot" model="ir.ui.view">
             <field name="name">programme.directorate.rel.pivot</field>
@@ -48,22 +48,28 @@
                 <pivot string="Directorate Performance Analysis">
                     <field name="directorate_id" type="row"/>
                     <field name="programme_id" type="col"/>
-                    <field name="responsibility_percentage" type="measure"/>
+                    <field name="normalized_achievement_percent" type="measure"/>
                 </pivot>
             </field>
         </record>
-        
+
         <!-- Directorate Performance Dashboard Kanban -->
         <record id="view_directorate_performance_dashboard" model="ir.ui.view">
             <field name="name">directorate.performance.dashboard</field>
             <field name="model">programme.directorate.rel</field>
             <field name="arch" type="xml">
-                <kanban class="o_kanban_dashboard" default_group_by="directorate_id">
+                <kanban class="o_kanban_dashboard o_directorate_dashboard" default_group_by="directorate_id">
                     <field name="directorate_id"/>
                     <field name="programme_id"/>
+                    <!-- Ensure programme_name is loaded for use in template -->
+                    <field name="programme_name"/>
                     <field name="implementation_role"/>
+                    <field name="normalized_achievement_percent"/>
+                    <!-- Load KPI counts for smarter metrics on cards -->
+                    <field name="owned_indicator_count"/>
+                    <field name="all_indicator_count"/>
+
                     <field name="responsibility_percentage"/>
-                    <field name="master_table_row"/>
                     <field name="active"/>
                     <templates>
                         <t t-name="kanban-box">
@@ -74,8 +80,8 @@
                                             <strong><field name="programme_name"/></strong>
                                         </div>
                                         <div class="col-6 text-right">
-                                            <span t-attf-class="badge #{record.implementation_role.raw_value == 'primary' ? 'badge-success' : 
-                                                                       record.implementation_role.raw_value == 'supporting' ? 'badge-warning' : 
+                                            <span t-attf-class="badge #{record.implementation_role.raw_value == 'primary' ? 'badge-success' :
+                                                                       record.implementation_role.raw_value == 'supporting' ? 'badge-warning' :
                                                                        record.implementation_role.raw_value == 'coordinating' ? 'badge-info' : 'badge-secondary'}">
                                                 <field name="implementation_role"/>
                                             </span>
@@ -84,22 +90,21 @@
                                     <div class="row mt-2">
                                         <div class="col-12">
                                             <div class="progress" style="height: 10px;">
-                                                <div class="progress-bar" role="progressbar" 
-                                                     t-attf-style="width: #{record.responsibility_percentage.raw_value}%"
-                                                     t-attf-class="#{record.responsibility_percentage.raw_value >= 80 ? 'bg-success' : 
-                                                                     record.responsibility_percentage.raw_value >= 50 ? 'bg-warning' : 'bg-danger'}">
+                                                <div class="progress-bar" role="progressbar"
+                                                     t-attf-style="width: #{record.normalized_achievement_percent.raw_value}%"
+                                                     t-attf-class="#{record.normalized_achievement_percent.raw_value >= 80 ? 'bg-success' :
+                                                                     record.normalized_achievement_percent.raw_value >= 50 ? 'bg-warning' : 'bg-danger'}">
                                                 </div>
                                             </div>
-                                            <small class="text-muted">
-                                                Responsibility: <field name="responsibility_percentage" widget="percentage"/>
-                                            </small>
                                         </div>
                                     </div>
-                                    <div class="row mt-2">
-                                        <div class="col-6">
-                                            <small class="text-muted">Row: <field name="master_table_row"/></small>
+                                    <div class="row mt-2 align-items-center">
+                                        <div class="col-8">
+                                            <span class="badge badge-light" title="Owned KPIs / All Programme KPIs">
+                                                KPIs: <t t-esc="record.owned_indicator_count.raw_value"/>/<t t-esc="record.all_indicator_count.raw_value"/>
+                                            </span>
                                         </div>
-                                        <div class="col-6 text-right">
+                                        <div class="col-4 text-right">
                                             <field name="active" widget="boolean_toggle"/>
                                         </div>
                                     </div>
@@ -110,7 +115,7 @@
                 </kanban>
             </field>
         </record>
-        
+
         <!-- Directorate Performance Dashboard Action -->
         <record id="action_directorate_performance_dashboard" model="ir.actions.act_window">
             <field name="name">Directorate Performance Dashboard</field>
@@ -122,6 +127,8 @@
                                           (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_performance')}),
                                           (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
                                           (0, 0, {'view_mode': 'list', 'view_id': ref('view_programme_directorate_rel_tree')})]"/>
+            <!-- Explicitly set search view to avoid auto-generated searchpanel trying to use integer fields as categories -->
+            <field name="search_view_id" ref="robust_pmis.view_programme_directorate_rel_search"/>
             <field name="context">{
                 'search_default_active': 1,
                 'search_default_group_by_directorate': 1
@@ -136,7 +143,7 @@
                 </p>
             </field>
         </record>
-        
+
         <!-- Directorate Performance Analytics Action -->
         <record id="action_directorate_performance_analytics" model="ir.actions.act_window">
             <field name="name">Directorate Performance Analytics</field>
@@ -146,9 +153,10 @@
                                           (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
                                           (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_performance')}),
                                           (0, 0, {'view_mode': 'list', 'view_id': ref('view_programme_directorate_rel_tree')})]"/>
+            <field name="search_view_id" ref="robust_pmis.view_programme_directorate_rel_search"/>
             <field name="context">{
                 'search_default_active': 1,
-                'pivot_measures': ['responsibility_percentage'],
+                'pivot_measures': ['normalized_achievement_percent'],
                 'pivot_row_groupby': ['directorate_id'],
                 'pivot_col_groupby': ['programme_id']
             }</field>
@@ -162,7 +170,7 @@
                 </p>
             </field>
         </record>
-        
+
         <!-- Directorate Budget Performance Action -->
         <record id="action_directorate_budget_performance" model="ir.actions.act_window">
             <field name="name">Directorate Budget Performance</field>
@@ -172,6 +180,7 @@
                                           (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
                                           (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_performance')}),
                                           (0, 0, {'view_mode': 'list', 'view_id': ref('view_programme_directorate_rel_tree')})]"/>
+            <field name="search_view_id" ref="robust_pmis.view_programme_directorate_rel_search"/>
             <field name="context">{
                 'search_default_active': 1,
                 'search_default_group_by_directorate': 1
@@ -186,7 +195,7 @@
                 </p>
             </field>
         </record>
-        
+
         <!-- Directorate Impact Analysis Action -->
         <record id="action_directorate_impact_analysis" model="ir.actions.act_window">
             <field name="name">Directorate Impact Analysis</field>
@@ -196,6 +205,7 @@
                                           (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_distribution')}),
                                           (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_programme_directorate_rel_pivot')}),
                                           (0, 0, {'view_mode': 'list', 'view_id': ref('view_programme_directorate_rel_tree')})]"/>
+            <field name="search_view_id" ref="robust_pmis.view_programme_directorate_rel_search"/>
             <field name="context">{
                 'search_default_active': 1,
                 'search_default_group_by_implementation_role': 1
@@ -210,6 +220,6 @@
                 </p>
             </field>
         </record>
-        
+
     </data>
 </odoo>

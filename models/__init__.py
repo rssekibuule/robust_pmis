@@ -28,3 +28,5 @@ from . import financial_analysis
 from . import financial_integration
 from . import financial_dashboard
 from . import performance_dashboard
+
+from . import legacy_cleanup

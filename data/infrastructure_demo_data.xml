@@ -7,7 +7,7 @@
         <!-- KRA 1: Road Infrastructure Development -->
         <record id="kra_road_infrastructure" model="key.result.area">
             <field name="name">Road Infrastructure Development</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="description">Develop, maintain and upgrade road networks across the city</field>
             <field name="sequence">10</field>
             <field name="active">True</field>
@@ -16,7 +16,7 @@
         <!-- KRA 2: Public Transport Systems -->
         <record id="kra_public_transport" model="key.result.area">
             <field name="name">Public Transport Systems</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="description">Enhance public transport infrastructure and services</field>
             <field name="sequence">20</field>
             <field name="active">True</field>
@@ -25,7 +25,7 @@
         <!-- KRA 3: Water and Sanitation Infrastructure -->
         <record id="kra_water_sanitation" model="key.result.area">
             <field name="name">Water and Sanitation Infrastructure</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="description">Improve water supply and sanitation infrastructure</field>
             <field name="sequence">30</field>
             <field name="active">True</field>
@@ -34,7 +34,7 @@
         <!-- KRA 4: Digital Infrastructure -->
         <record id="kra_digital_infrastructure" model="key.result.area">
             <field name="name">Digital Infrastructure</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="description">Develop ICT and digital infrastructure for smart city initiatives</field>
             <field name="sequence">40</field>
             <field name="active">True</field>
@@ -43,7 +43,7 @@
         <!-- KRA 5: Green Infrastructure -->
         <record id="kra_green_infrastructure" model="key.result.area">
             <field name="name">Green Infrastructure</field>
-            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development"/>
+            <field name="strategic_objective_id" ref="strategic_objective_infrastructure_development_main"/>
             <field name="description">Develop environmentally sustainable infrastructure and green spaces</field>
             <field name="sequence">50</field>
             <field name="active">True</field>

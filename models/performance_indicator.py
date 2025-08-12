@@ -300,7 +300,20 @@ class PerformanceIndicator(models.Model):
         string='Responsible Person',
         help="Person responsible for this indicator"
     )
-    
+
+    # Ownership attribution
+    responsible_directorate_id = fields.Many2one(
+        'kcca.directorate',
+        string='Responsible Directorate',
+        help="Directorate accountable for this programme indicator"
+    )
+    responsible_division_id = fields.Many2one(
+        'kcca.division',
+        string='Responsible Division',
+        domain="[('directorate_id', '=', responsible_directorate_id)]",
+        help="Division accountable for this programme indicator (optional)"
+    )
+
     # Computed parent programme
     parent_programme_id = fields.Many2one(
         'kcca.programme',
@@ -309,7 +322,7 @@ class PerformanceIndicator(models.Model):
         store=True,
         help="The ultimate parent programme"
     )
-    
+
     @api.depends('programme_id', 'outcome_id.programme_id', 'output_id.programme_id', 'piap_action_id.output_id.programme_id')
     def _compute_parent_programme(self):
         for record in self:

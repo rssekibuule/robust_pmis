@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
+
         <!-- Programme-Directorate Relationship Tree View -->
         <record id="view_programme_directorate_rel_tree" model="ir.ui.view">
             <field name="name">programme.directorate.rel.tree</field>
@@ -25,14 +25,51 @@
                     <field name="strategic_objective_id" invisible="1"/>
                 </list>
             </field>
+
         </record>
-        
+
+        <!-- Legacy 'tree' view provided for backward compatibility with legacy routes -->
+        <record id="view_programme_directorate_rel_tree_legacy" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.tree.legacy</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <list string="Programme-Directorate Relationships (Legacy)">
+                    <field name="programme_name"/>
+                    <field name="directorate_name"/>
+                    <field name="implementation_role"/>
+                    <field name="responsibility_percentage"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Backward-compatibility Tree View for routes expecting 'tree' type -->
+        <record id="view_programme_directorate_rel_tree_compat" model="ir.ui.view">
+            <field name="name">programme.directorate.rel.tree.compat</field>
+            <field name="model">programme.directorate.rel</field>
+            <field name="arch" type="xml">
+                <list string="Programme-Directorate Relationships (Compat)"
+                      decoration-info="implementation_role=='primary'"
+                      decoration-muted="not active">
+                    <field name="programme_name" string="Programme"/>
+                    <field name="directorate_name" string="Implementing Directorate"/>
+                    <field name="implementation_role" string="Role"/>
+                    <field name="responsibility_percentage" string="Responsibility %"/>
+                    <field name="strategic_objective_name" string="Strategic Objective" optional="hide"/>
+                    <field name="master_table_row" string="Master Table Row" optional="hide"/>
+                    <field name="active" string="Active"/>
+                    <field name="programme_id" invisible="1"/>
+                    <field name="directorate_id" invisible="1"/>
+                    <field name="strategic_objective_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
         <!-- Programme-Directorate Relationship Form View -->
         <record id="view_programme_directorate_rel_form" model="ir.ui.view">
             <field name="name">programme.directorate.rel.form</field>
             <field name="model">programme.directorate.rel</field>
             <field name="arch" type="xml">
-                <form string="Programme-Directorate Relationship">
+                <form string="Programme-Directorate Relationship" class="pdrel_form">
                     <header>
                         <field name="active" widget="boolean_toggle"/>
                     </header>
@@ -42,7 +79,7 @@
                                     type="object"
                                     class="oe_stat_button"
                                     icon="fa-tachometer"
-                                    invisible="performance_indicator_count == 0">
+                                    >
                                 <field name="performance_indicator_count" widget="statinfo" string="Performance Indicators"/>
                             </button>
 
@@ -77,7 +114,9 @@
                                     invisible="intermediate_outcome_count == 0">
                                 <field name="intermediate_outcome_count" widget="statinfo" string="Intermediate Outcomes"/>
                             </button>
+
                         </div>
+                        <!-- notebook moved below relationship info for better layout in Odoo 18 -->
 
                         <div class="oe_title">
                             <h1>
@@ -85,21 +124,38 @@
                             </h1>
                         </div>
 
+
+                        <!-- Professional Performance Overview (compact) -->
+                        <group name="performance_overview" string="Performance Overview" colspan="4" class="kcca-highlight" modifiers="{'invisible': [('owned_indicator_count','=',0)]}">
+                            <group col="4" class="o_inner_group">
+                                <field name="normalized_achievement_percent" widget="progressbar" string="Overall Achievement (%)" readonly="1"/>
+                                <field name="performance_status" string="Status" readonly="1"/>
+                                <field name="owned_indicator_count" string="Owned KPIs" readonly="1"/>
+                                <field name="all_indicator_count" string="Total KPIs (Programme)" readonly="1"/>
+                            </group>
+                            <separator string=""/>
+                            <div class="o_row" modifiers="{'invisible': [('owned_indicator_count','=',0)]}" style="margin:4px 0 8px 0; font-size:12px; color:#666;">
+                                <span class="o_form_label" style="margin-right:4px;">Snapshot:</span>
+                                <span>This relationship owns </span><field name="owned_indicator_count" nolabel="1" readonly="1" style="display:inline-block; width:auto;"/><span> indicator(s) contributing to programme performance.</span>
+                            </div>
+                        </group>
+
+
                         <group>
-                            <group name="relationship_info" string="Relationship Information">
+                            <group name="relationship_info" string="Relationship Information" class="kcca-highlight">
                                 <field name="programme_id" options="{'no_create': True}"/>
                                 <field name="directorate_id" options="{'no_create': True}"/>
                                 <field name="strategic_objective_id" options="{'no_create': True}"/>
                                 <field name="master_table_row"/>
                             </group>
-                            
-                            <group name="implementation_details" string="Implementation Details">
+
+                            <group name="implementation_details" string="Implementation Details" class="kcca-highlight">
                                 <field name="implementation_role"/>
                                 <field name="responsibility_percentage"/>
                             </group>
                         </group>
-                        
-                        <group name="computed_fields" string="Computed Information">
+
+                        <group name="computed_fields" string="Reference &amp; Status" colspan="4" class="kcca-highlight">
                             <group>
                                 <field name="programme_name" readonly="1"/>
                                 <field name="directorate_name" readonly="1"/>
@@ -111,12 +167,38 @@
                                 <field name="strategic_objective_sequence" readonly="1"/>
                             </group>
                         </group>
+
+                        <notebook>
+                            <page string="Owned Performance Indicators">
+                                <group col="1">
+                                    <field name="contributing_indicator_ids" options="{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}" readonly="1" nolabel="1">
+                                        <list string="Owned Performance Indicators" create="0" edit="0" delete="0"
+                                              decoration-success="status == 'achieved'"
+                                              decoration-warning="status in ('lagging','at_risk')"
+                                              decoration-danger="status in ('not_started','critical')">
+                                            <field name="name" string="Indicator"/>
+                                            <field name="current_value" string="Current"/>
+                                            <field name="target_value" string="Target" optional="hide"/>
+                                            <field name="achievement_percentage" widget="progressbar" string="Achv (%)"/>
+                                            <field name="status" string="Status"/>
+                                            <field name="contribution_weight" string="Weight" optional="hide"/>
+                                            <field name="strategic_kpi_ids" string="Strategic Links" optional="hide"/>
+                                            <field name="write_date" string="Last Update" optional="hide"/>
+                                        </list>
+                                    </field>
+                                    <div modifiers="{'invisible': [('owned_indicator_count','&gt;',0)]}" class="alert alert-info" role="status">
+                                        No owned indicators yet. Use the Performance Indicators screen to attribute KPIs to this directorate.
+                                    </div>
+                                </group>
+                            </page>
+                        </notebook>
+
                     </sheet>
                     <chatter/>
                 </form>
             </field>
         </record>
-        
+
         <!-- Programme-Directorate Relationship Kanban View -->
         <record id="view_programme_directorate_rel_kanban" model="ir.ui.view">
             <field name="name">programme.directorate.rel.kanban</field>
@@ -146,9 +228,8 @@
                                             <div t-if="record.implementation_role.raw_value">
                                                 <i class="fa fa-user" title="Implementation Role"/> <field name="implementation_role"/>
                                             </div>
-                                            <div t-if="record.responsibility_percentage.raw_value">
-                                                <i class="fa fa-percent" title="Responsibility Percentage"/> <field name="responsibility_percentage"/>%
-                                            </div>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +239,7 @@
                 </kanban>
             </field>
         </record>
-        
+
         <!-- Programme-Directorate Relationship Search View -->
         <record id="view_programme_directorate_rel_search" model="ir.ui.view">
             <field name="name">programme.directorate.rel.search</field>
@@ -169,43 +250,60 @@
                     <field name="directorate_id" string="Directorate"/>
                     <field name="strategic_objective_id" string="Strategic Objective"/>
                     <field name="implementation_role" string="Role"/>
-                    
+
                     <filter name="active" string="Active" domain="[('active', '=', True)]"/>
                     <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
-                    
+
                     <separator/>
-                    <filter name="primary_implementer" string="Primary Implementer" 
+                    <filter name="primary_implementer" string="Primary Implementer"
                             domain="[('implementation_role', '=', 'primary')]"/>
-                    <filter name="supporting_implementer" string="Supporting Implementer" 
+                    <filter name="supporting_implementer" string="Supporting Implementer"
                             domain="[('implementation_role', '=', 'supporting')]"/>
-                    <filter name="coordinating_role" string="Coordinating Role" 
+                    <filter name="coordinating_role" string="Coordinating Role"
                             domain="[('implementation_role', '=', 'coordinating')]"/>
-                    <filter name="monitoring_role" string="Monitoring Role" 
+                    <filter name="monitoring_role" string="Monitoring Role"
                             domain="[('implementation_role', '=', 'monitoring')]"/>
-                    
+
                     <separator/>
+
+                        <separator/>
+                        <filter name="perf_achieved" string="Achieved (≥100%)" domain="[('normalized_achievement_percent','&gt;=',100)]"/>
+                        <filter name="perf_high" string="High (80–99%)" domain="[('normalized_achievement_percent','&gt;=',80),('normalized_achievement_percent','&lt;',100)]"/>
+                        <filter name="perf_medium" string="Medium (50–79%)" domain="[('normalized_achievement_percent','&gt;=',50),('normalized_achievement_percent','&lt;',80)]"/>
+                        <filter name="perf_low" string="Low (1–49%)" domain="[('normalized_achievement_percent','&gt;',0),('normalized_achievement_percent','&lt;',50)]"/>
+                        <filter name="perf_none" string="No Indicators" domain="[('owned_indicator_count','=',0)]"/>
+                        <filter name="has_owned_indicators" string="Has Directorate-Owned Indicators" domain="[('owned_indicator_count','&gt;',0)]"/>
+
                     <filter name="row_1" string="Row 1" domain="[('master_table_row', '=', 1)]"/>
                     <filter name="row_2" string="Row 2" domain="[('master_table_row', '=', 2)]"/>
                     <filter name="row_3" string="Row 3" domain="[('master_table_row', '=', 3)]"/>
                     <filter name="row_4" string="Row 4" domain="[('master_table_row', '=', 4)]"/>
+
+                        <searchpanel>
+                            <field name="programme_id"/>
+                            <field name="directorate_id"/>
+                            <field name="strategic_objective_id"/>
+                            <field name="implementation_role"/>
+                        </searchpanel>
+
                     <filter name="row_5" string="Row 5" domain="[('master_table_row', '=', 5)]"/>
-                    
+
                     <group expand="0" string="Group By">
-                        <filter name="group_by_master_table_row" string="Master Table Row" 
+                        <filter name="group_by_master_table_row" string="Master Table Row"
                                 context="{'group_by': 'master_table_row'}"/>
-                        <filter name="group_by_programme" string="Programme" 
+                        <filter name="group_by_programme" string="Programme"
                                 context="{'group_by': 'programme_id'}"/>
-                        <filter name="group_by_directorate" string="Directorate" 
+                        <filter name="group_by_directorate" string="Directorate"
                                 context="{'group_by': 'directorate_id'}"/>
-                        <filter name="group_by_strategic_objective" string="Strategic Objective" 
+                        <filter name="group_by_strategic_objective" string="Strategic Objective"
                                 context="{'group_by': 'strategic_objective_id'}"/>
-                        <filter name="group_by_implementation_role" string="Implementation Role" 
+                        <filter name="group_by_implementation_role" string="Implementation Role"
                                 context="{'group_by': 'implementation_role'}"/>
                     </group>
                 </search>
             </field>
         </record>
-        
+
         <!-- Programme-Directorate Relationship Action -->
         <record id="action_programme_directorate_rel" model="ir.actions.act_window">
             <field name="name">Programme-Directorate Relationships</field>

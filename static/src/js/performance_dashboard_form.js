@@ -450,15 +450,9 @@ export class PerformanceDashboardController extends FormController {
             card.addEventListener('click', async (e) => {
                 const xmlid = e.currentTarget.dataset.actionXmlid;
                 if (!xmlid) return;
-                if (this.action && this.action.doAction) {
-                    try {
-                        await this.action.doAction(xmlid);
-                        return;
-                    } catch (err) {
-                        console.warn('doAction failed, falling back to hash navigation', err);
-                    }
-                }
-                window.open('/web#action=' + xmlid, '_self');
+                // Always use modern hash navigation to avoid legacy /odoo/action-* route
+                const safeUrl = `/web#action=${xmlid}&view_type=kanban`;
+                window.open(safeUrl, '_self');
             });
             // Basic keyboard accessibility
             card.addEventListener('keydown', (e) => {
@@ -486,8 +480,15 @@ export class PerformanceDashboardController extends FormController {
             else { entityEl.innerHTML = '<option value="all">All</option>'; return; }
 
             const records = await this.orm.searchRead(model, [['active', '=', true]], ['name']);
+            // De-duplicate by display name to avoid confusing duplicate options in dropdown
+            const seen = new Set();
+            const uniqueRecords = [];
+            for (const r of records) {
+                const key = (r.name || '').trim().toLowerCase();
+                if (!seen.has(key)) { seen.add(key); uniqueRecords.push(r); }
+            }
             const options = [`<option value="all">${labelAll}</option>`]
-                .concat(records.map(r => `<option value="${r.id}">${r.name}</option>`));
+                .concat(uniqueRecords.map(r => `<option value="${r.id}">${r.name}</option>`));
             entityEl.innerHTML = options.join('');
         } catch (error) {
             console.error('Error populating entities:', error);

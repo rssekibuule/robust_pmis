@@ -68,12 +68,8 @@ Hierarchical Structure:
         # Infrastructure strategic goal and objective
         'data/infrastructure_strategic_goal.xml',
 
-        # Demo data for Infrastructure Development objective
-        'data/strategic_objective_infrastructure.xml',
-        'data/demo_infrastructure_kra_kpi.xml',
-        'data/infrastructure_demo_data.xml',
+        # Single, de-duplicated demo dataset for Infrastructure Development objective
         'data/infrastructure_development_complete_demo.xml',
-        'data/infrastructure_development_demo_data.xml',
 
         # Views - Strategic Management
         'views/strategic_goal_views.xml',
@@ -152,7 +148,6 @@ Hierarchical Structure:
         'views/programme_directorate_rel_menus.xml',
         'views/division_performance_menus.xml',
         'views/directorate_performance_menus.xml',
-
         # Security (loaded after models)
         'security/ir.model.access.csv',
         # Dashboard data - commented out due to method signature issues
@@ -169,6 +164,8 @@ Hierarchical Structure:
             'robust_pmis/static/src/js/form_layout_override.js',
             # Ensure Chart.js is loaded before any charts code
             'web/static/lib/Chart/Chart.js',
+            # Normalize legacy tree->list in hash before the client boots
+            'robust_pmis/static/src/js/legacy_view_alias.js',
             'robust_pmis/static/src/js/kcca_directorate_charts.js',
             # Updated dashboard for Odoo 18 compatibility
             'robust_pmis/static/src/js/performance_dashboard_form.js',

@@ -43,18 +43,18 @@ class PerformanceDashboardController(http.Controller):
         dashboard = request.env['performance.dashboard'].search([], limit=1)
         if not dashboard:
             dashboard = request.env['performance.dashboard'].create({})
-        
+
         return dashboard.get_realtime_metrics()
-    
+
     @http.route('/performance/dashboard/chart/<string:chart_type>', type='json', auth='user')
     def get_chart_data(self, chart_type):
         """Return specific chart data"""
         dashboard = request.env['performance.dashboard'].search([], limit=1)
         if not dashboard:
             dashboard = request.env['performance.dashboard'].create({})
-            
+
         data = dashboard.get_dashboard_data()
-        
+
         if chart_type == 'goals_performance':
             return {
                 'labels': [goal['name'] for goal in data['goals_performance']],
@@ -70,7 +70,7 @@ class PerformanceDashboardController(http.Controller):
                     ]
                 }]
             }
-        
+
         elif chart_type == 'distribution':
             dist = data['distribution']
             return {
@@ -85,7 +85,7 @@ class PerformanceDashboardController(http.Controller):
                     ]
                 }]
             }
-        
+
         elif chart_type == 'top_kpis':
             top_kpis = data['top_kpis'][:10]  # Top 10 KPIs
             return {
@@ -98,15 +98,86 @@ class PerformanceDashboardController(http.Controller):
                     'fill': True
                 }]
             }
-        
+
         return {}
-    
+
     @http.route('/performance/dashboard/summary', type='json', auth='user')
+
+    @http.route(['/odoo/action-<string:xmlid>'], type='http', auth='user')
+    def legacy_action_redirect(self, xmlid, **kw):
+        """Redirect legacy /odoo/action-<xmlid>?... to /web#action=<xmlid>&...
+        This preserves any useful query params such as view_type and avoids
+        the deprecated route which can trigger 'tree' default view errors.
+        """
+        try:
+            # Preserve only safe params to append to the hash
+            params = []
+            view_type = kw.get('view_type')
+            if view_type:
+                # Normalize legacy 'tree' to 'list' for Odoo 18
+                if view_type == 'tree':
+                    view_type = 'list'
+                params.append(f"view_type={view_type}")
+            menu_id = kw.get('menu_id')
+            if menu_id:
+                params.append(f"menu_id={menu_id}")
+            model = kw.get('model')
+            if model:
+                params.append(f"model={model}")
+            # Build target hash URL
+            suffix = ('&' + '&'.join(params)) if params else ''
+            target = f"/web#action={xmlid}{suffix}"
+            return request.redirect(target, code=301)
+        except Exception:
+            # Fallback to base web client
+            return request.redirect('/web', code=302)
+
+
+    @http.route(['/odoo/action-<int:action_id>'], type='http', auth='user')
+    def legacy_action_id_redirect(self, action_id, **kw):
+        """Redirect legacy /odoo/action-<id> to /web#action=<id> preserving safe params."""
+        try:
+            params = []
+            view_type = kw.get('view_type')
+            if view_type:
+                if view_type == 'tree':
+                    view_type = 'list'
+                params.append(f"view_type={view_type}")
+            menu_id = kw.get('menu_id')
+            if menu_id:
+                params.append(f"menu_id={menu_id}")
+            model = kw.get('model')
+            if model:
+                params.append(f"model={model}")
+            suffix = ('&' + '&'.join(params)) if params else ''
+            target = f"/web#action={action_id}{suffix}"
+            return request.redirect(target, code=301)
+        except Exception:
+            return request.redirect('/web', code=302)
+
+    # Explicit redirects for stubborn legacy links observed in screenshots
+    @http.route(['/odoo/action-robust_pmis.action_directorate_performance_dashboard'], type='http', auth='user')
+    def legacy_directorate_dashboard(self, **kw):
+        params = []
+        if kw.get('view_type'):
+            params.append(f"view_type={kw.get('view_type')}")
+        target = '/web#action=robust_pmis.action_directorate_performance_dashboard' + (('&' + '&'.join(params)) if params else '')
+        return request.redirect(target, code=301)
+
+    @http.route(['/odoo/action-robust_pmis.action_division_performance_dashboard'], type='http', auth='user')
+    def legacy_division_dashboard(self, **kw):
+        params = []
+        if kw.get('view_type'):
+            params.append(f"view_type={kw.get('view_type')}")
+        target = '/web#action=robust_pmis.action_division_performance_dashboard' + (('&' + '&'.join(params)) if params else '')
+        return request.redirect(target, code=301)
+
+
     def get_summary_stats(self):
         """Return summary statistics for dashboard widgets"""
         dashboard = request.env['performance.dashboard'].search([], limit=1)
         if not dashboard:
             dashboard = request.env['performance.dashboard'].create({})
-        
+
         data = dashboard.get_dashboard_data()
         return data['summary']

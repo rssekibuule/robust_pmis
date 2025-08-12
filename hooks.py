@@ -32,14 +32,15 @@ def cleanup_duplicate_goals(env):
     print(f"[post_init] Duplicate cleanup complete. Removed {removed} duplicate goal(s).")
     return True
 
-# Safety cleanup for duplicate Strategic Objectives within a Strategic Goal
-# Ensures uniqueness by (goal, name) and preserves KRAs/KPIs by migrating them
-# to the preferred canonical objective when possible.
+# Safety cleanup for duplicate Strategic Objectives
+# 1) Dedupes within a specific Strategic Goal
+# 2) Additionally, dedupes globally by name keeping the canonical XML-defined record
+#    and migrating KRAs and programme links to it.
+# This makes repeated DB reloads idempotent and prevents duplicate entries in dropdowns.
 def cleanup_duplicate_objectives(env):
     SO = env['strategic.objective']
-    KRA = env['key.result.area']
 
-    def dedupe(goal_xmlid, keep_xmlid, name):
+    def dedupe_within_goal(goal_xmlid, keep_xmlid, name):
         try:
             goal = env.ref(goal_xmlid)
         except Exception:
@@ -62,30 +63,67 @@ def cleanup_duplicate_objectives(env):
             if dup.kra_ids:
                 dup.kra_ids.write({'strategic_objective_id': keep.id})
                 moved += len(dup.kra_ids)
+            # Merge programme links (M2M)
+            if dup.programme_ids:
+                keep.write({'programme_ids': [(4, pid) for pid in dup.programme_ids.ids]})
             dup.unlink()
             deleted += 1
         if deleted:
             print(f"[post_init] Objectives deduped for goal '{goal.name}': kept {keep.id}, moved {moved} KRAs, deleted {deleted} dup(s)")
         return deleted
 
+    def dedupe_globally(keep_xmlid, name):
+        deleted = 0
+        moved = 0
+        try:
+            keep = env.ref(keep_xmlid)
+        except Exception:
+            keep = SO.search([('name', '=', name)], limit=1)
+            if not keep:
+                return 0
+        dups = SO.search([('name', '=', name), ('id', '!=', keep.id)])
+        for dup in dups:
+            # move KRAs
+            if dup.kra_ids:
+                dup.kra_ids.write({'strategic_objective_id': keep.id})
+                moved += len(dup.kra_ids)
+            # merge programme links
+            if dup.programme_ids:
+                keep.write({'programme_ids': [(4, pid) for pid in dup.programme_ids.ids]})
+            dup.unlink()
+            deleted += 1
+        if deleted:
+            print(f"[post_init] Global objectives deduped for '{name}': kept {keep.id}, moved {moved} KRAs, deleted {deleted} dup(s)")
+        return deleted
+
     removed = 0
-    removed += dedupe(
+    removed += dedupe_within_goal(
         'robust_pmis.strategic_goal_improve_urban_infrastructure',
         'robust_pmis.strategic_objective_infrastructure_development_main',
         'Infrastructure Development'
     )
+    # Also remove any other 'Infrastructure Development' objectives seeded by older demo files
+    removed += dedupe_globally('robust_pmis.strategic_objective_infrastructure_development_main', 'Infrastructure Development')
+
     print(f"[post_init] Duplicate objective cleanup complete. Removed {removed} duplicate objective(s).")
     return True
 
 
 def post_init_hook(env):
-    """Post-installation hook to create transport infrastructure data and cleanup duplicates"""
+    """Post-installation hook: cleanup duplicates and normalize legacy views"""
     # Always perform duplicate cleanup first to keep data consistent
     try:
         cleanup_duplicate_goals(env)
         cleanup_duplicate_objectives(env)
     except Exception as e:
         print(f"[post_init] Duplicate cleanup failed: {e}")
+
+    # Normalize legacy 'tree' view types to 'list' on actions and view rels
+    try:
+        result = env['ir.actions.act_window'].fix_legacy_tree_view_modes()
+        print(f"[post_init] Legacy view types normalized: {result}")
+    except Exception as e:
+        print(f"[post_init] Legacy view normalization failed: {e}")
 
     # Check if transport programme already exists
     existing_programme = env['kcca.programme'].search([('code', '=', 'ITIS')], limit=1)
