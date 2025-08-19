@@ -14,7 +14,7 @@
                     <field name="programme_name" string="Programme" width="300px"/>
                     <field name="directorate_name" string="Implementing Directorate" width="200px"/>
                     <field name="implementation_role" string="Role" width="100px"/>
-                    <field name="responsibility_percentage" string="Responsibility %" width="120px"/>
+
                     <field name="strategic_objective_name" string="Strategic Objective" optional="hide" width="250px"/>
                     <field name="master_table_row" string="Master Table Row" optional="hide" width="80px"/>
                     <field name="active" string="Active" width="80px"/>
@@ -37,7 +37,7 @@
                     <field name="programme_name"/>
                     <field name="directorate_name"/>
                     <field name="implementation_role"/>
-                    <field name="responsibility_percentage"/>
+
                     <field name="active"/>
                 </list>
             </field>
@@ -54,7 +54,7 @@
                     <field name="programme_name" string="Programme"/>
                     <field name="directorate_name" string="Implementing Directorate"/>
                     <field name="implementation_role" string="Role"/>
-                    <field name="responsibility_percentage" string="Responsibility %"/>
+
                     <field name="strategic_objective_name" string="Strategic Objective" optional="hide"/>
                     <field name="master_table_row" string="Master Table Row" optional="hide"/>
                     <field name="active" string="Active"/>
@@ -125,73 +125,66 @@
                         </div>
 
 
-                        <!-- Professional Performance Overview (compact) -->
-                        <group name="performance_overview" string="Performance Overview" colspan="4" class="kcca-highlight" modifiers="{'invisible': [('owned_indicator_count','=',0)]}">
-                            <group col="4" class="o_inner_group">
+                        <!-- Performance Overview (compact grid) -->
+                        <group name="performance_overview" string="Performance Overview" colspan="4" class="kcca-highlight">
+                            <group col="2" class="performance-overview-fields">
                                 <field name="normalized_achievement_percent" widget="progressbar" string="Overall Achievement (%)" readonly="1"/>
                                 <field name="performance_status" string="Status" readonly="1"/>
-                                <field name="owned_indicator_count" string="Owned KPIs" readonly="1"/>
-                                <field name="all_indicator_count" string="Total KPIs (Programme)" readonly="1"/>
+                                <!-- Show the count that matches the aggregation source -->
+                                <field name="owned_indicator_count" string="Owned KPIs" readonly="1" invisible="[('using_programme_aggregate','=',True)]"/>
+                                <field name="all_indicator_count" string="Programme KPIs" readonly="1" invisible="[('using_programme_aggregate','=',False)]"/>
+                                <field name="using_programme_aggregate" invisible="1"/>
                             </group>
                             <separator string=""/>
-                            <div class="o_row" modifiers="{'invisible': [('owned_indicator_count','=',0)]}" style="margin:4px 0 8px 0; font-size:12px; color:#666;">
+                            <group name="snapshot_owned" colspan="4" class="o_no_label" invisible="[('owned_indicator_count','=',0)]">
                                 <span class="o_form_label" style="margin-right:4px;">Snapshot:</span>
-                                <span>This relationship owns </span><field name="owned_indicator_count" nolabel="1" readonly="1" style="display:inline-block; width:auto;"/><span> indicator(s) contributing to programme performance.</span>
-                            </div>
+                                <span>This relationship owns</span>
+                                <field name="owned_indicator_count" nolabel="1" readonly="1" class="o_inline o_stat_count"/>
+                                <span>indicator(s) contributing to programme performance.</span>
+                            </group>
+                            <group name="snapshot_programme" colspan="4" class="o_no_label" invisible="[('using_programme_aggregate','=',False)]">
+                                <span class="o_form_label" style="margin-right:4px;">Snapshot:</span>
+                                <span>No directorate-owned indicators yet, showing programme totals only.</span>
+                            </group>
+                            <group name="snapshot_none" colspan="4" class="o_no_label" invisible="['|', ('owned_indicator_count','!=',0), ('all_indicator_count','!=',0)]">
+                                <span class="o_form_label" style="margin-right:4px;">Snapshot:</span>
+                                <span>No indicators defined yet.</span>
+                            </group>
+
                         </group>
 
-
-                        <group>
-                            <group name="relationship_info" string="Relationship Information" class="kcca-highlight">
-                                <field name="programme_id" options="{'no_create': True}"/>
-                                <field name="directorate_id" options="{'no_create': True}"/>
-                                <field name="strategic_objective_id" options="{'no_create': True}"/>
-                                <field name="master_table_row"/>
-                            </group>
-
-                            <group name="implementation_details" string="Implementation Details" class="kcca-highlight">
-                                <field name="implementation_role"/>
-                                <field name="responsibility_percentage"/>
-                            </group>
-                        </group>
-
-                        <group name="computed_fields" string="Reference &amp; Status" colspan="4" class="kcca-highlight">
-                            <group>
-                                <field name="programme_name" readonly="1"/>
-                                <field name="directorate_name" readonly="1"/>
-                                <field name="strategic_objective_name" readonly="1"/>
-                            </group>
-                            <group>
-                                <field name="programme_sequence" readonly="1"/>
-                                <field name="directorate_sequence" readonly="1"/>
-                                <field name="strategic_objective_sequence" readonly="1"/>
-                            </group>
-                        </group>
 
                         <notebook>
-                            <page string="Owned Performance Indicators">
-                                <group col="1">
-                                    <field name="contributing_indicator_ids" options="{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}" readonly="1" nolabel="1">
-                                        <list string="Owned Performance Indicators" create="0" edit="0" delete="0"
-                                              decoration-success="status == 'achieved'"
-                                              decoration-warning="status in ('lagging','at_risk')"
-                                              decoration-danger="status in ('not_started','critical')">
-                                            <field name="name" string="Indicator"/>
-                                            <field name="current_value" string="Current"/>
-                                            <field name="target_value" string="Target" optional="hide"/>
-                                            <field name="achievement_percentage" widget="progressbar" string="Achv (%)"/>
-                                            <field name="status" string="Status"/>
-                                            <field name="contribution_weight" string="Weight" optional="hide"/>
-                                            <field name="strategic_kpi_ids" string="Strategic Links" optional="hide"/>
-                                            <field name="write_date" string="Last Update" optional="hide"/>
-                                        </list>
-                                    </field>
-                                    <div modifiers="{'invisible': [('owned_indicator_count','&gt;',0)]}" class="alert alert-info" role="status">
-                                        No owned indicators yet. Use the Performance Indicators screen to attribute KPIs to this directorate.
-                                    </div>
+                            <page string="Relationship">
+                                <group>
+                                    <group name="relationship_info" string="Relationship Information" class="kcca-highlight">
+                                        <field name="programme_id" options="{'no_create': True}"/>
+                                        <field name="directorate_id" options="{'no_create': True}"/>
+                                        <field name="strategic_objective_id" options="{'no_create': True}"/>
+                                        <field name="master_table_row"/>
+                                    </group>
+
+                                    <group name="implementation_details" string="Implementation Details" class="kcca-highlight">
+                                        <field name="implementation_role"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Reference &amp; Status">
+                                <group name="computed_fields" string="Reference &amp; Status" colspan="4" class="kcca-highlight">
+                                    <group>
+                                        <field name="programme_name" readonly="1"/>
+                                        <field name="directorate_name" readonly="1"/>
+                                        <field name="strategic_objective_name" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="programme_sequence" readonly="1"/>
+                                        <field name="directorate_sequence" readonly="1"/>
+                                        <field name="strategic_objective_sequence" readonly="1"/>
+                                    </group>
                                 </group>
                             </page>
                         </notebook>
+
 
                     </sheet>
                     <chatter/>
@@ -208,11 +201,11 @@
                     <field name="programme_name"/>
                     <field name="directorate_name"/>
                     <field name="implementation_role"/>
-                    <field name="responsibility_percentage"/>
+
                     <field name="strategic_objective_name"/>
                     <field name="active"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click #{!record.active.raw_value ? 'o_kanban_color_2' : ''}">
                                 <div class="o_kanban_content">
                                     <div class="o_kanban_record_top">
@@ -360,7 +353,7 @@
                     <field name="master_table_row"/>
                     <field name="active"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div class="oe_kanban_card oe_kanban_global_click" style="margin: 5px; border-left: 4px solid #007cba;">
                                 <div class="o_kanban_content">
                                     <div class="o_kanban_record_top">

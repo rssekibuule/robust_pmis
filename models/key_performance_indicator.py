@@ -211,7 +211,7 @@ class KeyPerformanceIndicator(models.Model):
             if not record.target_value:
                 record.achievement_percentage = 0.0
                 continue
-                
+
             if record.kpi_type == 'increasing':
                 # Higher is better
                 if record.target_value > 0:

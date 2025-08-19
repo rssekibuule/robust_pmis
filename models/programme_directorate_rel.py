@@ -157,6 +157,7 @@ class ProgrammeDirectorateRel(models.Model):
         'performance.indicator',
         string='All Programme Indicators',
         compute='_compute_contributing_indicators',
+        search='_search_all_programme_indicator_ids',
         help="All programme indicators under the selected programme (irrespective of directorate)"
     )
 
@@ -176,7 +177,8 @@ class ProgrammeDirectorateRel(models.Model):
     normalized_target_percent = fields.Float(
         string='Normalized Target (%)',
         compute='_compute_normalized_performance',
-        store=False,
+        store=True,
+        compute_sudo=True,
         help='Target expressed as normalized percentage (100% if indicators exist, else 0%)'
     )
 
@@ -184,6 +186,7 @@ class ProgrammeDirectorateRel(models.Model):
         string='Achievement (%)',
         compute='_compute_normalized_performance',
         store=True,
+        compute_sudo=True,
         aggregator='avg',
         help='Weighted average achievement (%) of contributing indicators'
     )
@@ -194,7 +197,15 @@ class ProgrammeDirectorateRel(models.Model):
         ('medium', 'Medium (50-79%)'),
         ('high', 'High (≥80%)'),
         ('achieved', 'Achieved (≥100%)'),
-    ], string='Status', compute='_compute_normalized_performance', store=False)
+    ], string='Status', compute='_compute_normalized_performance', store=True, compute_sudo=True)
+
+    using_programme_aggregate = fields.Boolean(
+        string='Using Programme Aggregate',
+        compute='_compute_normalized_performance',
+        store=True,
+        compute_sudo=True,
+        help='True when there are no owned KPIs and the achievement is aggregated from all programme KPIs.'
+    )
 
     @api.depends('programme_id.name', 'directorate_id.name', 'implementation_role')
     def _compute_display_name(self):
@@ -295,6 +306,15 @@ class ProgrammeDirectorateRel(models.Model):
             return [('id', 'in', self.search([]).filtered(lambda r: len(r.contributing_indicator_ids) > 0).ids)]
         if operator in ('=', '==') and value == 0:
             return [('id', 'in', self.search([]).filtered(lambda r: len(r.contributing_indicator_ids) == 0).ids)]
+        # Fallback: not optimized for all operators, defer to in-memory filtering
+        all_recs = self.search([])
+        if operator in ('>', '>=', '<', '<=', '=', '==', '!='):
+            matched = []
+            for r in all_recs:
+                cnt = len(r.contributing_indicator_ids)
+                if eval(f"cnt {operator.replace('==','=')} {value}"):
+                    matched.append(r.id)
+            return [('id', 'in', matched)]
         return []
 
     def _search_all_indicator_count(self, operator, value):
@@ -303,6 +323,46 @@ class ProgrammeDirectorateRel(models.Model):
             return [('id', 'in', self.search([]).filtered(lambda r: len(r.all_programme_indicator_ids) > 0).ids)]
         if operator in ('=', '==') and value == 0:
             return [('id', 'in', self.search([]).filtered(lambda r: len(r.all_programme_indicator_ids) == 0).ids)]
+        return []
+
+    def _search_all_programme_indicator_ids(self, operator, value):
+        """Search helper to allow dependencies to resolve. Supports [('all_programme_indicator_ids','in', [ids])]."""
+        Indicator = self.env['performance.indicator']
+        if operator in ('in', '='):
+            ids = value
+            if isinstance(ids, models.BaseModel):
+                ids = ids.ids
+            if not isinstance(ids, (list, tuple)):
+                ids = [ids]
+            ids = [int(i) for i in ids if i]
+            if not ids:
+                return [('id', '=', 0)]
+            indicators = Indicator.browse(ids)
+            # Determine programme IDs from indicators
+            programme_ids = set()
+            for ind in indicators:
+                if ind.programme_id:
+                    programme_ids.add(ind.programme_id.id)
+                elif ind.outcome_id and getattr(ind.outcome_id, 'objective_id', False):
+                    programme_ids.add(ind.outcome_id.objective_id.programme_id.id)
+                elif ind.output_id and getattr(ind.output_id, 'intervention_id', False):
+                    outcome = ind.output_id.intervention_id.outcome_id
+                    if outcome and outcome.objective_id:
+                        programme_ids.add(outcome.objective_id.programme_id.id)
+                elif ind.piap_action_id and getattr(ind.piap_action_id, 'output_id', False):
+                    out = ind.piap_action_id.output_id
+                    if out and out.intervention_id and out.intervention_id.outcome_id and out.intervention_id.outcome_id.objective_id:
+                        programme_ids.add(out.intervention_id.outcome_id.objective_id.programme_id.id)
+            if not programme_ids:
+                return [('id', '=', 0)]
+            # Any relation whose programme matches any of those programme_ids
+            domain = ['|'] * (len(programme_ids) - 1)
+            for pid in programme_ids:
+                domain += [('programme_id', '=', pid)]
+            return domain
+        elif operator in ('not in', '!='):
+            pos_domain = self._search_all_programme_indicator_ids('in', value)
+            return ['!', pos_domain] if pos_domain else []
         return []
 
     def _search_contributing_indicator_ids(self, operator, value):
@@ -364,15 +424,24 @@ class ProgrammeDirectorateRel(models.Model):
         'directorate_id',
         'contributing_indicator_ids',
         'contributing_indicator_ids.achievement_percentage',
-        'contributing_indicator_ids.contribution_weight'
+        'contributing_indicator_ids.contribution_weight',
+        'all_programme_indicator_ids',
+        'all_programme_indicator_ids.achievement_percentage',
+        'all_programme_indicator_ids.contribution_weight'
     )
     def _compute_normalized_performance(self):
         for record in self:
+            fallback = False
             indicators = record.contributing_indicator_ids
+            # Fallback: if no owned indicators yet but programme has indicators, use all programme indicators for overview
+            if not indicators and record.all_programme_indicator_ids:
+                indicators = record.all_programme_indicator_ids
+                fallback = True
             if not indicators:
                 record.normalized_target_percent = 0.0
                 record.normalized_achievement_percent = 0.0
                 record.performance_status = 'none'
+                record.using_programme_aggregate = False
                 continue
             # Use contribution_weight if present; otherwise equal weight
             weights = []
@@ -382,7 +451,7 @@ class ProgrammeDirectorateRel(models.Model):
             total_w = sum(weights)
             if total_w == 0:
                 # Equal weighting fallback
-                avg = sum(indicators.mapped('achievement_percentage')) / len(indicators)
+                avg = sum(indicators.mapped('achievement_percentage')) / len(indicators) if indicators else 0.0
                 record.normalized_achievement_percent = round(avg, 2)
             else:
                 weighted = 0.0
@@ -403,6 +472,7 @@ class ProgrammeDirectorateRel(models.Model):
                 record.performance_status = 'low'
             else:
                 record.performance_status = 'none'
+            record.using_programme_aggregate = fallback
 
     @api.depends('master_table_row')
     def _compute_strategic_objective(self):

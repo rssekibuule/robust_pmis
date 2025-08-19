@@ -140,7 +140,7 @@
                     <field name="state"/>
                     <field name="is_overdue"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.is_overdue.raw_value ? 'oe_kanban_color_2' : ''}">
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
@@ -159,12 +159,12 @@
                                     <div class="mt8">
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar" t-attf-style="width: #{record.progress.raw_value}%" t-attf-aria-valuenow="#{record.progress.raw_value}" aria-valuemin="0" aria-valuemax="100">
-                                                <t t-esc="record.progress.raw_value"/>%
+                                                <t t-out="record.progress.raw_value"/>%
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mt8" t-if="record.is_overdue.raw_value">
-                                        <span class="badge badge-danger">OVERDUE</span>
+                                        <span class="badge text-bg-danger">OVERDUE</span>
                                     </div>
                                 </div>
                             </div>

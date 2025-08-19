@@ -466,6 +466,7 @@ body.o_web_client, html.o_web_client, .o_web_client {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
@@ -1321,29 +1322,268 @@ body.o_web_client, html.o_web_client, .o_web_client {
     letter-spacing: 0.5px;
 }
 
-/* Limit chatter width to at most 20% on Programme-Directorate Relationship form */
-.pdrel_form .o_FormRenderer_chatterContainer, 
-.pdrel_form .o_form_view_container .o_ChatterContainer, 
-.pdrel_form .o_form_view .o_chatter_container, 
+/* Enforce chatter width = 20% (or less) for Programme-Directorate Relationship form.
+     Use high specificity and CSS variable to avoid being overridden by Odoo flex rules. */
+.pdrel_form { --pdrel-chatter-width: 20%; }
+.pdrel_form .o_Content > .o_form_view, /* wrapper */
+.pdrel_form.o_form_view, /* safety */
+.pdrel_form .o_form_view_container { position: relative; }
+
+/* Target all chatter containers (structure varies across minor versions). */
+.pdrel_form .o_FormRenderer_chatterContainer,
+.pdrel_form .o_form_view_container .o_ChatterContainer,
+.pdrel_form .o_form_view .o_chatter_container,
 .pdrel_form .o_form_view .o_form_sheet_bg + .o_FormRenderer_chatterContainer {
-  flex: 0 0 20% !important;
-  max-width: 20% !important;
-  min-width: 240px;
+    flex: 0 0 var(--pdrel-chatter-width) !important;
+    max-width: var(--pdrel-chatter-width) !important;
+    width: var(--pdrel-chatter-width) !important;
+    min-width: 260px; /* ensure usability */
+    box-sizing: border-box;
 }
-.pdrel_form .o_form_sheet_bg { flex: 1 1 80%; }
-@media (max-width: 1600px) {
-  .pdrel_form .o_FormRenderer_chatterContainer { flex: 0 0 22% !important; max-width:22% !important; }
-  .pdrel_form .o_form_sheet_bg { flex: 1 1 78%; }
+/* Force sheet to occupy remaining space without wrapping below chatter */
+.pdrel_form .o_form_sheet_bg, .pdrel_form .o_form_sheet {
+    flex: 1 1 calc(100% - var(--pdrel-chatter-width)) !important;
+    max-width: calc(100% - var(--pdrel-chatter-width)) !important;
 }
+/* If the framework injects an inline style increasing chatter, clamp via max-width again */
+.pdrel_form .o_FormRenderer_chatterContainer[style*="width"],
+.pdrel_form .o_ChatterContainer[style*="width"] {
+    width: var(--pdrel-chatter-width) !important;
+    max-width: var(--pdrel-chatter-width) !important;
+}
+
 @media (max-width: 1400px) {
-  .pdrel_form .o_FormRenderer_chatterContainer { flex: 0 0 24% !important; max-width:24% !important; }
-  .pdrel_form .o_form_sheet_bg { flex: 1 1 76%; }
+    .pdrel_form { --pdrel-chatter-width: 22%; }
 }
 @media (max-width: 1200px) {
-  .pdrel_form .o_FormRenderer_chatterContainer { flex: 0 0 28% !important; max-width:28% !important; }
-  .pdrel_form .o_form_sheet_bg { flex: 1 1 72%; }
+    .pdrel_form { --pdrel-chatter-width: 24%; }
+}
+@media (max-width: 1050px) {
+    .pdrel_form { --pdrel-chatter-width: 28%; }
 }
 @media (max-width: 992px) {
-  .pdrel_form .o_FormRenderer_chatterContainer { max-width:100% !important; flex:1 1 100% !important; }
-  .pdrel_form .o_form_sheet_bg { flex: 1 1 100%; }
+    .pdrel_form { --pdrel-chatter-width: 100%; }
+    .pdrel_form .o_FormRenderer_chatterContainer,
+    .pdrel_form .o_ChatterContainer { min-width: 100% !important; }
 }
+
+/* Owned Indicators list header visibility fix: ensure headers not clipped inside page */
+.pdrel_form .pdrel_owned_indicators .o_list_view thead th,
+.pdrel_form .pdrel_owned_indicators .o_list_view thead tr {
+    position: relative;
+    overflow: visible !important;
+    white-space: normal; /* allow wrapping if needed */
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+}
+.pdrel_form .pdrel_owned_indicators .o_list_view thead { overflow: visible !important; }
+/* Remove potential clipping from ancestor scroll containers */
+.pdrel_form .pdrel_owned_indicators .o_list_view { overflow: visible !important; }
+
+/* Additional polish for Owned Performance Indicators header row */
+.pdrel_form .pdrel_owned_indicators .o_list_view thead th {
+    background: #f6f7f9 !important;
+    border-bottom: 1px solid #d9dfe5 !important;
+    border-top: none !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .5px !important;
+    line-height: 18px !important;
+    padding: 7px 12px !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important; /* keep header labels on one line */
+}
+
+/* Compact performance overview layout */
+.pdrel_form .performance-overview-fields.o_inner_group {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px 24px;
+    align-items: start;
+}
+.pdrel_form .performance-overview-fields.o_inner_group .o_field_widget {
+    margin: 0 !important;
+    padding: 4px 0 !important;
+}
+.pdrel_form .performance-overview-fields .o_progressbar .o_progressbar_value {
+    font-size: 11px;
+}
+.pdrel_form .pdrel_owned_indicators .o_list_view thead tr {
+    height: auto !important;
+}
+/* Slight top spacing so header doesn't visually collide with tab edge */
+.pdrel_form .pdrel_owned_indicators .o_list_view {
+    margin-top: 4px;
+}
+/* First column adaptive width; prevent squeezing others too much */
+.pdrel_form .pdrel_owned_indicators .o_list_view tbody td:first-child, 
+.pdrel_form .pdrel_owned_indicators .o_list_view thead th:first-child {
+    min-width: 260px;
+}
+/* Allow table to auto size rather than fixed layout to avoid header truncation */
+.pdrel_form .pdrel_owned_indicators .o_list_view table { table-layout: auto !important; }
+
+/* Division form: enforce chatter width = 20% */
+.kcca_division_form { --kcca-chatter-width: 20%; }
+.kcca_division_form .o_FormRenderer_chatterContainer,
+.kcca_division_form .o_form_view .o_chatter_container,
+.kcca_division_form .o_form_view .o_form_sheet_bg + .o_FormRenderer_chatterContainer {
+    flex: 0 0 var(--kcca-chatter-width) !important;
+    max-width: var(--kcca-chatter-width) !important;
+    width: var(--kcca-chatter-width) !important;
+    min-width: 260px;
+}
+.kcca_division_form .o_form_sheet_bg, .kcca_division_form .o_form_sheet {
+    flex: 1 1 calc(100% - var(--kcca-chatter-width)) !important;
+    max-width: calc(100% - var(--kcca-chatter-width)) !important;
+}
+@media (max-width: 992px) {
+    .kcca_division_form .o_FormRenderer_chatterContainer,
+    .kcca_division_form .o_chatter_container { min-width: 100% !important; }
+}
+
+/* Notebook list headers: avoid clipping/truncation */
+/* Ensure notebook tabs and list headers do not clip text */
+.kcca_division_form .o_notebook .nav-tabs .nav-link,
+.kcca_division_form .o_notebook .o_list_view thead th,
+.kcca_division_form .o_notebook .o_list_view thead tr {
+    overflow: visible !important;
+    white-space: normal !important;
+}
+.kcca_division_form .o_notebook .o_list_view thead {
+    overflow: visible !important;
+}
+/* Global safety: avoid header clipping across backend lists */
+.o_web_client .o_list_view thead th { 
+    text-overflow: clip !important; 
+    overflow: visible !important; 
+    white-space: normal !important;
+}
+
+/* Global chatter width = 20% across backend forms (module-wide) */
+:root { --kcca-global-chatter-width: 20%; }
+.o_web_client .o_form_view_container > .o_FormRenderer_chatterContainer,
+.o_web_client .o_form_view_container > .o_chatter_container,
+.o_web_client .o_form_view .o_ChatterContainer,
+.o_web_client .o_form_view .o_FormRenderer_chatterContainer {
+    flex: 0 0 var(--kcca-global-chatter-width) !important;
+    max-width: var(--kcca-global-chatter-width) !important;
+    width: var(--kcca-global-chatter-width) !important;
+    min-width: 260px;
+    box-sizing: border-box;
+}
+.o_web_client .o_form_view_container .o_form_sheet_bg,
+.o_web_client .o_form_view_container .o_form_sheet {
+    flex: 1 1 calc(100% - var(--kcca-global-chatter-width)) !important;
+    max-width: calc(100% - var(--kcca-global-chatter-width)) !important;
+}
+/* Responsive: stack chatter on narrow screens */
+@media (max-width: 992px) {
+    .o_web_client .o_form_view_container > .o_FormRenderer_chatterContainer,
+    .o_web_client .o_form_view_container > .o_chatter_container,
+    .o_web_client .o_form_view .o_ChatterContainer,
+    .o_web_client .o_form_view .o_FormRenderer_chatterContainer {
+        min-width: 100% !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+    .o_web_client .o_form_view_container .o_form_sheet_bg,
+    .o_web_client .o_form_view_container .o_form_sheet {
+        max-width: 100% !important;
+    }
+}
+
+/* Comprehensive notebook + list header visibility fixes */
+/* Ensure notebook tab content doesn't clip child overflow (headers, tooltips, wraps) */
+.o_web_client .o_notebook .tab-content,
+.o_web_client .o_notebook .tab-content > .tab-pane {
+    overflow: visible !important;
+}
+
+/* Allow list header labels to wrap rather than truncate */
+.o_web_client .o_list_view thead th .o_column_title,
+.o_web_client .o_list_view thead th .o_field_widget {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: break-word;
+}
+
+/* Let list/table compute natural widths; prevents over-aggressive clipping */
+.o_web_client .o_list_view table {
+    table-layout: auto !important;
+}
+
+/* Header row should adapt height to multi-line titles */
+.o_web_client .o_list_view thead tr,
+.o_web_client .o_list_view thead th {
+    height: auto !important;
+    line-height: 1.2 !important;
+    vertical-align: middle !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+}
+
+/* One2many in notebook: remove potential clipping from intermediate containers */
+.o_web_client .o_field_one2many .o_list_view,
+.o_web_client .o_field_one2many .o_list_view thead,
+.o_web_client .o_field_one2many .o_list_view thead tr,
+.o_web_client .o_field_one2many .o_list_view thead th {
+    overflow: visible !important;
+}
+
+/* Improve readability of wrapped headers without forcing nowrap */
+.o_web_client .o_list_view thead th {
+    background-clip: padding-box;
+}
+
+/* Also target the renderer/container used in Odoo 18 list views */
+.o_web_client .o_list_renderer,
+.o_web_client .o_list_renderer thead,
+.o_web_client .o_list_renderer thead tr,
+.o_web_client .o_list_renderer thead th {
+    overflow: visible !important;
+    white-space: normal !important;
+}
+.o_web_client .o_list_renderer table.o_list_table {
+    table-layout: auto !important;
+}
+
+/* Global 20% chatter ratio across back-end forms (module-wide) */
+:root { --kcca-chatter-width: 20%; }
+.o_web_client .o_form_view .o_FormRenderer_chatterContainer,
+.o_web_client .o_form_view .o_chatter_container,
+.o_web_client .o_form_view .o_form_sheet_bg + .o_FormRenderer_chatterContainer {
+    flex: 0 0 var(--kcca-chatter-width) !important;
+    max-width: var(--kcca-chatter-width) !important;
+    width: var(--kcca-chatter-width) !important;
+    min-width: 260px;
+    box-sizing: border-box;
+}
+.o_web_client .o_form_view .o_form_sheet_bg,
+.o_web_client .o_form_view .o_form_sheet {
+    flex: 1 1 calc(100% - var(--kcca-chatter-width)) !important;
+    max-width: calc(100% - var(--kcca-chatter-width)) !important;
+}
+/* Expand the sheet to use the full available content width (remove default centering/limits) */
+.o_web_client .o_form_view .o_form_sheet_bg {
+    max-width: none !important;
+}
+.o_web_client .o_form_view .o_form_sheet {
+    max-width: none !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+@media (max-width: 992px) {
+    .o_web_client .o_form_view .o_FormRenderer_chatterContainer,
+    .o_web_client .o_form_view .o_chatter_container { min-width: 100% !important; }
+}
+
+/* Division kanban visual tweaks */
+.o_kanban_small_column .oe_kanban_card .badge { font-size: 0.7rem; }
+.o_kanban_small_column .oe_kanban_card .o_kanban_record_title { font-weight: 700; }
+.o_kanban_small_column .oe_kanban_card .o_kanban_record_subtitle { color: #6c757d; }
+

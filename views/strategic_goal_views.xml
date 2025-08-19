@@ -188,7 +188,7 @@
                     <field name="kpi_count"/>
                     <field name="color"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-attf-style="border-left: 4px solid #{record.color.raw_value or '#e9ecef'}">
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
@@ -200,9 +200,9 @@
                                 <div class="o_kanban_record_body">
                                     <div class="row">
                                         <div class="col-6">
-                                            <span>Objectives: <t t-esc="record.objective_count.value"/></span><br/>
-                                            <span>KRAs: <t t-esc="record.kra_count.value"/></span><br/>
-                                            <span>KPIs: <t t-esc="record.kpi_count.value"/></span>
+                                            <span>Objectives: <t t-out="record.objective_count.value"/></span><br/>
+                                            <span>KRAs: <t t-out="record.kra_count.value"/></span><br/>
+                                            <span>KPIs: <t t-out="record.kpi_count.value"/></span>
                                         </div>
                                         <div class="col-6">
                                             <div class="text-right">

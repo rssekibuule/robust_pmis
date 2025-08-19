@@ -77,6 +77,8 @@
                             
                             <group name="performance_info" string="Performance Overview">
                                 <field name="completion_percentage" widget="percentage"/>
+                                <field name="completion_over_pct" widget="percentage" readonly="1"/>
+                                <field name="completion_pct_raw" widget="percentage" readonly="1"/>
                                 <field name="performance_score" widget="percentage" readonly="1"/>
                                 <field name="is_on_track" readonly="1"/>
                                 <field name="requires_attention" readonly="1"/>
@@ -106,6 +108,7 @@
                                         <field name="allocated_budget"/>
                                         <field name="utilized_budget"/>
                                         <field name="budget_utilization" widget="percentage" readonly="1"/>
+                                        <field name="budget_utilization_raw" widget="percentage" readonly="1"/>
                                         <field name="currency_id" invisible="1"/>
                                     </group>
                                     
@@ -113,6 +116,7 @@
                                         <field name="target_beneficiaries"/>
                                         <field name="actual_beneficiaries"/>
                                         <field name="beneficiary_achievement" widget="percentage" readonly="1"/>
+                                        <field name="beneficiary_achievement_raw" widget="percentage" readonly="1"/>
                                     </group>
                                 </group>
                             </page>
@@ -156,7 +160,7 @@
                     <field name="requires_attention"/>
                     <field name="active"/>
                     <templates>
-                        <t t-name="kanban-box">
+                            <t t-name="card">
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click 
                                  #{record.performance_score.raw_value >= 80 ? 'oe_kanban_color_5' : 
                                    record.performance_score.raw_value >= 50 ? 'oe_kanban_color_3' : 'oe_kanban_color_2'}
@@ -198,16 +202,16 @@
                                                 <field name="completion_percentage" widget="percentage"/>
                                             </div>
                                         </div>
-                                        <div class="row mt-2" t-if="record.requires_attention.raw_value">
-                                            <div class="col-12">
-                                                <span class="badge badge-warning">⚠️ Needs Attention</span>
+                                            <div class="row mt-2" t-if="record.requires_attention.raw_value">
+                                                <div class="col-12">
+                                                    <span class="badge text-bg-warning">⚠️ Needs Attention</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-2" t-if="record.is_on_track.raw_value">
-                                            <div class="col-12">
-                                                <span class="badge badge-success">✅ On Track</span>
+                                            <div class="row mt-2" t-if="record.is_on_track.raw_value">
+                                                <div class="col-12">
+                                                    <span class="badge text-bg-success">✅ On Track</span>
+                                                </div>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -227,6 +231,8 @@
                     <field name="programme_id" string="Programme"/>
                     <field name="implementation_status" string="Status"/>
                     <field name="priority_level" string="Priority"/>
+                    <separator/>
+                    <filter name="is_direct" string="Direct Programmes" domain="[('is_direct','=',True)]"/>
                     
                     <filter name="active" string="Active" domain="[('active', '=', True)]"/>
                     <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
@@ -269,6 +275,8 @@
                                 context="{'group_by': 'division_id'}"/>
                         <filter name="group_by_programme" string="Programme" 
                                 context="{'group_by': 'programme_id'}"/>
+            <filter name="group_by_is_direct" string="Direct vs Implementing" 
+                context="{'group_by': 'is_direct'}"/>
                         <filter name="group_by_status" string="Implementation Status" 
                                 context="{'group_by': 'implementation_status'}"/>
                         <filter name="group_by_priority" string="Priority Level" 

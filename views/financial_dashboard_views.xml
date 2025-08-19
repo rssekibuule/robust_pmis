@@ -194,7 +194,7 @@
                     <field name="widget_count"/>
                     
                     <templates>
-                        <t t-name="kanban-box">
+                            <t t-name="card">
                             <div class="oe_kanban_card oe_kanban_global_click">
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
@@ -208,8 +208,8 @@
                                     </div>
                                     <div class="o_kanban_record_top_right">
                                         <div class="o_kanban_record_badges">
-                                            <span t-if="record.state.raw_value == 'active'" class="badge badge-success">Active</span>
-                                            <span t-if="record.state.raw_value == 'draft'" class="badge badge-secondary">Draft</span>
+                                                <span t-if="record.state.raw_value == 'active'" class="badge text-bg-success">Active</span>
+                                                <span t-if="record.state.raw_value == 'draft'" class="badge text-bg-secondary">Draft</span>
                                         </div>
                                     </div>
                                 </div>

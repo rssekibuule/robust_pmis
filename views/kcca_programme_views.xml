@@ -155,8 +155,8 @@
                                 <div class="o_kanban_record_body">
                                     <div class="row">
                                         <div class="col-6">
-                                            <span>Objectives: <t t-esc="record.objective_count.value"/></span><br/>
-                                            <span>Indicators: <t t-esc="record.indicator_count.value"/></span>
+                                            <span>Objectives: <t t-out="record.objective_count.value"/></span><br/>
+                                            <span>Indicators: <t t-out="record.indicator_count.value"/></span>
                                         </div>
                                         <div class="col-6">
                                             <div class="text-right">

@@ -7,7 +7,7 @@
         <!-- Directorate Management Submenu -->
         <menuitem id="menu_directorate_management"
                   name="Directorate Management"
-                  parent="menu_directorate_performance"
+                  parent="robust_pmis.menu_directorate_performance"
                   sequence="10"/>
         
         <!-- KCCA Directorates Menu Item -->
@@ -27,7 +27,7 @@
         <!-- Performance Analytics Submenu -->
         <menuitem id="menu_directorate_analytics"
                   name="Performance Analytics"
-                  parent="menu_directorate_performance"
+                  parent="robust_pmis.menu_directorate_performance"
                   sequence="20"/>
         
         <!-- Directorate Performance Dashboard Menu Item -->
@@ -61,7 +61,7 @@
         <!-- Reports Submenu -->
         <menuitem id="menu_directorate_reports"
                   name="Reports"
-                  parent="menu_directorate_performance"
+                  parent="robust_pmis.menu_directorate_performance"
                   sequence="30"/>
         
         <!-- Directorate Performance Report Action -->
@@ -82,8 +82,8 @@
                     Directorate Performance Report
                 </p>
                 <p>
-                    Generate comprehensive performance reports for directorates showing 
-                    programme implementation status, responsibility allocation, and key metrics.
+                    Generate comprehensive performance reports for directorates showing
+                    programme implementation status and key performance metrics.
                 </p>
             </field>
         </record>
@@ -98,7 +98,7 @@
                                           (0, 0, {'view_mode': 'graph', 'view_id': ref('view_programme_directorate_rel_graph_performance')})]"/>
             <field name="context">{
                 'search_default_active': 1,
-                'pivot_measures': ['responsibility_percentage'],
+                'pivot_measures': ['normalized_achievement_percent'],
                 'pivot_row_groupby': ['directorate_id'],
                 'pivot_col_groupby': ['programme_id']
             }</field>

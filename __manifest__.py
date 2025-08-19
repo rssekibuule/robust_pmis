@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'KCCA Performance Management Information System',
-    'version': '18.0.1.0.3',
+    'version': ': .post1',
+        'version': '18.0.1.0.7',
     'category': 'Human Resources/Performance',
     'summary': 'Comprehensive Performance Management System for KCCA',
     'description': """
@@ -64,6 +65,8 @@ Hierarchical Structure:
         'data/financial_strategy_sample_data.xml',
         'data/kpi_thematic_classification.xml',
         'data/sample_kpi_linkages.xml',
+    'data/ensure_all_divisions_have_all_programmes.xml',
+    'data/enforce_allowed_implementing_relations.xml',
 
         # Infrastructure strategic goal and objective
         'data/infrastructure_strategic_goal.xml',

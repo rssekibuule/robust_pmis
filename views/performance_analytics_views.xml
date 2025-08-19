@@ -98,7 +98,7 @@
                     <field name="confidence_score"/>
                     <field name="state"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div class="oe_kanban_card oe_kanban_global_click">
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
@@ -111,12 +111,10 @@
                                             <i class="fa fa-calendar" title="Date"/> <field name="date"/>
                                         </div>
                                         <div class="mt8">
-                                            <span class="badge badge-pill" t-attf-class="badge-#{record.risk_level.raw_value == 'low' and 'success' or record.risk_level.raw_value == 'medium' and 'warning' or 'danger'}">
+                                            <span class="badge rounded-pill" t-attf-class="text-bg-#{record.risk_level.raw_value == 'low' and 'success' or record.risk_level.raw_value == 'medium' and 'warning' or 'danger'}">
                                                 <field name="risk_level"/>
                                             </span>
-                                            <span class="badge badge-pill badge-info ml8">
-                                                <field name="confidence_score"/>% Confidence
-                                            </span>
+                                            <span class="badge rounded-pill text-bg-info ms-2"><field name="confidence_score"/>% Confidence</span>
                                         </div>
                                     </div>
                                 </div>

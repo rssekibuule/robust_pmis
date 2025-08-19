@@ -125,6 +125,32 @@ def post_init_hook(env):
     except Exception as e:
         print(f"[post_init] Legacy view normalization failed: {e}")
 
+    # Initialize direct programme flags on relationships based on existing ownership
+    try:
+        updated = env['division.programme.rel'].mark_direct_programme_flags()
+        print(f"[post_init] Direct programme flags initialized on {updated} relationship(s)")
+    except Exception as e:
+        print(f"[post_init] Direct programme flag init failed: {e}")
+
+    # Ensure each division implements all programmes (target coverage: 16 programmes)
+    try:
+        divisions = env['kcca.division'].search([])
+        results = divisions.ensure_all_programmes_implemented()
+        total_created = sum(results.values()) if isinstance(results, dict) else 0
+        print(f"[post_init] Implementing relationships ensured for all divisions. Created {total_created} missing link(s)")
+    except Exception as e:
+        print(f"[post_init] Ensuring implementing relationships failed: {e}")
+
+    # Enforce only allowed implementing relations and normalize DEMO
+    try:
+        res = env['kcca.division'].enforce_allowed_implementing_relations()
+        removed = res.get('removed_non_allowed', 0)
+        demo_cross = res.get('removed_demo_cross', 0)
+        demo_marked = res.get('marked_demo_direct', 0)
+        print(f"[post_init] Implementing relations enforced: removed_non_allowed={removed}, removed_demo_cross={demo_cross}, marked_demo_direct={demo_marked}")
+    except Exception as e:
+        print(f"[post_init] Implementing relations enforcement failed: {e}")
+
     # Check if transport programme already exists
     existing_programme = env['kcca.programme'].search([('code', '=', 'ITIS')], limit=1)
     if existing_programme:
@@ -382,3 +408,39 @@ def update_kpi_classifications(env):
     print(f"✅ Successfully updated classifications for {len(kpis)} KPIs")
 
     return True
+
+
+def enforce_allowed_implementing_relations(env):
+    """Cleanup utility to enforce only allowed implementing relations.
+
+    Rules applied:
+    - Keep implementing (is_direct = False) only for the canonical 16 programme codes.
+    - For DEMO programmes (codes like 'CD-DP01', 'KD-DP02', etc.), keep only the
+      relation to their owner division and mark those relations as direct.
+    - Remove any other non-direct relations pointing to DEMO or legacy codes.
+    """
+    Rel = env['division.programme.rel'].sudo()
+    Programme = env['kcca.programme'].sudo()
+
+    allowed = set(['AGRO','PSD','ITIS','SUH','DT','HCD','LOR','RRP','WME','PHE','DRC','UPD','AOJ','GS','PST','SED'])
+
+    # 1) Remove non-allowed implementing relations (non-direct only)
+    rem1 = Rel.search([('is_direct','=', False), ('programme_id.code','not in', list(allowed))])
+    if rem1:
+        print(f"[post_init] Removing {len(rem1)} non-allowed implementing relation(s)")
+        rem1.unlink()
+
+    # 2) Normalize DEMO programmes: only direct to owner division
+    demo_programmes = Programme.search([('code', 'like', '%-DP%')])
+    if demo_programmes:
+        demo_rels = Rel.search([('programme_id','in', demo_programmes.ids)])
+        # Remove cross-division relations for DEMO programmes
+        to_remove = demo_rels.filtered(lambda r: r.programme_id.division_id and r.division_id != r.programme_id.division_id)
+        if to_remove:
+            print(f"[post_init] Removing {len(to_remove)} DEMO cross-division relation(s)")
+            to_remove.unlink()
+        # Ensure owner relations are marked direct
+        owners = Rel.search([('programme_id','in', demo_programmes.ids)])
+        if owners:
+            owners.write({'is_direct': True})
+            print(f"[post_init] Marked {len(owners)} DEMO owner relation(s) as direct")

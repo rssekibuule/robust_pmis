@@ -35,6 +35,13 @@ class DivisionProgrammeRel(models.Model):
         tracking=True,
         help="KCCA programme implemented by the division"
     )
+
+    # Relationship semantics: mark whether this programme is directly owned by the division
+    is_direct = fields.Boolean(
+        string='Direct Programme',
+        default=False,
+        help='Check if this programme is directly owned by the division (not just implementing).'
+    )
     
     # Implementation details
     implementation_status = fields.Selection([
@@ -163,6 +170,12 @@ class DivisionProgrammeRel(models.Model):
         store=True,
         help="Percentage of allocated budget utilized"
     )
+    budget_utilization_raw = fields.Float(
+        string='Budget Utilization (Raw %)',
+        compute='_compute_budget_utilization',
+        store=True,
+        help="Raw budget utilization before capping to 100% for scoring"
+    )
     
     # Beneficiary achievement percentage
     beneficiary_achievement = fields.Float(
@@ -171,6 +184,12 @@ class DivisionProgrammeRel(models.Model):
         store=True,
         help="Percentage of target beneficiaries reached"
     )
+    beneficiary_achievement_raw = fields.Float(
+        string='Beneficiary Achievement (Raw %)',
+        compute='_compute_beneficiary_achievement',
+        store=True,
+        help="Raw beneficiary achievement before capping to 100% for scoring"
+    )
     
     # Status indicators
     is_on_track = fields.Boolean(
@@ -178,6 +197,18 @@ class DivisionProgrammeRel(models.Model):
         compute='_compute_status_indicators',
         store=True,
         help="Whether the programme is on track"
+    )
+    completion_pct_raw = fields.Float(
+        string='Completion (Raw %)',
+        compute='_compute_completion_percentage',
+        store=True,
+        help="Raw completion percentage before capping to 100% for scoring"
+    )
+    completion_over_pct = fields.Float(
+        string='Overachievement %',
+        compute='_compute_completion_percentage',
+        store=True,
+        help="Amount by which completion exceeds 100% (0 if not exceeded)"
     )
     
     is_delayed = fields.Boolean(
@@ -220,27 +251,45 @@ class DivisionProgrammeRel(models.Model):
     def _compute_budget_utilization(self):
         """Compute budget utilization percentage"""
         for record in self:
-            if record.allocated_budget > 0:
-                record.budget_utilization = (record.utilized_budget / record.allocated_budget) * 100
+            if record.allocated_budget and record.allocated_budget > 0:
+                pct = (record.utilized_budget or 0.0) / record.allocated_budget * 100.0
+                record.budget_utilization_raw = max(0.0, pct)
+                # Cap to 100 for scoring
+                record.budget_utilization = min(record.budget_utilization_raw, 100.0)
             else:
+                record.budget_utilization_raw = 0.0
                 record.budget_utilization = 0.0
     
     @api.depends('target_beneficiaries', 'actual_beneficiaries')
     def _compute_beneficiary_achievement(self):
         """Compute beneficiary achievement percentage"""
         for record in self:
-            if record.target_beneficiaries > 0:
-                record.beneficiary_achievement = (record.actual_beneficiaries / record.target_beneficiaries) * 100
+            target = record.target_beneficiaries or 0
+            actual = record.actual_beneficiaries or 0
+            if target > 0:
+                pct = (float(actual) / float(target)) * 100.0
+                record.beneficiary_achievement_raw = max(0.0, pct)
+                # Cap to 100 for scoring
+                record.beneficiary_achievement = min(record.beneficiary_achievement_raw, 100.0)
             else:
+                record.beneficiary_achievement_raw = 0.0
                 record.beneficiary_achievement = 0.0
     
     @api.depends('actual_beneficiaries', 'target_beneficiaries')
     def _compute_completion_percentage(self):
         """Compute completion percentage based on beneficiaries achieved versus target"""
         for record in self:
-            if record.target_beneficiaries > 0:
-                record.completion_percentage = (record.actual_beneficiaries / record.target_beneficiaries) * 100
+            target = record.target_beneficiaries or 0
+            actual = record.actual_beneficiaries or 0
+            if target > 0:
+                pct = (float(actual) / float(target)) * 100.0
+                record.completion_pct_raw = max(0.0, pct)
+                # Cap to 100 for scoring
+                record.completion_percentage = min(record.completion_pct_raw, 100.0)
+                record.completion_over_pct = max(0.0, record.completion_pct_raw - 100.0)
             else:
+                record.completion_pct_raw = 0.0
+                record.completion_over_pct = 0.0
                 record.completion_percentage = 0.0
     
     @api.depends('completion_percentage', 'budget_utilization', 'beneficiary_achievement')
@@ -253,13 +302,13 @@ class DivisionProgrammeRel(models.Model):
             beneficiary_weight = 0.3
             
             # Clamp completion, budget, and beneficiary percentages to 100
-            clamped_completion = min(record.completion_percentage, 100)
-            clamped_budget = min(record.budget_utilization, 100)
-            clamped_beneficiary = min(record.beneficiary_achievement, 100)
+            clamped_completion = min(max(record.completion_percentage or 0.0, 0.0), 100.0)
+            clamped_budget = min(max(record.budget_utilization or 0.0, 0.0), 100.0)
+            clamped_beneficiary = min(max(record.beneficiary_achievement or 0.0, 0.0), 100.0)
             score = (
                 (clamped_completion * completion_weight) +
-                (min(record.budget_utilization, 100) * budget_weight) +
-                (min(record.beneficiary_achievement, 100) * beneficiary_weight)
+                (clamped_budget * budget_weight) +
+                (clamped_beneficiary * beneficiary_weight)
             )
             record.performance_score = score
     
@@ -337,3 +386,89 @@ class DivisionProgrammeRel(models.Model):
         """Suspend programme implementation"""
         self.write({'implementation_status': 'suspended'})
         return True
+
+    # --- Quick navigation actions for Kanban/dashboard ---
+    def action_view_division(self):
+        """Open the related Division form view."""
+        self.ensure_one()
+        if not self.division_id:
+            return False
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Division'),
+            'res_model': 'kcca.division',
+            'res_id': self.division_id.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
+    def action_view_programme(self):
+        """Open the related Programme form view."""
+        self.ensure_one()
+        if not self.programme_id:
+            return False
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Programme'),
+            'res_model': 'kcca.programme',
+            'res_id': self.programme_id.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
+    # --- Direct programme tagging helpers ---
+    @api.model
+    def _compute_is_direct_value(self, division_id, programme_id):
+        """Return True if the programme is directly owned by the division.
+
+        Business rule: programme is direct when programme.division_id == division_id.
+        """
+        if not division_id or not programme_id:
+            return False
+        Programme = self.env['kcca.programme']
+        prog = Programme.browse(programme_id)
+        return bool(prog and prog.division_id and prog.division_id.id == division_id)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Batch-safe create override that auto-derives is_direct.
+
+        For each payload, compute is_direct based on programme.division_id when
+        both division_id and programme_id are provided.
+        """
+        # Normalize single-dict input just in case
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
+        for vals in vals_list:
+            division_id = vals.get('division_id')
+            programme_id = vals.get('programme_id')
+            if division_id and programme_id and 'is_direct' not in vals:
+                vals['is_direct'] = self._compute_is_direct_value(division_id, programme_id)
+        records = super().create(vals_list)
+        return records
+
+    def write(self, vals):
+        res = super().write(vals)
+        # If division or programme changed (or either present in vals), recompute is_direct
+        if any(k in vals for k in ('division_id', 'programme_id')):
+            for rec in self:
+                rec.is_direct = self._compute_is_direct_value(rec.division_id.id, rec.programme_id.id)
+        return res
+
+    @api.model
+    def mark_direct_programme_flags(self):
+        """Batch-tag existing relationships where the programme is owned by the same division.
+
+        This is safe to call on upgrade to initialize the is_direct flag.
+        """
+        rels = self.search([])
+        updates = []
+        for rel in rels:
+            should_be_direct = self._compute_is_direct_value(rel.division_id.id, rel.programme_id.id)
+            if rel.is_direct != should_be_direct:
+                updates.append(rel.id)
+        if updates:
+            self.browse(updates).write({'is_direct': True})
+        return len(updates)
+
+    # Note: Business guardrails enforced by admin scripts and views to avoid blocking data loads

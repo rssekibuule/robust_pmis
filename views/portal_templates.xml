@@ -10,7 +10,7 @@
                     <t t-else="">KCCA Performance</t>
                 </li>
                 <li t-if="strategic_goal" class="breadcrumb-item active">
-                    <t t-esc="strategic_goal.name"/>
+                    <t t-out="strategic_goal.name"/>
                 </li>
             </xpath>
         </template>
@@ -41,7 +41,7 @@
                         <div class="col-md-3">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <h2 class="text-primary" t-esc="summary_stats['total_goals']"/>
+                                    <h2 class="text-primary" t-out="summary_stats['total_goals']"/>
                                     <p class="card-text">Strategic Goals</p>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                         <div class="col-md-3">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <h2 class="text-info" t-esc="summary_stats['total_directorates']"/>
+                                    <h2 class="text-info" t-out="summary_stats['total_directorates']"/>
                                     <p class="card-text">Directorates</p>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                         <div class="col-md-3">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <h2 class="text-success" t-esc="summary_stats['total_programmes']"/>
+                                    <h2 class="text-success" t-out="summary_stats['total_programmes']"/>
                                     <p class="card-text">Programmes</p>
                                 </div>
                             </div>
@@ -65,7 +65,7 @@
                         <div class="col-md-3">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <h2 class="text-warning" t-esc="summary_stats['total_kpis']"/>
+                                    <h2 class="text-warning" t-out="summary_stats['total_kpis']"/>
                                     <p class="card-text">KPIs</p>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                              t-attf-style="width: #{summary_stats['avg_goal_progress']}%"
                                              t-attf-aria-valuenow="#{summary_stats['avg_goal_progress']}" 
                                              aria-valuemin="0" aria-valuemax="100">
-                                            <t t-esc="'%.1f' % summary_stats['avg_goal_progress']"/>%
+                                            <t t-out="'%.1f' % summary_stats['avg_goal_progress']"/>%
                                         </div>
                                     </div>
                                     <small class="text-muted">Average progress across all strategic goals</small>
@@ -103,7 +103,7 @@
                                              t-attf-style="width: #{summary_stats['avg_programme_performance']}%"
                                              t-attf-aria-valuenow="#{summary_stats['avg_programme_performance']}" 
                                              aria-valuemin="0" aria-valuemax="100">
-                                            <t t-esc="'%.1f' % summary_stats['avg_programme_performance']"/>%
+                                            <t t-out="'%.1f' % summary_stats['avg_programme_performance']"/>%
                                         </div>
                                     </div>
                                     <small class="text-muted">Average performance across all programmes</small>
@@ -127,18 +127,18 @@
                                                     <div class="card-body">
                                                         <h6 class="card-title">
                                                             <a t-attf-href="/my/kcca_performance/goal/#{goal.id}" 
-                                                               class="text-decoration-none" t-esc="goal.name"/>
+                                                               class="text-decoration-none" t-out="goal.name"/>
                                                         </h6>
                                                         <div class="progress mb-2">
                                                             <div class="progress-bar" role="progressbar" 
                                                                  t-attf-style="width: #{goal.progress}%">
-                                                                <t t-esc="'%.1f' % goal.progress"/>%
+                                                                <t t-out="'%.1f' % goal.progress"/>%
                                                             </div>
                                                         </div>
                                                         <small class="text-muted">
-                                                            <t t-esc="goal.objective_count"/> Objectives, 
-                                                            <t t-esc="goal.kra_count"/> KRAs, 
-                                                            <t t-esc="goal.kpi_count"/> KPIs
+                                                            <t t-out="goal.objective_count"/> Objectives, 
+                                                            <t t-out="goal.kra_count"/> KRAs, 
+                                                            <t t-out="goal.kpi_count"/> KPIs
                                                         </small>
                                                     </div>
                                                 </div>
@@ -173,18 +173,18 @@
                                                     <tr>
                                                         <td>
                                                             <a t-attf-href="/my/kcca_performance/directorate/#{directorate.id}" 
-                                                               class="text-decoration-none" t-esc="directorate.name"/>
+                                                               class="text-decoration-none" t-out="directorate.name"/>
                                                         </td>
                                                         <td>
                                                             <div class="progress" style="height: 20px;">
                                                                 <div class="progress-bar" role="progressbar" 
                                                                      t-attf-style="width: #{directorate.overall_performance}%">
-                                                                    <t t-esc="'%.1f' % directorate.overall_performance"/>%
+                                                                    <t t-out="'%.1f' % directorate.overall_performance"/>%
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td t-esc="directorate.programme_count"/>
-                                                        <td t-esc="directorate.kpi_count"/>
+                                                        <td t-out="directorate.programme_count"/>
+                                                        <td t-out="directorate.kpi_count"/>
                                                     </tr>
                                                 </t>
                                             </tbody>

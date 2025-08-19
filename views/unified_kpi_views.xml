@@ -70,7 +70,7 @@
                   sequence="15"/>
 
         <menuitem id="menu_strategic_kpis"
-                  name="Strategic KPIs (108)"
+                  name="Strategic KPIs"
                   parent="menu_kpi_management"
                   action="action_strategic_kpi_with_programmes"
                   sequence="1"/>

@@ -14,7 +14,7 @@
                     <field name="progress"/>
                     <field name="parent_goal_id"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
                                 <div class="o_kanban_image_fill_left d-none d-md-block" style="background-color: #875A7B;">
                                     <i class="fa fa-bullseye fa-2x text-white" title="Key Result Area"/>
@@ -69,7 +69,7 @@
                     <field name="status"/>
                     <field name="kpi_type"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div class="oe_kanban_global_click">
                                 <div class="oe_kanban_content">
                                     <div class="o_kanban_record_top">

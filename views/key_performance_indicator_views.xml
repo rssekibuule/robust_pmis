@@ -141,8 +141,8 @@
                                 <div class="o_kanban_record_body">
                                     <div class="row">
                                         <div class="col-6">
-                                            <span>Current: <t t-esc="record.current_value.value"/> <t t-esc="record.measurement_unit.value"/></span><br/>
-                                            <span>Target: <t t-esc="record.target_value.value"/> <t t-esc="record.measurement_unit.value"/></span>
+                                            <span>Current: <t t-out="record.current_value.value"/> <t t-out="record.measurement_unit.value"/></span><br/>
+                                            <span>Target: <t t-out="record.target_value.value"/> <t t-out="record.measurement_unit.value"/></span>
                                         </div>
                                         <div class="col-6">
                                             <div class="text-right">

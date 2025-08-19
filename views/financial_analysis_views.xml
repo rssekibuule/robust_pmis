@@ -166,7 +166,7 @@
                     <field name="analysis_date"/>
                     
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div class="oe_kanban_card oe_kanban_global_click">
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
@@ -180,10 +180,10 @@
                                     </div>
                                     <div class="o_kanban_record_top_right">
                                         <div class="o_kanban_record_badges">
-                                            <span t-if="record.risk_level.raw_value == 'high'" class="badge badge-danger">High Risk</span>
-                                            <span t-if="record.risk_level.raw_value == 'critical'" class="badge badge-dark">Critical</span>
-                                            <span t-if="record.risk_level.raw_value == 'medium'" class="badge badge-warning">Medium Risk</span>
-                                            <span t-if="record.risk_level.raw_value == 'low'" class="badge badge-success">Low Risk</span>
+                                            <span t-if="record.risk_level.raw_value == 'high'" class="badge text-bg-danger">High Risk</span>
+                                            <span t-if="record.risk_level.raw_value == 'critical'" class="badge text-bg-dark">Critical</span>
+                                            <span t-if="record.risk_level.raw_value == 'medium'" class="badge text-bg-warning">Medium Risk</span>
+                                            <span t-if="record.risk_level.raw_value == 'low'" class="badge text-bg-success">Low Risk</span>
                                         </div>
                                     </div>
                                 </div>

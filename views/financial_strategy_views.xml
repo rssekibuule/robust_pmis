@@ -944,7 +944,7 @@
                     <field name="end_date"/>
                     <field name="currency_id"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div class="oe_kanban_card oe_kanban_global_click">
                                 <div class="o_kanban_card_header">
                                     <div class="o_kanban_card_header_title">
@@ -952,7 +952,7 @@
                                             <strong><field name="name"/></strong>
                                         </div>
                                         <div class="o_secondary">
-                                            <span class="badge" t-attf-class="badge-#{record.status.raw_value == 'active' ? 'success' : record.status.raw_value == 'approved' ? 'info' : record.status.raw_value == 'draft' ? 'warning' : 'secondary'}">
+                                            <span class="badge" t-attf-class="text-bg-#{record.status.raw_value == 'active' ? 'success' : record.status.raw_value == 'approved' ? 'info' : record.status.raw_value == 'draft' ? 'warning' : 'secondary'}">
                                                 <field name="status"/>
                                             </span>
                                         </div>

@@ -7,20 +7,30 @@
             <field name="name">kcca.division.kanban</field>
             <field name="model">kcca.division</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="directorate_id" class="o_kanban_small_column">
+                <kanban class="o_kanban_small_column o_divisions_dashboard">
                     <field name="id"/>
                     <field name="name"/>
                     <field name="code"/>
                     <field name="directorate_id"/>
                     <field name="head_id"/>
                     <field name="programme_count"/>
+                    <field name="division_kpi_count"/>
                     <field name="overall_performance"/>
+                    <field name="implementation_coverage_percent"/>
+                    <field name="programme_pi_count"/>
+                    <field name="programme_pi_avg"/>
+                    <field name="direct_pi_count"/>
+                    <field name="direct_pi_avg"/>
+                    <field name="pi_high_count"/>
+                    <field name="pi_medium_count"/>
+                    <field name="pi_low_count"/>
+                    <field name="pi_none_count"/>
                     <field name="active"/>
                     <field name="email"/>
                     <field name="phone"/>
                     <templates>
                         <t t-name="card">
-                            <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_card oe_kanban_global_click compact">
                                 <div class="o_dropdown_kanban dropdown">
                                     <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
                                         <span class="fa fa-ellipsis-v"/>
@@ -45,46 +55,82 @@
                                                 <field name="code"/>
                                             </small>
                                         </div>
+                                        <div class="o_kanban_manage_button_section d-flex align-items-center gap-2">
+                                            <span class="badge rounded-pill text-bg-primary" title="Direct programmes">
+                                                <field name="programme_count"/> Direct
+                                            </span>
+                                            <span class="badge rounded-pill text-bg-info" title="Division-owned KPIs">
+                                                <field name="division_kpi_count"/> KPIs
+                                            </span>
+                                        </div>
                                     </div>
 
-                                    <div class="o_kanban_record_body">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <span class="fa fa-building" title="Directorate"/>
-                                                <field name="directorate_id"/>
-                                            </div>
+                                    <div class="row mt-2 g-1">
+                                        <div class="col-7 text-truncate" title="Head of Division">
+                                            <span class="fa fa-user" title="Head"/>
+                                            <field name="head_id"/>
                                         </div>
+                                        <div class="col-5 text-end text-truncate" title="Parent Directorate">
+                                            <span class="fa fa-building"/>
+                                            <field name="directorate_id"/>
+                                        </div>
+                                    </div>
 
-                                        <div class="row mt-2">
-                                            <div class="col-8">
-                                                <span class="fa fa-user" title="Head"/>
-                                                <field name="head_id"/>
-                                            </div>
-                                            <div class="col-4 text-end">
-                                                <span class="badge badge-pill badge-success">
-                                                    <field name="programme_count"/> Prog.
-                                                </span>
-                                            </div>
+                                    <div class="mt-2">
+                                        <div class="text-muted small d-flex justify-content-between align-items-center">
+                                            <span>Overall Performance</span>
+                                            <span><t t-out="record.overall_performance.raw_value"/>%</span>
                                         </div>
+                                        <field name="overall_performance" widget="progressbar"/>
+                                    </div>
 
-                                        <div class="mt-3">
-                                            <div class="text-muted small">Overall Performance</div>
-                                            <field name="overall_performance" widget="progressbar"/>
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="badge text-bg-light" title="Programme KPI Avg">
+                                                <span class="fa fa-line-chart"/> <t t-out="record.programme_pi_avg.raw_value"/>% / <t t-out="record.programme_pi_count.raw_value"/> KPIs
+                                            </span>
+                                            <span class="badge text-bg-light" title="Direct KPI Avg">
+                                                <span class="fa fa-bullseye"/> <t t-out="record.direct_pi_avg.raw_value"/>% / <t t-out="record.direct_pi_count.raw_value"/> KPIs
+                                            </span>
                                         </div>
+                                        <div class="mt-2">
+                                            <div class="text-muted small">KPI Status Mix</div>
+                                            <div class="d-flex gap-1 align-items-center" title="High / Medium / Low / None">
+                                                <div class="progress flex-grow-1" style="height:8px;">
+                                                    <t t-set="total" t-value="(record.pi_high_count.raw_value || 0) + (record.pi_medium_count.raw_value || 0) + (record.pi_low_count.raw_value || 0) + (record.pi_none_count.raw_value || 0)"/>
+                                                    <div class="progress-bar bg-success" role="progressbar" t-att-style="'width: ' + (total ? Math.round((record.pi_high_count.raw_value/total)*100) : 0) + '%'"/>
+                                                    <div class="progress-bar bg-warning" role="progressbar" t-att-style="'width: ' + (total ? Math.round((record.pi_medium_count.raw_value/total)*100) : 0) + '%'"/>
+                                                    <div class="progress-bar bg-danger" role="progressbar" t-att-style="'width: ' + (total ? Math.round((record.pi_low_count.raw_value/total)*100) : 0) + '%'"/>
+                                                    <div class="progress-bar bg-secondary" role="progressbar" t-att-style="'width: ' + (total ? Math.round((record.pi_none_count.raw_value/total)*100) : 0) + '%'"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                        <div class="mt-2" t-if="record.email.raw_value or record.phone.raw_value">
-                                            <div t-if="record.email.raw_value" class="text-muted small">
-                                                <span class="fa fa-envelope" title="Email"/> <field name="email"/>
-                                            </div>
-                                            <div t-if="record.phone.raw_value" class="text-muted small">
-                                                <span class="fa fa-phone" title="Phone"/> <field name="phone"/>
-                                            </div>
+                                    <div class="mt-2" t-if="record.email.raw_value or record.phone.raw_value">
+                                        <div t-if="record.email.raw_value" class="text-muted small">
+                                            <span class="fa fa-envelope" title="Email"/> <field name="email"/>
                                         </div>
+                                        <div t-if="record.phone.raw_value" class="text-muted small">
+                                            <span class="fa fa-phone" title="Phone"/> <field name="phone"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_bottom d-flex justify-content-end gap-2 mt-2">
+                                        <button type="object" name="action_view_programmes" class="btn btn-xs btn-secondary">
+                                            <span class="fa fa-tasks"/> Direct
+                                        </button>
+                                        <button type="object" name="action_view_implementing_programmes" class="btn btn-xs btn-primary">
+                                            <span class="fa fa-briefcase"/> Implementing
+                                        </button>
+                                        <button type="object" name="action_view_division_performance" class="btn btn-xs btn-info">
+                                            <span class="fa fa-line-chart"/> Analytics
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </t>
                     </templates>
+                    <field name="programme_count" string="Direct Programmes"/>
                 </kanban>
             </field>
         </record>
@@ -100,21 +146,22 @@
                     <field name="code"/>
                     <field name="directorate_id"/>
                     <field name="head_id"/>
-                    <field name="programme_count" string="Programmes"/>
+                    <field name="programme_count" string="Direct Programmes"/>
                     <field name="overall_performance" widget="progressbar"/>
                     <field name="email"/>
                     <field name="phone"/>
                     <field name="active" invisible="1"/>
                 </list>
             </field>
-        </record>
+    </record>
+            
 
-        <!-- Enhanced Division Form View -->
+    <!-- Enhanced Division Form View -->
         <record id="view_kcca_division_form" model="ir.ui.view">
             <field name="name">kcca.division.form</field>
             <field name="model">kcca.division</field>
             <field name="arch" type="xml">
-                <form string="KCCA Division" class="o_form_view_compact_chatter">
+        <form string="KCCA Division" class="o_form_view_compact_chatter kcca_division_form">
                     <header>
                         <field name="active" widget="boolean_toggle"/>
                     </header>
@@ -122,7 +169,11 @@
                         <div class="oe_button_box" name="button_box">
                             <button name="action_view_programmes" type="object"
                                     class="oe_stat_button" icon="fa-tasks">
-                                <field name="programme_count" widget="statinfo" string="Programmes"/>
+                                <field name="programme_count" widget="statinfo" string="Direct Programmes"/>
+                            </button>
+                <button name="action_view_implementing_programmes" type="object"
+                    class="oe_stat_button" icon="fa-briefcase" modifiers="{'invisible': [('implementing_programme_count', '=', 0)]}">
+                                <field name="implementing_programme_count" widget="statinfo" string="Implementing"/>
                             </button>
                             <button name="action_view_division_performance" type="object"
                                     class="oe_stat_button" icon="fa-line-chart">
@@ -187,87 +238,11 @@
                                 </field>
                             </page>
 
-                            <page string="Programme Implementation">
-                                <field name="division_programme_rel_ids">
-                                    <list editable="bottom" decoration-success="performance_score >= 80"
-                                          decoration-warning="50 &lt;= performance_score and performance_score &lt; 80"
-                                          decoration-danger="performance_score &lt; 50">
-                                        <field name="programme_id"/>
-                                        <field name="implementation_status"/>
-                                        <field name="priority_level"/>
-                                        <field name="completion_percentage" widget="percentage"/>
-                                        <field name="performance_score" widget="percentage"/>
-                                        <field name="target_beneficiaries"/>
-                                        <field name="actual_beneficiaries"/>
-                                        <field name="is_on_track"/>
-                                    </list>
-                                </field>
-                            </page>
-
-                            <page string="Implementing Programmes" name="implementing_programmes">
-                                <field name="implementing_programme_ids">
-                                    <list>
-                                        <field name="name"/>
-                                        <field name="code"/>
-                                        <field name="directorate_id"/>
-                                        <field name="programme_manager_id"/>
-                                        <field name="overall_performance" widget="progressbar"/>
-                                    </list>
-                                </field>
-                            </page>
+                            
                         </notebook>
                     </sheet>
                     <chatter/>
                 </form>
-            </field>
-        </record>
-
-        <!-- Division Kanban View -->
-        <record id="view_kcca_division_kanban" model="ir.ui.view">
-            <field name="name">kcca.division.kanban</field>
-            <field name="model">kcca.division</field>
-            <field name="arch" type="xml">
-                <kanban class="o_kanban_small_column">
-                    <field name="name"/>
-                    <field name="code"/>
-                    <field name="directorate_id"/>
-                    <field name="programme_count"/>
-                    <field name="overall_performance"/>
-                    <field name="active"/>
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click
-                                 #{record.overall_performance.raw_value >= 80 ? 'oe_kanban_color_5' :
-                                   record.overall_performance.raw_value >= 50 ? 'oe_kanban_color_3' : 'oe_kanban_color_2'}
-                                 #{!record.active.raw_value ? 'o_kanban_color_2' : ''}">
-                                <div class="o_kanban_content">
-                                    <div class="o_kanban_record_top">
-                                        <div class="o_kanban_record_headings">
-                                            <strong class="o_kanban_record_title">
-                                                <field name="name"/>
-                                            </strong>
-                                            <div class="o_kanban_record_subtitle">
-                                                <field name="code"/> - <field name="directorate_id"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="o_kanban_record_body">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <span title="Programmes">📋</span>
-                                                <field name="programme_count"/> programmes
-                                            </div>
-                                            <div class="col-6">
-                                                <span title="Performance">🎯</span>
-                                                <field name="overall_performance" widget="percentage"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
             </field>
         </record>
 
@@ -281,24 +256,6 @@
                     <field name="code" string="Code"/>
                     <field name="directorate_id" string="Directorate"/>
                     <field name="head_id" string="Head"/>
-
-                    <filter name="active" string="Active" domain="[('active', '=', True)]"/>
-                    <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
-
-                    <separator/>
-                    <filter name="high_performance" string="High Performance (≥80%)"
-                            domain="[('overall_performance', '>=', 80)]"/>
-                    <filter name="medium_performance" string="Medium Performance (50-79%)"
-                            domain="[('overall_performance', '>=', 50), ('overall_performance', '&lt;', 80)]"/>
-                    <filter name="low_performance" string="Low Performance (&lt;50%)"
-                            domain="[('overall_performance', '&lt;', 50)]"/>
-
-                    <group expand="0" string="Group By">
-                        <filter name="group_by_directorate" string="Directorate"
-                                context="{'group_by': 'directorate_id'}"/>
-                        <filter name="group_by_head" string="Division Head"
-                                context="{'group_by': 'head_id'}"/>
-                    </group>
                 </search>
             </field>
         </record>
@@ -309,7 +266,7 @@
             <field name="res_model">kcca.division</field>
             <field name="view_mode">kanban,list,form</field>
             <field name="search_view_id" ref="view_kcca_division_search"/>
-            <field name="context">{'search_default_active': 1}</field>
+            <field name="context">{}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create your first KCCA Division
