@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'KCCA Performance Management Information System',
-    'version': ': .post1',
-        'version': '18.0.1.0.7',
+    'version': '18.0.1.0.8',
     'category': 'Human Resources/Performance',
     'summary': 'Comprehensive Performance Management System for KCCA',
     'description': """
@@ -173,10 +172,17 @@ Hierarchical Structure:
             # Updated dashboard for Odoo 18 compatibility
             'robust_pmis/static/src/js/performance_dashboard_form.js',
             'robust_pmis/static/src/xml/kcca_directorate_charts.xml',
+            # KPI Linkage Dashboard client action
+            'robust_pmis/static/src/js/kpi_linkage_dashboard.js',
+            'robust_pmis/static/src/xml/kpi_linkage_dashboard.xml',
 
         ],
         'web.assets_frontend': [
             'robust_pmis/static/src/css/portal.css',
+        ],
+        # Ensure QWeb templates are always picked up by the client
+        'web.assets_qweb': [
+            'robust_pmis/static/src/xml/kpi_linkage_dashboard.xml',
         ],
     },
     'images': ['static/description/banner.png'],
