@@ -179,9 +179,9 @@
                                     class="oe_stat_button" icon="fa-line-chart">
                                 <div class="o_field_widget o_stat_info">
                                     <span class="o_stat_value">
-                                        <field name="overall_performance" widget="percentage"/>
+                                        <field name="overall_performance" widget="float" digits="[16, 2]"/>
                                     </span>
-                                    <span class="o_stat_text">Performance</span>
+                                    <span class="o_stat_text">Performance (%)</span>
                                 </div>
                             </button>
                         </div>
@@ -218,7 +218,7 @@
                             <group name="performance" string="Performance Overview">
                                 <field name="programme_count" readonly="1"/>
                                 <field name="performance_indicator_count" readonly="1"/>
-                                <field name="overall_performance" widget="percentage" readonly="1"/>
+                                <field name="overall_performance" widget="float" digits="[16, 2]" readonly="1" string="Overall Performance (%)"/>
                             </group>
                         </group>
 

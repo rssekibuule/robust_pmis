@@ -16,7 +16,14 @@ class DivisionProgrammeRel(models.Model):
     _table = 'division_programme_relationship'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'division_sequence, programme_sequence'
-    
+    _sql_constraints = [
+        (
+            'uniq_division_programme',
+            'unique(division_id, programme_id)',
+            'A relationship between this Division and Programme already exists.'
+        ),
+    ]
+
     # Core relationship fields
     division_id = fields.Many2one(
         'kcca.division',
@@ -26,7 +33,6 @@ class DivisionProgrammeRel(models.Model):
         tracking=True,
         help="KCCA territorial division"
     )
-    
     programme_id = fields.Many2one(
         'kcca.programme',
         string='Programme',
@@ -40,9 +46,10 @@ class DivisionProgrammeRel(models.Model):
     is_direct = fields.Boolean(
         string='Direct Programme',
         default=False,
+        index=True,
         help='Check if this programme is directly owned by the division (not just implementing).'
     )
-    
+
     # Implementation details
     implementation_status = fields.Selection([
         ('not_started', 'Not Started'),
@@ -51,118 +58,110 @@ class DivisionProgrammeRel(models.Model):
         ('monitoring', 'Monitoring'),
         ('completed', 'Completed'),
         ('suspended', 'Suspended')
-    ], string='Implementation Status', default='not_started', tracking=True)
-    
+    ], string='Implementation Status', default='not_started', tracking=True, index=True)
+
     priority_level = fields.Selection([
         ('low', 'Low'),
         ('medium', 'Medium'),
         ('high', 'High'),
         ('critical', 'Critical')
-    ], string='Priority Level', default='medium', tracking=True)
-    
+    ], string='Priority Level', default='medium', tracking=True, index=True)
+
     # Resource allocation
     allocated_budget = fields.Monetary(
         string='Allocated Budget',
         currency_field='currency_id',
         help="Budget allocated for this programme in this division"
     )
-    
     utilized_budget = fields.Monetary(
         string='Utilized Budget',
         currency_field='currency_id',
         help="Budget utilized so far"
     )
-    
     currency_id = fields.Many2one(
         'res.currency',
         string='Currency',
         default=lambda self: self.env.company.currency_id
     )
-    
+
     # Performance tracking
     target_beneficiaries = fields.Integer(
         string='Target Beneficiaries',
         help="Number of people/entities targeted to benefit from this programme"
     )
-    
     actual_beneficiaries = fields.Integer(
         string='Actual Beneficiaries',
         help="Number of people/entities actually benefiting"
     )
-    
+
     completion_percentage = fields.Float(
         string='Completion %',
         compute='_compute_completion_percentage',
         store=True,
+        index=True,
         help="Overall completion percentage of the programme in this division"
     )
-    
+
     performance_score = fields.Float(
         string='Performance Score',
         compute='_compute_performance_score',
         store=True,
+        index=True,
         help="Computed performance score based on various metrics"
     )
-    
+
     # Dates
     start_date = fields.Date(
         string='Start Date',
         help="Programme implementation start date in this division"
     )
-    
     end_date = fields.Date(
         string='End Date',
         help="Programme implementation end date in this division"
     )
-    
     last_review_date = fields.Date(
         string='Last Review Date',
         help="Date of last performance review"
     )
-    
     next_review_date = fields.Date(
         string='Next Review Date',
         help="Date of next scheduled review"
     )
-    
+
     # Responsible persons
     division_coordinator_id = fields.Many2one(
         'res.users',
         string='Division Coordinator',
         help="Person coordinating this programme in the division"
     )
-    
     programme_officer_id = fields.Many2one(
         'res.users',
         string='Programme Officer',
         help="Officer responsible for programme implementation"
     )
-    
+
     # Computed fields for display and sorting
     division_name = fields.Char(
         string='Division Name',
         related='division_id.name',
         store=True
     )
-    
     programme_name = fields.Char(
         string='Programme Name',
         related='programme_id.name',
         store=True
     )
-    
     division_sequence = fields.Integer(
         string='Division Sequence',
         related='division_id.sequence',
         store=True
     )
-    
     programme_sequence = fields.Integer(
         string='Programme Sequence',
         related='programme_id.sequence',
         store=True
     )
-    
+
     # Budget utilization percentage
     budget_utilization = fields.Float(
         string='Budget Utilization %',
@@ -176,7 +175,7 @@ class DivisionProgrammeRel(models.Model):
         store=True,
         help="Raw budget utilization before capping to 100% for scoring"
     )
-    
+
     # Beneficiary achievement percentage
     beneficiary_achievement = fields.Float(
         string='Beneficiary Achievement %',
@@ -190,7 +189,7 @@ class DivisionProgrammeRel(models.Model):
         store=True,
         help="Raw beneficiary achievement before capping to 100% for scoring"
     )
-    
+
     # Status indicators
     is_on_track = fields.Boolean(
         string='On Track',
@@ -210,34 +209,33 @@ class DivisionProgrammeRel(models.Model):
         store=True,
         help="Amount by which completion exceeds 100% (0 if not exceeded)"
     )
-    
     is_delayed = fields.Boolean(
         string='Delayed',
         compute='_compute_status_indicators',
         store=True,
         help="Whether the programme is delayed"
     )
-    
     requires_attention = fields.Boolean(
         string='Requires Attention',
         compute='_compute_status_indicators',
         store=True,
         help="Whether the programme requires management attention"
     )
-    
+
     # Display name
     display_name = fields.Char(
         string='Display Name',
         compute='_compute_display_name',
         store=True
     )
-    
+
     active = fields.Boolean(
         string='Active',
         default=True,
+        index=True,
         tracking=True
     )
-    
+
     @api.depends('division_id', 'programme_id')
     def _compute_display_name(self):
         """Compute display name for the relationship"""
@@ -302,15 +300,16 @@ class DivisionProgrammeRel(models.Model):
             beneficiary_weight = 0.3
             
             # Clamp completion, budget, and beneficiary percentages to 100
-            clamped_completion = min(max(record.completion_percentage or 0.0, 0.0), 100.0)
-            clamped_budget = min(max(record.budget_utilization or 0.0, 0.0), 100.0)
-            clamped_beneficiary = min(max(record.beneficiary_achievement or 0.0, 0.0), 100.0)
+            clamped_completion = min(max(float(record.completion_percentage or 0.0), 0.0), 100.0)
+            clamped_budget = min(max(float(record.budget_utilization or 0.0), 0.0), 100.0)
+            clamped_beneficiary = min(max(float(record.beneficiary_achievement or 0.0), 0.0), 100.0)
             score = (
                 (clamped_completion * completion_weight) +
                 (clamped_budget * budget_weight) +
                 (clamped_beneficiary * beneficiary_weight)
             )
-            record.performance_score = score
+            # Final clamp to 0..100
+            record.performance_score = min(max(score, 0.0), 100.0)
     
     @api.depends('performance_score', 'implementation_status', 'completion_percentage')
     def _compute_status_indicators(self):
@@ -471,4 +470,19 @@ class DivisionProgrammeRel(models.Model):
             self.browse(updates).write({'is_direct': True})
         return len(updates)
 
-    # Note: Business guardrails enforced by admin scripts and views to avoid blocking data loads
+    @api.model
+    def cron_integrity_check(self):
+        """Nightly integrity pass for relationships.
+
+        - Normalize direct flags based on programme ownership
+        - Enforce allowed implementing relations via division utility
+        """
+        try:
+            self.sudo().mark_direct_programme_flags()
+        except Exception:
+            pass
+        try:
+            self.env['kcca.division'].sudo().enforce_allowed_implementing_relations()
+        except Exception:
+            pass
+        return True

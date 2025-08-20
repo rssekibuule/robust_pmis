@@ -231,60 +231,122 @@ class KCCADivision(models.Model):
                  'division_programme_rel_ids.performance_score',
                  'kpi_ids.achievement_percentage')
     def _compute_performance(self):
+        def _pct(val):
+            try:
+                v = float(val or 0.0)
+            except Exception:
+                v = 0.0
+            # clamp to 0..100
+            return max(0.0, min(100.0, v))
+
         for record in self:
-            # Combine direct programme performance and relationship performance scores
+            # Aggregate components in 0..100 space and clamp to avoid outliers
             direct_performance = 0.0
             relationship_performance = 0.0
             division_kpi_perf = 0.0
 
             if record.programme_ids:
-                direct_performance = sum(prog.overall_performance for prog in record.programme_ids) / len(record.programme_ids)
+                vals = [p.overall_performance for p in record.programme_ids]
+                if vals:
+                    direct_performance = sum(_pct(v) for v in vals) / len(vals)
 
             if record.division_programme_rel_ids:
-                relationship_performance = sum(rel.performance_score for rel in record.division_programme_rel_ids) / len(record.division_programme_rel_ids)
+                vals = [r.performance_score for r in record.division_programme_rel_ids]
+                if vals:
+                    relationship_performance = sum(_pct(v) for v in vals) / len(vals)
 
             if record.kpi_ids:
-                division_kpi_perf = sum(record.kpi_ids.mapped('achievement_percentage')) / len(record.kpi_ids)
+                vals = [v for v in record.kpi_ids.mapped('achievement_percentage')]
+                if vals:
+                    division_kpi_perf = sum(_pct(v) for v in vals) / len(vals)
 
-            # Blend available components fairly so division KPIs contribute to org totals
-            components = [val for val in [direct_performance, relationship_performance, division_kpi_perf] if val]
+            # Include zeros; only drop Nones
+            components = [c for c in [direct_performance, relationship_performance, division_kpi_perf] if c is not None]
             if components:
-                record.overall_performance = sum(components) / len(components)
+                blended = sum(components) / len(components)
+                record.overall_performance = _pct(blended)
             else:
                 record.overall_performance = 0.0
     
     def action_view_programmes(self):
         """Open division-programme relationships filtered to direct programmes"""
         self.ensure_one()
-        # Use the existing Division Programme Performance action (kanban/list/form/graph/pivot)
-        action = self.env.ref('robust_pmis.action_division_programme_performance').read()[0]
+        # Try standard action; fallback to a safe act_window if not found
+        action = None
+        try:
+            action = self.env.ref('robust_pmis.action_division_programme_performance').sudo().read()[0]
+        except Exception:
+            action = {
+                'type': 'ir.actions.act_window',
+                'name': _('Direct Programmes'),
+                'res_model': 'division.programme.rel',
+                'view_mode': 'kanban,list,form,graph,pivot',
+            }
         action['domain'] = [('division_id', '=', self.id), ('is_direct', '=', True)]
-        action['context'] = {
+        action.setdefault('context', {})
+        action['context'].update({
             'default_division_id': self.id,
             'search_default_is_direct': 1,
-        }
+            # Force a safe grouping for Graph view (avoid boolean category errors)
+            'group_by': 'programme_id',
+            'search_default_group_by_programme': 1,
+            'search_default_active': 1,
+        })
         action['name'] = _('Direct Programmes')
         return action
 
     def action_view_division_performance(self):
         """Action to view division performance across programmes"""
-        action = self.env.ref('robust_pmis.action_division_programme_performance').read()[0]
+        self.ensure_one()
+        action = None
+        # Prefer the dashboard action if available
+        try:
+            action = self.env.ref('robust_pmis.action_division_performance_dashboard').sudo().read()[0]
+        except Exception:
+            try:
+                action = self.env.ref('robust_pmis.action_division_programme_performance').sudo().read()[0]
+            except Exception:
+                action = {
+                    'type': 'ir.actions.act_window',
+                    'name': _('Division Performance'),
+                    'res_model': 'division.programme.rel',
+                    'view_mode': 'kanban,list,form,graph,pivot',
+                }
         action['domain'] = [('division_id', '=', self.id)]
-        action['context'] = {
+        action.setdefault('context', {})
+        action['context'].update({
             'default_division_id': self.id,
-            'search_default_active': 1
-        }
+            'search_default_active': 1,
+            'search_default_group_by_division': 1,
+            'searchpanel_default_division_id': self.id,
+            # Ensure graphs default to a supported category
+            'group_by': 'division_id',
+        })
+        action['name'] = _('Division Performance')
         return action
 
     def action_view_implementing_programmes(self):
         """Open division-programme relationships filtered to non-direct (implementing)"""
         self.ensure_one()
-        action = self.env.ref('robust_pmis.action_division_programme_performance').read()[0]
+        action = None
+        try:
+            action = self.env.ref('robust_pmis.action_division_programme_performance').sudo().read()[0]
+        except Exception:
+            action = {
+                'type': 'ir.actions.act_window',
+                'name': _('Implementing Programmes'),
+                'res_model': 'division.programme.rel',
+                'view_mode': 'kanban,list,form,graph,pivot',
+            }
         action['domain'] = [('division_id', '=', self.id), ('is_direct', '=', False)]
-        action['context'] = {
+        action.setdefault('context', {})
+        action['context'].update({
             'default_division_id': self.id,
+            # Force a safe grouping for Graph view (avoid boolean category errors)
+            'group_by': 'programme_id',
+            'search_default_group_by_programme': 1,
             'search_default_active': 1,
-        }
+        })
         action['name'] = _('Implementing Programmes')
         return action
 
@@ -306,10 +368,7 @@ class KCCADivision(models.Model):
         """
         Programme = self.env['kcca.programme']
         Rel = self.env['division.programme.rel']
-        allowed_codes = [
-            'AGRO', 'PSD', 'ITIS', 'SUH', 'DT', 'HCD', 'LOR', 'RRP',
-            'WME', 'PHE', 'DRC', 'UPD', 'AOJ', 'GS', 'PST', 'SED'
-        ]
+        allowed_codes = self.env['res.config.settings'].get_allowed_programme_codes()
         # Fetch only allowed programmes; this automatically excludes DEMO codes
         # like KD-DP01, etc., and any legacy non-allowed codes.
         allowed_programmes = Programme.search([('code', 'in', allowed_codes)])
@@ -340,7 +399,7 @@ class KCCADivision(models.Model):
         Rel = self.env['division.programme.rel'].sudo()
         Programme = self.env['kcca.programme'].sudo()
 
-        allowed = set(['AGRO','PSD','ITIS','SUH','DT','HCD','LOR','RRP','WME','PHE','DRC','UPD','AOJ','GS','PST','SED'])
+        allowed = set(self.env['res.config.settings'].get_allowed_programme_codes())
 
         # 1) Remove non-allowed implementing relations (non-direct only)
         rem1 = Rel.search([('is_direct', '=', False), ('programme_id.code', 'not in', list(allowed))])
@@ -436,3 +495,40 @@ class KCCADivision(models.Model):
             rec.pi_medium_count = medium
             rec.pi_low_count = low
             rec.pi_none_count = none
+
+    # --- Maintenance utilities ---
+    @api.model
+    def recompute_all_performance(self):
+        """Recompute and clamp stored performance fields across PMIS models.
+
+        This addresses stale values persisted before clamps were introduced.
+        """
+        # Programmes
+        progs = self.env['kcca.programme'].sudo().search([])
+        if progs:
+            progs._compute_performance()
+            progs.flush_recordset()
+
+        # Division-Programme relationships
+        rels = self.env['division.programme.rel'].sudo().search([])
+        if rels:
+            rels._compute_budget_utilization()
+            rels._compute_beneficiary_achievement()
+            rels._compute_completion_percentage()
+            rels._compute_performance_score()
+            rels._compute_status_indicators()
+            rels.flush_recordset()
+
+        # Divisions
+        divs = self.sudo().search([])
+        if divs:
+            divs._compute_counts()
+            divs._compute_performance()
+            divs._compute_pi_stats()
+            divs.flush_recordset()
+
+        return {
+            'programmes': len(progs),
+            'relations': len(rels),
+            'divisions': len(divs),
+        }

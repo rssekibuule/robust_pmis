@@ -170,7 +170,8 @@
             <field name="search_view_id" ref="view_division_programme_rel_search"/>
             <field name="context">{
                 'search_default_active': 1,
-                'search_default_group_by_division': 1
+                'search_default_group_by_division': 1,
+                'searchpanel_default_division_id': 1
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -197,7 +198,8 @@
             <field name="search_view_id" ref="view_division_programme_rel_search"/>
             <field name="context">{
                 'search_default_active': 1,
-                'search_default_group_by_division': 1
+                'search_default_group_by_division': 1,
+                'searchpanel_default_division_id': 1
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

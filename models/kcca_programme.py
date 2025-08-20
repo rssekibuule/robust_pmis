@@ -211,8 +211,13 @@ class KCCAProgramme(models.Model):
     def _compute_performance(self):
         for record in self:
             if record.performance_indicator_ids:
-                total_achievement = sum(pi.achievement_percentage for pi in record.performance_indicator_ids)
-                record.overall_performance = total_achievement / len(record.performance_indicator_ids)
+                vals = [pi.achievement_percentage or 0.0 for pi in record.performance_indicator_ids]
+                if vals:
+                    avg = sum(vals) / len(vals)
+                else:
+                    avg = 0.0
+                # clamp to 0..100 to avoid outliers propagating upwards
+                record.overall_performance = max(0.0, min(100.0, avg))
             else:
                 record.overall_performance = 0.0
 

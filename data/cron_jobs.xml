@@ -102,5 +102,16 @@
             <field name="active">True</field>
         </record>
 
+        <!-- Nightly Division-Programme Relationship Integrity Check -->
+        <record id="cron_division_programme_integrity" model="ir.cron">
+            <field name="name">PMIS: Division-Programme Integrity</field>
+            <field name="model_id" ref="model_division_programme_rel"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_integrity_check()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+        </record>
+
     </data>
 </odoo>

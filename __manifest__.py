@@ -116,6 +116,7 @@ Hierarchical Structure:
         'views/financial_integration_views.xml',
         'views/financial_dashboard_views.xml',
         'views/programme_budget_views.xml',
+    'views/res_config_settings_views.xml',
 
         # Dashboard and Analytics
         'views/kpi_linkage_dashboard.xml',
@@ -137,6 +138,7 @@ Hierarchical Structure:
         # Email Templates and Cron Jobs
         'data/email_templates.xml',
         'data/cron_jobs.xml',
+        
 
         # Reports
         'reports/performance_report_templates.xml',

@@ -227,6 +227,12 @@
             <field name="model">division.programme.rel</field>
             <field name="arch" type="xml">
                 <search string="Division Programme Performance">
+                    <searchpanel>
+                        <field name="division_id" icon="fa-building"/>
+                        <field name="programme_id" icon="fa-sitemap"/>
+                        <field name="implementation_status"/>
+                        <field name="priority_level"/>
+                    </searchpanel>
                     <field name="division_id" string="Division"/>
                     <field name="programme_id" string="Programme"/>
                     <field name="implementation_status" string="Status"/>
@@ -275,8 +281,6 @@
                                 context="{'group_by': 'division_id'}"/>
                         <filter name="group_by_programme" string="Programme" 
                                 context="{'group_by': 'programme_id'}"/>
-            <filter name="group_by_is_direct" string="Direct vs Implementing" 
-                context="{'group_by': 'is_direct'}"/>
                         <filter name="group_by_status" string="Implementation Status" 
                                 context="{'group_by': 'implementation_status'}"/>
                         <filter name="group_by_priority" string="Priority Level" 
