@@ -20,26 +20,6 @@
             <!-- Main Dashboard Content -->
             <div class="dashboard-content">
 
-              <!-- Performance Summary Banner -->
-              <div class="performance-summary-banner">
-                <div class="summary-item">
-                  <div class="summary-title">Overall Performance</div>
-                  <div class="summary-value"><field name="avg_kpi_performance" widget="progressbar" options="{'editable': false}"/></div>
-                </div>
-                <div class="summary-item">
-                  <div class="summary-title">KRA Achievement</div>
-                  <div class="summary-value"><field name="avg_kra_performance" widget="progressbar" options="{'editable': false}"/></div>
-                </div>
-                <div class="summary-item">
-                  <div class="summary-title">Programme Progress</div>
-                  <div class="summary-value"><field name="avg_programme_performance" widget="progressbar" options="{'editable': false}"/></div>
-                </div>
-                <div class="timestamp-info">
-                  <div id="dashboard-timestamp">Last Updated: <span></span></div>
-                  <a id="refresh-dashboard" class="refresh-button" href="#"><i class="fa fa-refresh"></i> Refresh</a>
-                </div>
-              </div>
-
               <!-- Filter Bar -->
               <div class="filters-row">
                 <div class="filter-group">
@@ -80,7 +60,7 @@
                 <div class="filter-group">
                   <span class="o_form_label">Period</span>
                   <select id="filter-period">
-                    <option value="fy">FY 2024/25</option>
+                      <option value="all">All Periods</option>
                     <option value="q1">Q1</option>
                     <option value="q2">Q2</option>
                     <option value="q3">Q3</option>
@@ -116,7 +96,7 @@
               <div class="executive-scorecards">
                 <div class="gauge-card" tabindex="0">
                   <div class="gauge-header">
-                    <span class="gauge-title">Overall Performance</span>
+                    <span class="gauge-title">All KPIs Achievements</span>
                     <span class="gauge-sub">Avg of all KPIs</span>
                   </div>
                   <div class="gauge-canvas"><canvas id="gaugeOverall"></canvas></div>

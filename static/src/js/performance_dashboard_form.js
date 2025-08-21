@@ -44,6 +44,7 @@ export class PerformanceDashboardController extends FormController {
         setTimeout(() => {
             this.loadDashboardData();
             this.enhanceVisuals();
+            this.loadPeriodOptions();
             this.populateEntityOptions('organization');
             this._attachResizeHandlers();
         }, 500);
@@ -70,7 +71,7 @@ export class PerformanceDashboardController extends FormController {
 
             this.updateDashboardMetrics(data);
             this.renderCharts(data);
-            this.updateTimestamp();
+            // Timestamp/refresh removed with summary banner
         } catch (error) {
             console.error('Error loading dashboard data:', error);
             // Fallback to basic chart rendering
@@ -390,10 +391,14 @@ export class PerformanceDashboardController extends FormController {
             }]
         });
 
-        const summary = data.summary || {};
-        const overall = summary.avg_performance ?? 0;
-        const kra = summary.avg_kra_performance ?? 0;
-        const programme = summary.avg_programme_performance ?? 0;
+    const summary = data.summary || {};
+    const toNum = (v) => (typeof v === 'number' ? v : (v ? parseFloat(v) : 0)) || 0;
+    // Map 'All KPIs Achievements' to KPI-only. If it's missing or zero, fall back progressively.
+    let overall = toNum(summary.kpi_only_performance);
+    if (!overall) overall = toNum(summary.avg_kpi_performance);
+    if (!overall) overall = toNum(summary.avg_performance);
+    const kra = toNum(summary.avg_kra_performance ?? 0);
+    const programme = toNum(summary.avg_programme_performance ?? 0);
         const portfolio = (() => {
             const dist = data.distribution || { excellent: 0, good: 0, fair: 0, poor: 0 };
             const total = (dist.excellent || 0) + (dist.good || 0) + (dist.fair || 0) + (dist.poor || 0);
@@ -401,16 +406,43 @@ export class PerformanceDashboardController extends FormController {
             return Math.round(((dist.excellent + dist.good) / total) * 100);
         })();
 
-        const ensureCanvas = (id) => document.getElementById(id)?.getContext('2d');
-        const overCtx = ensureCanvas('gaugeOverall');
-        const kraCtx = ensureCanvas('gaugeKRA');
-        const progCtx = ensureCanvas('gaugeProgramme');
-        const portCtx = ensureCanvas('gaugePortfolio');
+        // Work with canvas elements (not contexts) so we can query Chart registry safely
+        const ensureCanvas = (id) => document.getElementById(id) || null;
+        const destroyExisting = (canvas, propName) => {
+            try {
+                if (!canvas || !window.Chart) return;
+                // Destroy tracked instance first
+                const inst = this[propName];
+                if (inst && typeof inst.destroy === 'function') {
+                    inst.destroy();
+                    this[propName] = null;
+                }
+                // Also destroy any chart that Chart.js still has registered for this canvas
+                if (typeof Chart.getChart === 'function') {
+                    const existing = Chart.getChart(canvas);
+                    if (existing && (!inst || existing !== inst)) {
+                        existing.destroy();
+                    }
+                }
+            } catch (e) {
+                // Ignore cleanup errors
+            }
+        };
+
+        const overCanvas = ensureCanvas('gaugeOverall');
+        const kraCanvas = ensureCanvas('gaugeKRA');
+        const progCanvas = ensureCanvas('gaugeProgramme');
+        const portCanvas = ensureCanvas('gaugePortfolio');
+        // Ensure previous charts are gone before creating new ones
+        destroyExisting(overCanvas, '_gaugeOverall');
+        destroyExisting(kraCanvas, '_gaugeKRA');
+        destroyExisting(progCanvas, '_gaugeProgramme');
+        destroyExisting(portCanvas, '_gaugePortfolio');
         // Harmonize gauge palette with purple theme for better aesthetics
-        if (overCtx) { this._gaugeOverall?.destroy?.(); this._gaugeOverall = new Chart(overCtx, cfg(overall, ['#5b7cfa', '#e9edf5'])); }
-        if (kraCtx) { this._gaugeKRA?.destroy?.(); this._gaugeKRA = new Chart(kraCtx, cfg(kra, ['#36d399', '#e9edf5'])); }
-        if (progCtx) { this._gaugeProgramme?.destroy?.(); this._gaugeProgramme = new Chart(progCtx, cfg(programme, ['#f6ad55', '#e9edf5'])); }
-        if (portCtx) { this._gaugePortfolio?.destroy?.(); this._gaugePortfolio = new Chart(portCtx, cfg(portfolio, ['#6b3fa0', '#e9edf5'])); }
+        if (overCanvas) { this._gaugeOverall = new Chart(overCanvas, cfg(overall, ['#5b7cfa', '#e9edf5'])); }
+        if (kraCanvas) { this._gaugeKRA = new Chart(kraCanvas, cfg(kra, ['#36d399', '#e9edf5'])); }
+        if (progCanvas) { this._gaugeProgramme = new Chart(progCanvas, cfg(programme, ['#f6ad55', '#e9edf5'])); }
+        if (portCanvas) { this._gaugePortfolio = new Chart(portCanvas, cfg(portfolio, ['#6b3fa0', '#e9edf5'])); }
     }
 
     enhanceVisuals() {
@@ -434,16 +466,7 @@ export class PerformanceDashboardController extends FormController {
             });
         }
 
-        // Refresh button
-        const refreshBtn = document.getElementById('refresh-dashboard');
-        if (refreshBtn) {
-            refreshBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.updateTimestamp();
-                this.loadDashboardData();
-            });
-        }
+    // Refresh button removed with summary banner
 
         // Card click handlers with real navigation
         document.querySelectorAll('.metric-card, .quick-link').forEach(card => {
@@ -462,6 +485,30 @@ export class PerformanceDashboardController extends FormController {
                 }
             });
         });
+    }
+
+    async loadPeriodOptions() {
+        try {
+            const periodEl = document.getElementById('filter-period');
+            if (!periodEl) return;
+            const options = await this.orm.call('performance.dashboard', 'get_period_options', []);
+            const seen = new Set();
+            const opts = ['<option value="all">All Periods</option>'];
+            for (const o of options || []) {
+                const key = (o.key || '').trim();
+                const label = o.label || key;
+                if (key && !seen.has(key)) {
+                    seen.add(key);
+                    opts.push(`<option value="${key}">${label}</option>`);
+                }
+            }
+            periodEl.innerHTML = opts.join('');
+            // Auto-select the latest FY (last FY option in list)
+            const lastFy = [...seen].filter(k => k.startsWith('fy:')).pop();
+            if (lastFy) periodEl.value = lastFy;
+        } catch (e) {
+            console.error('Error loading period options:', e);
+        }
     }
 
     async populateEntityOptions(scope) {
@@ -506,17 +553,11 @@ export class PerformanceDashboardController extends FormController {
             scope: scopeEl?.value || 'organization',
             entity: entityEl?.value || 'all',
             performance: performanceEl?.value || 'all',
-            period: periodEl?.value || 'fy'
+            period: periodEl?.value && periodEl.value !== 'all' ? periodEl.value : null
         };
     }
 
-    updateTimestamp() {
-        const span = document.querySelector('#dashboard-timestamp span');
-        if (span) {
-            const now = new Date();
-            span.textContent = now.toLocaleString();
-        }
-    }
+    // Timestamp removed with summary banner
 
     _attachResizeHandlers() {
         // Debounced window resize to reduce thrashing during scroll/resize
@@ -555,6 +596,31 @@ export class PerformanceDashboardController extends FormController {
         if (this.distributionChart) {
             this.distributionChart.destroy();
             this.distributionChart = null;
+        }
+        if (this.dirChart) {
+            this.dirChart.destroy();
+            this.dirChart = null;
+        }
+        if (this.divChart) {
+            this.divChart.destroy();
+            this.divChart = null;
+        }
+        // Gauges
+        if (this._gaugeOverall) {
+            try { this._gaugeOverall.destroy(); } catch (e) {}
+            this._gaugeOverall = null;
+        }
+        if (this._gaugeKRA) {
+            try { this._gaugeKRA.destroy(); } catch (e) {}
+            this._gaugeKRA = null;
+        }
+        if (this._gaugeProgramme) {
+            try { this._gaugeProgramme.destroy(); } catch (e) {}
+            this._gaugeProgramme = null;
+        }
+        if (this._gaugePortfolio) {
+            try { this._gaugePortfolio.destroy(); } catch (e) {}
+            this._gaugePortfolio = null;
         }
     }
 }

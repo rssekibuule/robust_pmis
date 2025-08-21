@@ -240,15 +240,8 @@ class PerformanceAlert(models.Model):
         
         # Create activities for critical/urgent alerts (guard if activity exists)
         if self.severity in ['critical', 'urgent']:
-            # Ensure the default TODO activity type exists before scheduling
-            ActivityType = self.env['mail.activity.type']
-            todo_type = ActivityType.search([('xml_id', '=', 'mail.mail_activity_data_todo')], limit=1)
-            if not todo_type:
-                # Fallback by external id lookup to avoid crash in partially loaded environments
-                try:
-                    todo_type = self.env.ref('mail.mail_activity_data_todo')
-                except Exception:
-                    todo_type = False
+            # Safely resolve the default TODO activity type by external id
+            todo_type = self.env.ref('mail.mail_activity_data_todo', raise_if_not_found=False)
             if todo_type:
                 for user in recipients:
                     self.activity_schedule(

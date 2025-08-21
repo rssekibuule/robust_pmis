@@ -1,0 +1,8 @@
+.kcca_directorate_dashboard.modern .kcca-card { border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 10px 12px; }
+.kcca_directorate_dashboard.modern .card_header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.kcca_directorate_dashboard.modern .card_title { font-weight:600; color:#1a202c; }
+.kcca_directorate_dashboard.modern .card_stats { display:flex; gap:8px; margin:8px 0; flex-wrap:wrap; }
+.kcca_directorate_dashboard.modern .chip { background:#f3f4f6; border-radius:999px; padding:4px 10px; font-size:12px; color:#374151; display:inline-flex; align-items:center; gap:6px; }
+.kcca_directorate_dashboard.modern .card_progress .progress { position:relative; height:8px; background:#e9edf5; border-radius:999px; overflow:hidden; }
+.kcca_directorate_dashboard.modern .card_progress .progress-bar { height:100%; }
+.kcca_directorate_dashboard.modern .card_progress .progress-text { position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:12px; color:#2d3748; font-weight:600; }

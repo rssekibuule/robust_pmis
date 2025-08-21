@@ -6,7 +6,8 @@
       <field name="model">res.config.settings</field>
       <field name="inherit_id" ref="base.res_config_settings_view_form"/>
       <field name="arch" type="xml">
-        <xpath expr="//form" position="inside">
+  <!-- Place our settings block right after the Companies (or Users & Companies) section for higher prominence -->
+  <xpath expr="//form" position="inside">
           <div class="app_settings_block" data-string="PMIS" string="PMIS" data-key="pmis_settings">
             <h2>Performance MIS</h2>
             <div class="row mt16 o_settings_container">
@@ -17,6 +18,24 @@
                 <div class="o_setting_right_pane">
                   <label for="pmis_allowed_implementing_programme_codes" string="Allowed Implementing Programme Codes"/>
                   <div class="text-muted">Comma-separated list of Programme codes permitted under Implementing relations.</div>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 o_setting_box">
+                <div class="o_setting_left_pane">
+                  <field name="plan_start_year" placeholder="2024"/>
+                </div>
+                <div class="o_setting_right_pane">
+                  <label for="plan_start_year" string="Strategic Plan Start Year"/>
+                  <div class="text-muted">Enter the first year of the current strategic plan (e.g., 2024 for FY 2024/25).</div>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 o_setting_box">
+                <div class="o_setting_left_pane">
+                  <field name="plan_years" placeholder="5"/>
+                </div>
+                <div class="o_setting_right_pane">
+                  <label for="plan_years" string="Strategic Plan Years"/>
+                  <div class="text-muted">Total number of fiscal years in the plan window (typically 5).</div>
                 </div>
               </div>
             </div>

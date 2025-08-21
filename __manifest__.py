@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'KCCA Performance Management Information System',
-    'version': '18.0.1.0.8',
+    'version': '18.0.1.0.11',
     'category': 'Human Resources/Performance',
     'summary': 'Comprehensive Performance Management System for KCCA',
     'description': """
@@ -165,6 +165,7 @@ Hierarchical Structure:
             'robust_pmis/static/src/css/kcca_pmis.css',
             'robust_pmis/static/src/css/financial_strategy.css',
             'robust_pmis/static/src/css/dashboard_clean.css',
+            'robust_pmis/static/src/css/directorate_kanban.css',
             'robust_pmis/static/src/js/form_layout_override.js',
             # Ensure Chart.js is loaded before any charts code
             'web/static/lib/Chart/Chart.js',

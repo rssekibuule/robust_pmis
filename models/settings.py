@@ -28,3 +28,15 @@ class ResConfigSettings(models.TransientModel):
             return result
         # default canonical 16
         return ['AGRO','PSD','ITIS','SUH','DT','HCD','LOR','RRP','WME','PHE','DRC','UPD','AOJ','GS','PST','SED']
+
+    # Strategic plan period configuration
+    plan_start_year = fields.Integer(
+        string='Strategic Plan Start Year',
+        config_parameter='robust_pmis.plan_start_year',
+        help='Fiscal year start (e.g., 2024 for FY 2024/25)'
+    )
+    plan_years = fields.Integer(
+        string='Strategic Plan Years',
+        config_parameter='robust_pmis.plan_years',
+        help='Number of fiscal years in the plan (e.g., 5)'
+    )

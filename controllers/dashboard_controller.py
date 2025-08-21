@@ -31,9 +31,22 @@ class PerformanceDashboardController(http.Controller):
         else:
             dashboard_data = dashboard.get_dashboard_data()
 
-        # Merge real-time metrics with dashboard data
+        # Merge real-time metrics with dashboard data without overriding computed averages
+        # Keep only totals from realtime to avoid zeroing analytics-driven averages
         dashboard_data.setdefault('summary', {})
-        dashboard_data['summary'].update(realtime_data)
+        if isinstance(realtime_data, dict):
+            safe_keys = {
+                'total_goals',
+                'total_strategic_goals',
+                'total_kras',
+                'total_kpis',
+                'total_programmes',
+                'total_directorates',
+                'total_divisions',
+            }
+            for k in safe_keys:
+                if k in realtime_data:
+                    dashboard_data['summary'][k] = realtime_data[k]
 
         return dashboard_data
 

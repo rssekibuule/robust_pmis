@@ -7,7 +7,7 @@
             <field name="name">kcca.directorate.kanban</field>
             <field name="model">kcca.directorate</field>
             <field name="arch" type="xml">
-                <kanban class="o_kanban_dashboard kcca_directorate_dashboard" sample="1">
+                <kanban class="o_kanban_dashboard kcca_directorate_dashboard modern" sample="1">
                     <field name="id"/>
                     <field name="name"/>
                     <field name="code"/>
@@ -23,7 +23,7 @@
 
                     <templates>
                         <t t-name="card">
-                            <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_card oe_kanban_global_click kcca-card">
                                 <div class="o_dropdown_kanban dropdown">
                                     <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
                                         <span class="fa fa-ellipsis-v"/>
@@ -53,43 +53,26 @@
                                         <field name="name"/>
                                     </div>
                                     <div class="card_performance">
-                                        <field name="overall_performance"/>%
+                                        <span t-attf-class="badge #{record.overall_performance.raw_value >= 80 ? 'bg-success' : record.overall_performance.raw_value >= 60 ? 'bg-warning text-dark' : 'bg-danger'}">
+                                            <t t-esc="Math.round(record.overall_performance.raw_value || 0)"/>%
+                                        </span>
                                     </div>
                                 </div>
 
                                 <!-- Compact Statistics Grid -->
                                 <div class="card_stats">
-                                    <div class="kcca_stat_box">
-                                        <div class="kcca_stat_number">
-                                            <field name="division_count"/>
-                                        </div>
-                                        <div class="kcca_stat_label">
-                                            <i class="fa fa-sitemap"/> DIV
-                                        </div>
-                                    </div>
-                                    <div class="kcca_stat_box">
-                                        <div class="kcca_stat_number">
-                                            <field name="programme_count"/>
-                                        </div>
-                                        <div class="kcca_stat_label">
-                                            <i class="fa fa-tasks"/> PRG
-                                        </div>
-                                    </div>
-                                    <div class="kcca_stat_box">
-                                        <div class="kcca_stat_number">
-                                            <field name="kpi_count"/>
-                                        </div>
-                                        <div class="kcca_stat_label">
-                                            <i class="fa fa-tachometer"/> KPI
-                                        </div>
-                                    </div>
+                                    <span class="chip" title="Divisions"><i class="fa fa-sitemap"/> <field name="division_count"/></span>
+                                    <span class="chip" title="Programmes"><i class="fa fa-tasks"/> <field name="programme_count"/></span>
+                                    <span class="chip" title="KPIs"><i class="fa fa-tachometer"/> <field name="kpi_count"/></span>
                                 </div>
 
                                 <!-- Compact Performance Bar -->
                                 <div class="card_progress">
                                     <div class="progress">
-                                        <div class="progress-bar"
-                                             t-attf-style="width: #{record.overall_performance.raw_value}%; background-color: #{record.overall_performance.raw_value >= 80 ? '#28a745' : record.overall_performance.raw_value >= 60 ? '#ffc107' : '#dc3545'}"/>
+                                        <div class="progress-bar" role="progressbar"
+                                             t-attf-style="width: #{record.overall_performance.raw_value}%; background-color: #{record.overall_performance.raw_value >= 80 ? '#28a745' : record.overall_performance.raw_value >= 60 ? '#ffc107' : '#dc3545'}">
+                                        </div>
+                                        <span class="progress-text"><t t-esc="Math.round(record.overall_performance.raw_value || 0)"/>%</span>
                                     </div>
                                 </div>
 

@@ -443,6 +443,91 @@ class KeyPerformanceIndicator(models.Model):
         if template:
             template.with_context(kpi=kpi).send_mail(user.id, force_send=True)
 
+    # --- Fiscal year validation helpers and constraints ---
+    def _get_plan_years(self):
+        """Return list of FY definitions based on config with date ranges.
+        [{ 'year_start': 2024, 'date_start': date(2024,7,1), 'date_end': date(2025,6,30), 'label_key': '2024/25' }, ...]
+        """
+        from datetime import date
+        Param = self.env['ir.config_parameter'].sudo()
+        try:
+            start_year = int(Param.get_param('robust_pmis.plan_start_year') or 2024)
+        except Exception:
+            start_year = 2024
+        try:
+            years = int(Param.get_param('robust_pmis.plan_years') or 5)
+        except Exception:
+            years = 5
+
+        def _fy_range(year_start):
+            return date(year_start, 7, 1), date(year_start + 1, 6, 30)
+
+        fys = []
+        for y in range(start_year, start_year + years):
+            d0, d1 = _fy_range(y)
+            fys.append({
+                'year_start': y,
+                'date_start': d0,
+                'date_end': d1,
+                'label_key': f"FY {y}/{str((y + 1) % 100).zfill(2)}",
+            })
+        return fys
+
+    @api.constrains('start_date', 'end_date', 'target_value', 'current_value')
+    def _check_fy_values_present(self):
+        """Require target/current values for each plan FY the KPI is active in.
+
+        Rules:
+        - If KPI overlaps a plan FY, a target_value must be set.
+        - If that FY has started (today >= FY start), a current_value must also be set.
+        Notes:
+        - If no start/end provided, KPI is considered active for all plan FYs.
+        - We treat None as missing; zeros are allowed where meaningful.
+        """
+        from datetime import date
+        today = date.today()
+        for rec in self:
+            fys = rec._get_plan_years()
+            assigned = []
+            for fy in fys:
+                if rec.start_date or rec.end_date:
+                    if (not rec.start_date or rec.start_date <= fy['date_end']) and (not rec.end_date or rec.end_date >= fy['date_start']):
+                        assigned.append(fy)
+                else:
+                    assigned.append(fy)
+
+            missing_target_fys = []
+            missing_current_fys = []
+            for fy in assigned:
+                if rec.target_value is None:
+                    missing_target_fys.append(fy['label_key'])
+                if fy['date_start'] <= today and rec.current_value is None:
+                    missing_current_fys.append(fy['label_key'])
+
+            if missing_target_fys or missing_current_fys:
+                parts = []
+                if missing_target_fys:
+                    parts.append(_("Missing KPI target for: %s") % ', '.join(missing_target_fys))
+                if missing_current_fys:
+                    parts.append(_("Missing KPI current value for: %s") % ', '.join(missing_current_fys))
+                parts.append(_("Fill in KPI Target/Current for each financial year the KPI is active in the plan."))
+                raise ValidationError('\n'.join(parts))
+
+    @api.constrains('start_date', 'end_date')
+    def _check_fy_dates_required(self):
+        """Require explicit Fiscal Year coverage via start_date and end_date.
+
+        Without dates, KPIs are treated as active across all plan FYs which can
+        overstate filtered results. Force explicit FY range on records.
+        """
+        for rec in self:
+            if not rec.start_date or not rec.end_date:
+                raise ValidationError(_(
+                    "Financial Year is required: please set Start Date and End Date (FY range)."
+                ))
+            if rec.end_date < rec.start_date:
+                raise ValidationError(_("End Date cannot be before Start Date."))
+
     # Strategic-Programme Linkage Methods
     @api.model
     def _cron_update_strategic_kpis(self):

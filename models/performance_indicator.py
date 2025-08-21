@@ -490,3 +490,121 @@ class PerformanceIndicator(models.Model):
         action['domain'] = [('indicator_id', '=', self.id)]
         action['context'] = {'default_indicator_id': self.id}
         return action
+
+    # --- Fiscal year validation helpers and constraints ---
+    def _get_plan_years(self):
+        """Return list of FY definitions based on config:
+        [
+          {
+            'year_start': 2024,
+            'label_key': '2024_25',
+            'date_start': date(2024,7,1),
+            'date_end': date(2025,6,30),
+            'target_field': 'target_fy2024_25',
+            'actual_field': 'actual_fy2024_25',
+          }, ...
+        ]
+        """
+        from datetime import date
+        Param = self.env['ir.config_parameter'].sudo()
+        try:
+            start_year = int(Param.get_param('robust_pmis.plan_start_year') or 2024)
+        except Exception:
+            start_year = 2024
+        try:
+            years = int(Param.get_param('robust_pmis.plan_years') or 5)
+        except Exception:
+            years = 5
+
+        def _fy_range(year_start):
+            return date(year_start, 7, 1), date(year_start + 1, 6, 30)
+
+        fys = []
+        for y in range(start_year, start_year + years):
+            key_suffix = f"{y}_{str((y + 1) % 100).zfill(2)}"
+            d0, d1 = _fy_range(y)
+            fys.append({
+                'year_start': y,
+                'label_key': key_suffix,
+                'date_start': d0,
+                'date_end': d1,
+                'target_field': f'target_fy{key_suffix}',
+                'actual_field': f'actual_fy{key_suffix}',
+            })
+        return fys
+
+    @api.constrains(
+        'start_date', 'end_date',
+        'target_value', 'current_value',
+        'target_fy2022_23', 'target_fy2023_24', 'target_fy2024_25', 'target_fy2025_26', 'target_fy2026_27', 'target_fy2027_28', 'target_fy2028_29', 'target_fy2029_30',
+        'actual_fy2022_23', 'actual_fy2023_24', 'actual_fy2024_25', 'actual_fy2025_26', 'actual_fy2026_27', 'actual_fy2027_28', 'actual_fy2028_29', 'actual_fy2029_30'
+    )
+    def _check_fy_targets_and_actuals(self):
+        """Enforce that for each assigned FY within the plan window:
+        - A target value exists (target_fyYYYY_YY not None)
+        - An actual/current value exists once the FY is in-progress or completed (actual_fyYYYY_YY not None)
+
+        Assumptions:
+        - If no start/end dates are set, the indicator is considered active for all plan FYs.
+        - Future FYs must have targets but may omit actuals.
+        """
+        from datetime import date
+        today = date.today()
+
+        for record in self:
+            fys = record._get_plan_years()
+            # Determine which FYs are assigned to this indicator (overlap with start/end)
+            assigned = []
+            for fy in fys:
+                if record.start_date or record.end_date:
+                    # Overlap if start_date <= fy_end and (no end_date or end_date >= fy_start)
+                    if (not record.start_date or record.start_date <= fy['date_end']) and (not record.end_date or record.end_date >= fy['date_start']):
+                        assigned.append(fy)
+                else:
+                    # No dates -> assume assigned to all plan FYs
+                    assigned.append(fy)
+
+            missing_targets = []
+            missing_actuals = []
+
+            for fy in assigned:
+                tgt_field = fy['target_field']
+                act_field = fy['actual_field']
+                # Skip if fields are not defined on the model (defensive)
+                if tgt_field not in record._fields or act_field not in record._fields:
+                    continue
+
+                tgt_val = getattr(record, tgt_field)
+                if tgt_val is None:
+                    missing_targets.append(fy['label_key'])
+
+                # Require actuals only for FYs that have started (in-progress or done)
+                if fy['date_start'] <= today:
+                    act_val = getattr(record, act_field)
+                    if act_val is None:
+                        missing_actuals.append(fy['label_key'])
+
+            if missing_targets or missing_actuals:
+                msg_lines = []
+                if missing_targets:
+                    msg_lines.append(_("Missing FY targets for: %s") % ', '.join(missing_targets))
+                if missing_actuals:
+                    msg_lines.append(_("Missing FY actuals for: %s") % ', '.join(missing_actuals))
+                # Provide a guidance hint once to reduce friction
+                msg_lines.append(_("Please fill the per-FY Target/Actual fields for the financial years the indicator is active in the strategic plan."))
+                raise ValidationError('\n'.join(msg_lines))
+
+    @api.constrains('start_date', 'end_date')
+    def _check_fy_dates_required(self):
+        """Require explicit Fiscal Year coverage via start_date and end_date.
+
+        Rationale: Dashboard FY/Q filtering relies on date overlap. Records without
+        both dates unintentionally span all years and inflate filtered results.
+        """
+        for record in self:
+            if not record.start_date or not record.end_date:
+                raise ValidationError(_(
+                    "Financial Year is required: please set Start Date and End Date (FY range)."
+                ))
+            if record.end_date < record.start_date:
+                raise ValidationError(_("End Date cannot be before Start Date."))

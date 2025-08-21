@@ -18,15 +18,10 @@ odoo.define('robust_pmis.interactive_dashboard', function(require) {
             this._setupEventListeners();
             this._initCharts();
             this._loadDashboardData();
-            this._updateTimestamp();
         },
         
         _setupEventListeners: function() {
-            // Setup refresh button
-            var refreshBtn = this.el.querySelector('#refresh-dashboard');
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', this._refreshDashboard.bind(this));
-            }
+            // No header refresh button anymore; keep placeholder for future hooks
         },
         
         _initCharts: function() {
@@ -53,31 +48,8 @@ odoo.define('robust_pmis.interactive_dashboard', function(require) {
         },
         
         _refreshDashboard: function() {
-            var refreshBtn = this.el.querySelector('#refresh-dashboard');
-            if (refreshBtn) {
-                refreshBtn.innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-right: 6px;"></i> Refreshing...';
-                refreshBtn.style.pointerEvents = 'none';
-                refreshBtn.style.opacity = '0.7';
-            }
-            
-            // Refresh dashboard data
-            this._loadDashboardData()
-                .then(() => {
-                    if (refreshBtn) {
-                        refreshBtn.innerHTML = '<i class="fa fa-refresh" style="margin-right: 6px;"></i> Refresh';
-                        refreshBtn.style.pointerEvents = 'auto';
-                        refreshBtn.style.opacity = '1';
-                    }
-                    this._updateTimestamp();
-                })
-                .catch((error) => {
-                    console.error('Dashboard refresh failed:', error);
-                    if (refreshBtn) {
-                        refreshBtn.innerHTML = '<i class="fa fa-exclamation-triangle" style="margin-right: 6px;"></i> Error - Retry';
-                        refreshBtn.style.pointerEvents = 'auto';
-                        refreshBtn.style.opacity = '1';
-                    }
-                });
+            // Simple refresh without header button UI state
+            return this._loadDashboardData();
         },
         
         _loadDashboardData: function() {
@@ -471,20 +443,7 @@ odoo.define('robust_pmis.interactive_dashboard', function(require) {
             }
         },
         
-        _updateTimestamp: function() {
-            var timestampElem = this.el.querySelector('#dashboard-timestamp span');
-            if (timestampElem) {
-                var now = new Date();
-                var dateOptions = { 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                };
-                timestampElem.textContent = now.toLocaleDateString(undefined, dateOptions);
-            }
-        },
+    // Removed timestamp update; banner is gone
         
         _truncateText: function(text, maxLength) {
             if (!text) return '';

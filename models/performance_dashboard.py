@@ -54,18 +54,18 @@ class PerformanceDashboard(models.Model):
         self.total_divisions = len(divisions)
         
         # Calculate average KRA performance based on linked KPIs
+        # Include 0% for KRAs that have no KPIs to avoid inflated averages
         if kras:
             kra_performances = []
             for kra in kras:
                 kra_kpis = self.env['key.performance.indicator'].search([('kra_id', '=', kra.id)])
                 if kra_kpis:
-                    avg_kra_perf = sum(kpi.achievement_percentage or 0.0 for kpi in kra_kpis) / len(kra_kpis)
+                    avg_kra_perf = sum((kpi.achievement_percentage or 0.0) for kpi in kra_kpis) / len(kra_kpis)
                     kra_performances.append(avg_kra_perf)
-            
-            if kra_performances:
-                self.avg_kra_performance = sum(kra_performances) / len(kra_performances)
-            else:
-                self.avg_kra_performance = 0.0
+                else:
+                    kra_performances.append(0.0)
+
+            self.avg_kra_performance = (sum(kra_performances) / len(kra_performances)) if kra_performances else 0.0
         else:
             self.avg_kra_performance = 0.0
         
@@ -185,8 +185,46 @@ class PerformanceDashboard(models.Model):
                 domain_prog.append(('parent_programme_id.division_programme_rel_ids.division_id', '=', entity_id))
                 domain_div_rel.append(('division_id', '=', entity_id))
 
-        # Period filter placeholder (FY/Q) – can be refined when date baselines are standardized
-        # We intentionally do not filter by date yet to avoid hiding data inadvertently.
+        # Period filter (FY/Q) – apply using start/end date ranges on KPI/PI and Division-Programme relations
+        def _fy_range(year_start):
+            # Uganda FY assumed: Jul 1 (year_start) to Jun 30 (year_start+1)
+            from datetime import date
+            return date(year_start, 7, 1), date(year_start + 1, 6, 30)
+
+        def _quarter_range(year_start, quarter):
+            from datetime import date
+            # Q1: Jul-Sep, Q2: Oct-Dec, Q3: Jan-Mar, Q4: Apr-Jun
+            if quarter == 1:
+                return date(year_start, 7, 1), date(year_start, 9, 30)
+            if quarter == 2:
+                return date(year_start, 10, 1), date(year_start, 12, 31)
+            if quarter == 3:
+                return date(year_start + 1, 1, 1), date(year_start + 1, 3, 31)
+            # default Q4
+            return date(year_start + 1, 4, 1), date(year_start + 1, 6, 30)
+
+        period = (filters or {}).get('period')
+        date_start = date_end = None
+        try:
+            if isinstance(period, str) and period:
+                # Formats supported: 'fy:2024', 'q1:2024', 'q2:2024', 'q3:2024', 'q4:2024'
+                if period.startswith('fy:'):
+                    y = int(period.split(':', 1)[1])
+                    date_start, date_end = _fy_range(y)
+                elif period[0].lower() == 'q' and ':' in period:
+                    qpart, ypart = period.split(':', 1)
+                    q = int(qpart[1])
+                    y = int(ypart)
+                    date_start, date_end = _quarter_range(y, q)
+        except Exception:
+            date_start = date_end = None
+
+        if date_start and date_end:
+            # Overlap of [start_date, end_date] with [date_start, date_end]
+            overlap = ['&', ('start_date', '<=', date_end), '|', ('end_date', '=', False), ('end_date', '>=', date_start)]
+            domain_kpi.extend(overlap)
+            domain_prog.extend(overlap)
+            domain_div_rel.extend(overlap)
 
         # Compute strategic (KPI) aggregates for KRAs and Goals regardless of data_type,
         # as these structures are inherently strategic.
@@ -197,12 +235,17 @@ class PerformanceDashboard(models.Model):
             kpis = self.env['key.performance.indicator'].search(kpi_domain)
             if kpis:
                 avg_performance = sum(kpi.achievement_percentage or 0.0 for kpi in kpis) / len(kpis)
-                kras_data.append({
-                    'name': kra.name,
-                    'performance': avg_performance,
-                    'kpi_count': len(kpis),
-                    'strategic_objective': kra.strategic_objective_id.name if kra.strategic_objective_id else 'No Objective'
-                })
+                kpi_count = len(kpis)
+            else:
+                # Treat KRA with no KPIs in scope as 0% to avoid inflated averages
+                avg_performance = 0.0
+                kpi_count = 0
+            kras_data.append({
+                'name': kra.name,
+                'performance': avg_performance,
+                'kpi_count': kpi_count,
+                'strategic_objective': kra.strategic_objective_id.name if kra.strategic_objective_id else 'No Objective'
+            })
 
         goals_data = []
         strategic_goals = self.env['strategic.goal'].search([])
@@ -211,13 +254,17 @@ class PerformanceDashboard(models.Model):
             kpis = self.env['key.performance.indicator'].search(goal_domain)
             if kpis:
                 avg_performance = sum(kpi.achievement_percentage or 0.0 for kpi in kpis) / len(kpis)
-                target_value = getattr(goal, 'target_percentage', 100.0) or 100.0
-                goals_data.append({
-                    'name': goal.name,
-                    'performance': avg_performance,
-                    'kpi_count': len(kpis),
-                    'target': target_value
-                })
+                kpi_count = len(kpis)
+            else:
+                avg_performance = 0.0
+                kpi_count = 0
+            target_value = getattr(goal, 'target_percentage', 100.0) or 100.0
+            goals_data.append({
+                'name': goal.name,
+                'performance': avg_performance,
+                'kpi_count': kpi_count,
+                'target': target_value
+            })
 
         # Build top performers and distribution depending on data_type
         data_type = (filters or {}).get('data_type') or 'all'
@@ -285,27 +332,46 @@ class PerformanceDashboard(models.Model):
         prog_recs = self.env['performance.indicator'].search(domain_prog)
         div_rel_recs = self.env['division.programme.rel'].search(domain_div_rel)
 
-        if data_type == 'strategic':
-            avg_performance = _safe_avg([r.achievement_percentage for r in strat_recs])
-        elif data_type == 'programme':
-            avg_performance = _safe_avg([r.achievement_percentage for r in prog_recs])
-        else:
-            # Blend strategic + programme indicators + division-programme performance
-            avg_performance = _safe_avg(
-                [r.achievement_percentage for r in strat_recs]
-                + [r.achievement_percentage for r in prog_recs]
-                + [r.performance_score for r in div_rel_recs]
-            )
+        # KPI-only (treat missing values as 0)
+        kpi_only_avg = _safe_avg([(r.achievement_percentage or 0.0) for r in strat_recs] + [(r.achievement_percentage or 0.0) for r in prog_recs])
 
+        # Average KRA performance across all KRAs (0 if none in scope) to avoid inflation
         avg_kra = _safe_avg([k.get('performance') for k in kras_data])
 
-        avg_prog = 0.0
-        if data_type in ('programme', 'all'):
-            programmes = prog_recs.mapped('parent_programme_id') if prog_recs else self.env['kcca.programme']
-            if programmes:
-                avg_prog = _safe_avg([p.overall_performance for p in programmes])
+        # Programme average across all programmes in scope (not only those with indicators) to avoid inflation
+        programmes_domain = [('active', '=', True)]
+        if scope == 'strategic_goal' and entity_id:
+            programmes_domain.append(('strategic_objective_ids.strategic_goal_id', '=', entity_id))
+        elif scope == 'strategic_objective' and entity_id:
+            programmes_domain.append(('strategic_objective_ids', 'in', [entity_id]))
+        elif scope == 'programme' and entity_id:
+            programmes_domain.append(('id', '=', entity_id))
+        elif scope == 'directorate' and entity_id:
+            programmes_domain.append(('implementing_directorate_ids', 'in', [entity_id]))
+        elif scope == 'division' and entity_id:
+            programmes_domain.append(('division_programme_rel_ids.division_id', '=', entity_id))
+
+        # Apply period overlap to programme via its start/end dates if available
+        if date_start and date_end:
+            programmes_domain.extend(['&', ('start_date', '<=', date_end), '|', ('end_date', '=', False), ('end_date', '>=', date_start)])
+
+        programmes_all = self.env['kcca.programme'].search(programmes_domain)
+        avg_prog = _safe_avg([(p.overall_performance or 0.0) for p in programmes_all]) if (data_type in ('programme', 'all')) else 0.0
 
         avg_div_prog = _safe_avg([r.performance_score for r in div_rel_recs])
+
+        # Blended overall: average of the three macro-aggregates to keep semantics consistent with unfiltered endpoint
+        components = []
+        if data_type in ('strategic', 'all'):
+            components.append(kpi_only_avg)
+        if data_type in ('programme', 'all'):
+            components.append(avg_prog)
+        # Always consider division-programme component for 'all' or when filtering across entities including divisions/directorates
+        if data_type == 'all' or scope in ('directorate', 'division', 'organization'):
+            components.append(avg_div_prog)
+        avg_performance = _safe_avg(components)
+
+        # No fallback inflation: keep KPI-only average as-is to avoid overstating progress
 
         return {
             'kras_performance': kras_data,
@@ -319,11 +385,43 @@ class PerformanceDashboard(models.Model):
                 'total_kras': len(kras),
                 # Added core averages used by gauges
                 'avg_performance': avg_performance,
+                'kpi_only_performance': kpi_only_avg,
+                'avg_kpi_performance': kpi_only_avg,
                 'avg_kra_performance': avg_kra,
                 'avg_programme_performance': avg_prog,
                 'avg_division_programme_performance': avg_div_prog,
+                'avg_budget_utilization': _safe_avg([r.budget_utilization for r in div_rel_recs]),
             }
         }
+
+    @api.model
+    def get_period_options(self):
+        """Return configurable FY/Q options for the 5-year strategic plan.
+
+        Reads plan start year and span from config parameters and builds:
+        [{ key: 'fy:2024', label: 'FY 2024/25' }, { key: 'q1:2024', label: 'Q1 2024/25' }, ...]
+        """
+        Param = self.env['ir.config_parameter'].sudo()
+        try:
+            start_year = int(Param.get_param('robust_pmis.plan_start_year') or 2024)
+        except Exception:
+            start_year = 2024
+        try:
+            years = int(Param.get_param('robust_pmis.plan_years') or 5)
+        except Exception:
+            years = 5
+
+        def _fy_label(y):
+            return f"FY {y}/{str((y + 1) % 100).zfill(2)}"
+
+        options = []
+        for y in range(start_year, start_year + years):
+            options.append({'key': f'fy:{y}', 'label': _fy_label(y)})
+            options.append({'key': f'q1:{y}', 'label': f'Q1 {_fy_label(y)}'})
+            options.append({'key': f'q2:{y}', 'label': f'Q2 {_fy_label(y)}'})
+            options.append({'key': f'q3:{y}', 'label': f'Q3 {_fy_label(y)}'})
+            options.append({'key': f'q4:{y}', 'label': f'Q4 {_fy_label(y)}'})
+        return options
 
     def get_dashboard_data(self):
         """Return JSON data for dashboard charts"""
@@ -341,12 +439,16 @@ class PerformanceDashboard(models.Model):
             kpis = self.env['key.performance.indicator'].search([('kra_id', '=', kra.id)])
             if kpis:
                 avg_performance = sum(kpi.achievement_percentage or 0.0 for kpi in kpis) / len(kpis)
-                kras_data.append({
-                    'name': kra.name,
-                    'performance': avg_performance,
-                    'kpi_count': len(kpis),
-                    'strategic_objective': kra.strategic_objective_id.name if kra.strategic_objective_id else 'No Objective'
-                })
+                kpi_count = len(kpis)
+            else:
+                avg_performance = 0.0
+                kpi_count = 0
+            kras_data.append({
+                'name': kra.name,
+                'performance': avg_performance,
+                'kpi_count': kpi_count,
+                'strategic_objective': kra.strategic_objective_id.name if kra.strategic_objective_id else 'No Objective'
+            })
 
         # KPI Performance by Strategic Goal
         goals_data = []
@@ -358,18 +460,22 @@ class PerformanceDashboard(models.Model):
             ])
             if kpis:
                 avg_performance = sum(kpi.achievement_percentage or 0.0 for kpi in kpis) / len(kpis)
+                kpi_count = len(kpis)
+            else:
+                avg_performance = 0.0
+                kpi_count = 0
 
-                # Get target values if they exist, otherwise set to 100 (100%)
-                target_value = 100.0  # Default target is 100%
-                if hasattr(goal, 'target_percentage'):
-                    target_value = goal.target_percentage
+            # Get target values if they exist, otherwise set to 100 (100%)
+            target_value = 100.0  # Default target is 100%
+            if hasattr(goal, 'target_percentage'):
+                target_value = goal.target_percentage
 
-                goals_data.append({
-                    'name': goal.name,
-                    'performance': avg_performance,
-                    'kpi_count': len(kpis),
-                    'target': target_value
-                })
+            goals_data.append({
+                'name': goal.name,
+                'performance': avg_performance,
+                'kpi_count': kpi_count,
+                'target': target_value
+            })
 
         # Top performing KPIs - include both strategic KPIs and programme indicators
         top_strategic_kpis = self.env['key.performance.indicator'].search([
@@ -407,18 +513,18 @@ class PerformanceDashboard(models.Model):
         # Sort combined list by performance
         top_kpis_data = sorted(top_kpis_data, key=lambda x: x['performance'], reverse=True)[:10]
 
-        # Performance distribution - include both types
+        # Performance distribution - include both types (treat None as 0 to reflect no progress)
         strategic_kpis = self.env['key.performance.indicator'].search([])
         programme_kpis = self.env['performance.indicator'].search([])
         div_prog_rels = self.env['division.programme.rel'].search([('active', '=', True)])
 
         all_achievements = []
         for kpi in strategic_kpis:
-            if kpi.achievement_percentage:
-                all_achievements.append(kpi.achievement_percentage)
+            val = kpi.achievement_percentage if kpi.achievement_percentage is not None else 0.0
+            all_achievements.append(val)
         for kpi in programme_kpis:
-            if kpi.achievement_percentage:
-                all_achievements.append(kpi.achievement_percentage)
+            val = kpi.achievement_percentage if kpi.achievement_percentage is not None else 0.0
+            all_achievements.append(val)
 
         distribution_data = {
             'excellent': len([a for a in all_achievements if a >= 90]),
@@ -469,11 +575,24 @@ class PerformanceDashboard(models.Model):
                 'total_indicators': len(indicators),
             })
 
-        # Global averages for gauges
-        avg_kpi_performance = _safe_avg([k.achievement_percentage for k in strategic_kpis] + [p.achievement_percentage for p in programme_kpis])
-        avg_programme_performance = _safe_avg([p.overall_performance for p in self.env['kcca.programme'].search([])])
+        # Global averages for gauges (conservative, bounded)
+        # Treat missing values as 0 to avoid overstating progress
+        avg_kpi_performance = _safe_avg([(k.achievement_percentage or 0.0) for k in strategic_kpis] + [(p.achievement_percentage or 0.0) for p in programme_kpis])
+        avg_programme_performance = _safe_avg([(p.overall_performance or 0.0) for p in self.env['kcca.programme'].search([])])
         avg_division_programme_performance = _safe_avg([r.performance_score for r in div_prog_rels])
         avg_overall = _safe_avg([avg_kpi_performance, avg_programme_performance, avg_division_programme_performance])
+        # Clamp all displayed values to 0..100
+        def _clamp01(x):
+            try:
+                v = float(x)
+            except Exception:
+                return 0.0
+            return 0.0 if v < 0 else (100.0 if v > 100 else v)
+        avg_kpi_performance = _clamp01(avg_kpi_performance)
+        avg_programme_performance = _clamp01(avg_programme_performance)
+        avg_division_programme_performance = _clamp01(avg_division_programme_performance)
+        avg_overall = _clamp01(avg_overall)
+        # No fallback inflation: keep KPI-only average as-is to avoid overstating progress
 
         return {
             'kras_performance': kras_data,
@@ -488,8 +607,11 @@ class PerformanceDashboard(models.Model):
                 'avg_kra_performance': self.avg_kra_performance,
                 'total_kpis': self.total_kpis,  # Now includes both types
                 'avg_performance': avg_overall,  # Blended KPI + Programme + Division-Programme
+                'kpi_only_performance': avg_kpi_performance,  # Explicit KPI-only average for UI mapping
+                'avg_kpi_performance': avg_kpi_performance,
                 'avg_programme_performance': avg_programme_performance,
                 'avg_division_programme_performance': avg_division_programme_performance,
+                'avg_budget_utilization': _safe_avg([r.budget_utilization for r in div_prog_rels]),
                 'total_programmes': self.total_programmes,
                 'total_directorates': self.total_directorates,
                 'total_divisions': self.total_divisions,
@@ -516,7 +638,8 @@ class PerformanceDashboard(models.Model):
         # Get counts directly from database
         strategic_goals = self.env['strategic.goal'].search([])
         kras = self.env['key.result.area'].search([])
-        kpis = self.env['key.performance.indicator'].search([])
+        strategic_kpis = self.env['key.performance.indicator'].search([])
+        programme_indicators = self.env['performance.indicator'].search([])
         programmes = self.env['kcca.programme'].search([])
         directorates = self.env['kcca.directorate'].search([])
         divisions = self.env['kcca.division'].search([])
@@ -536,9 +659,10 @@ class PerformanceDashboard(models.Model):
         
         # Calculate KPI performance
         avg_kpi_performance = 0.0
-        if kpis:
-            total_achievement = sum(kpi.achievement_percentage or 0.0 for kpi in kpis)
-            avg_kpi_performance = total_achievement / len(kpis)
+        if strategic_kpis or programme_indicators:
+            all_kpi_values = [k.achievement_percentage or 0.0 for k in strategic_kpis] + [p.achievement_percentage or 0.0 for p in programme_indicators]
+            if all_kpi_values:
+                avg_kpi_performance = sum(all_kpi_values) / len(all_kpi_values)
         
         # Calculate programme performance
         avg_programme_performance = 0.0
@@ -555,12 +679,13 @@ class PerformanceDashboard(models.Model):
             'total_goals': len(strategic_goals),
             'total_strategic_goals': len(strategic_goals),
             'total_kras': len(kras),
-            'total_kpis': len(kpis),
+            'total_kpis': len(strategic_kpis) + len(programme_indicators),
             'total_programmes': len(programmes),
             'total_directorates': len(directorates),
             'total_divisions': len(divisions),
             'avg_kra_performance': avg_kra_performance,
             'avg_kpi_performance': avg_kpi_performance,
+            'kpi_only_performance': avg_kpi_performance,
             'avg_programme_performance': avg_programme_performance,
             'avg_directorate_performance': 0.0,  # Can be enhanced later
             'avg_division_performance': 0.0,     # Can be enhanced later

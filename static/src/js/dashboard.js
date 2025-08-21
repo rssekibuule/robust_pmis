@@ -206,10 +206,7 @@ odoo.define('robust_pmis.dashboard', function (require) {
                 self.do_action(xmlid, { additional_context: ctx });
             });
 
-            // Refresh button in header
-            $(document).off('click', '#refresh-dashboard').on('click', '#refresh-dashboard', function(){
-                self._loadDashboardData();
-            });
+            // Header refresh button removed; no handler needed
 
             // Animate cards on load
             $('.dashboard-card, .metric-card').each(function (index) {
