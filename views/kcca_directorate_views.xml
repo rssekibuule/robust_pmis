@@ -205,7 +205,7 @@
                                 </field>
                             </page>
                             <!-- Removed 'Related Territorial Divisions' tab as requested -->
-                            <page string="Primary Programmes">
+                            <page string="Devolved Programmes">
                                 <field name="direct_programme_ids">
                                     <list editable="bottom">
                                         <field name="name"/>

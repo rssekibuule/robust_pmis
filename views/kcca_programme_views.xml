@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- Programme Search View: intuitive filters and group-by options for kanban/list/graph -->
+        <record id="view_kcca_programme_search" model="ir.ui.view">
+            <field name="name">kcca.programme.search</field>
+            <field name="model">kcca.programme</field>
+            <field name="arch" type="xml">
+                <search string="Search KCCA Programmes">
+                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                    <filter string="Active" name="active_true" domain="[('active', '=', True)]" help="Only active programmes"/>
+                    <filter string="Archived" name="active_false" domain="[('active', '=', False)]" help="Only archived programmes"/>
+
+                    <separator/>
+                    <filter string="With Manager" name="with_manager" domain="[('programme_manager_id', '!=', False)]"/>
+                    <filter string="Without Manager" name="without_manager" domain="[('programme_manager_id', '=', False)]"/>
+
+                    <separator/>
+                    <filter string="Ongoing" name="ongoing" domain="['&amp;', ('start_date', '&lt;=', context_today()), ('end_date', '>=', context_today())]"/>
+                    <filter string="Upcoming" name="upcoming" domain="[('start_date', '>', context_today())]"/>
+                    <filter string="Completed" name="completed" domain="[('end_date', '&lt;', context_today())]"/>
+
+                    <separator/>
+                    <filter string="Excellent (≥80%)" name="perf_excellent" domain="[('overall_performance', '>=', 80)]"/>
+                    <filter string="Good (60–79%)" name="perf_good" domain="['&amp;', ('overall_performance', '>=', 60), ('overall_performance', '&lt;', 80)]"/>
+                    <filter string="Fair (40–59%)" name="perf_fair" domain="['&amp;', ('overall_performance', '>=', 40), ('overall_performance', '&lt;', 60)]"/>
+                    <filter string="Poor (&lt;40%)" name="perf_poor" domain="[('overall_performance', '&lt;', 40)]"/>
+
+                    <group expand="0" string="Group By">
+                        <!-- Many2one groupings are graph-safe -->
+                        <filter string="Implementing Directorate" name="grp_directorate" context="{'group_by': 'directorate_id'}"/>
+                        <filter string="Implementing Division" name="grp_division" context="{'group_by': 'division_id'}"/>
+                        <filter string="Programme Manager" name="grp_manager" context="{'group_by': 'programme_manager_id'}"/>
+                        <separator/>
+                        <filter string="Start Month" name="grp_start_month" context="{'group_by': 'start_date:month'}"/>
+                        <filter string="Start Year" name="grp_start_year" context="{'group_by': 'start_date:year'}"/>
+                        <filter string="End Month" name="grp_end_month" context="{'group_by': 'end_date:month'}"/>
+                        <filter string="End Year" name="grp_end_year" context="{'group_by': 'end_date:year'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
 
         <!-- Programme List View -->
         <record id="view_kcca_programme_list" model="ir.ui.view">
@@ -170,6 +209,11 @@
                     </templates>
                 </kanban>
             </field>
+        </record>
+
+        <!-- Link search view to the action after both are defined (update existing action) -->
+        <record id="action_kcca_programme" model="ir.actions.act_window">
+            <field name="search_view_id" ref="view_kcca_programme_search"/>
         </record>
 
     </data>

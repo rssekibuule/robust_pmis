@@ -16,10 +16,10 @@
                     <field name="programme_id" string="Programme"/>
                     <field name="implementation_status" string="Status"/>
                     <field name="priority_level" string="Priority"/>
-                    <field name="completion_percentage" string="Completion %" widget="percentage"/>
-                    <field name="performance_score" string="Performance Score" widget="percentage"/>
-                    <field name="budget_utilization" string="Budget Utilization %" widget="percentage"/>
-                    <field name="beneficiary_achievement" string="Beneficiary Achievement %" widget="percentage"/>
+                    <field name="completion_percentage" string="Completion %" widget="float"/>
+                    <field name="performance_score" string="Performance Score" widget="float"/>
+                    <field name="budget_utilization" string="Budget Utilization %" widget="float"/>
+                    <field name="beneficiary_achievement" string="Beneficiary Achievement %" widget="float"/>
                     <field name="target_beneficiaries" string="Target Beneficiaries"/>
                     <field name="actual_beneficiaries" string="Actual Beneficiaries"/>
                     <field name="is_on_track" string="On Track" widget="boolean"/>
@@ -54,7 +54,7 @@
                             <div class="oe_stat_button">
                                 <div class="o_field_widget o_stat_info">
                                     <span class="o_stat_value">
-                                        <field name="performance_score" widget="percentage"/>
+                                        <field name="performance_score" widget="float"/>
                                     </span>
                                     <span class="o_stat_text">Performance Score</span>
                                 </div>
@@ -76,10 +76,10 @@
                             </group>
                             
                             <group name="performance_info" string="Performance Overview">
-                                <field name="completion_percentage" widget="percentage"/>
-                                <field name="completion_over_pct" widget="percentage" readonly="1"/>
-                                <field name="completion_pct_raw" widget="percentage" readonly="1"/>
-                                <field name="performance_score" widget="percentage" readonly="1"/>
+                                <field name="completion_percentage" widget="float"/>
+                                <field name="completion_over_pct" widget="float" readonly="1"/>
+                                <field name="completion_pct_raw" widget="float" readonly="1"/>
+                                <field name="performance_score" widget="float" readonly="1"/>
                                 <field name="is_on_track" readonly="1"/>
                                 <field name="requires_attention" readonly="1"/>
                             </group>
@@ -107,16 +107,16 @@
                                     <group name="budget_info" string="Budget Information">
                                         <field name="allocated_budget"/>
                                         <field name="utilized_budget"/>
-                                        <field name="budget_utilization" widget="percentage" readonly="1"/>
-                                        <field name="budget_utilization_raw" widget="percentage" readonly="1"/>
+                                        <field name="budget_utilization" widget="float" readonly="1"/>
+                                        <field name="budget_utilization_raw" widget="float" readonly="1"/>
                                         <field name="currency_id" invisible="1"/>
                                     </group>
                                     
                                     <group name="beneficiaries" string="Beneficiaries">
                                         <field name="target_beneficiaries"/>
                                         <field name="actual_beneficiaries"/>
-                                        <field name="beneficiary_achievement" widget="percentage" readonly="1"/>
-                                        <field name="beneficiary_achievement_raw" widget="percentage" readonly="1"/>
+                                        <field name="beneficiary_achievement" widget="float" readonly="1"/>
+                                        <field name="beneficiary_achievement_raw" widget="float" readonly="1"/>
                                     </group>
                                 </group>
                             </page>
@@ -195,11 +195,11 @@
                                         <div class="row mt-2">
                                             <div class="col-6">
                                                 <span title="Performance Score">🎯</span> 
-                                                <field name="performance_score" widget="percentage"/>
+                                                <field name="performance_score" widget="float"/>
                                             </div>
                                             <div class="col-6">
                                                 <span title="Completion">✅</span> 
-                                                <field name="completion_percentage" widget="percentage"/>
+                                                <field name="completion_percentage" widget="float"/>
                                             </div>
                                         </div>
                                             <div class="row mt-2" t-if="record.requires_attention.raw_value">
@@ -238,7 +238,7 @@
                     <field name="implementation_status" string="Status"/>
                     <field name="priority_level" string="Priority"/>
                     <separator/>
-                    <filter name="is_direct" string="Direct Programmes" domain="[('is_direct','=',True)]"/>
+                    <filter name="is_direct" string="Devolved Programmes" domain="[('is_direct','=',True)]"/>
                     
                     <filter name="active" string="Active" domain="[('active', '=', True)]"/>
                     <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>

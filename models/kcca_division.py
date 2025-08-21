@@ -53,8 +53,8 @@ class KCCADivision(models.Model):
     programme_ids = fields.One2many(
         'kcca.programme',
         'division_id',
-        string='Direct Programmes (legacy)',
-        help="Deprecated: use Division-Programme relationships with 'Direct Programme' flag"
+        string='Devolved Programmes (legacy)',
+        help="Deprecated: use Division-Programme relationships with 'Devolved Programme' flag"
     )
 
     # Division-owned KPIs (direct KPIs managed at division level)
@@ -192,10 +192,10 @@ class KCCADivision(models.Model):
                  'division_programme_rel_ids.is_direct',
                  'division_programme_rel_ids.programme_id')
     def _compute_implementing_programmes(self):
-        """Compute non-direct programmes this division implements.
+        """Compute non-devolved programmes this division implements.
 
-        Implementing = relationships where is_direct is False. Direct programmes are
-        represented separately via the Direct Programmes smart button.
+        Implementing = relationships where is_direct is False. Devolved programmes are
+        represented separately via the Devolved Programmes smart button.
         """
         for record in self:
             non_direct = record.division_programme_rel_ids.filtered(lambda r: not r.is_direct)
@@ -206,11 +206,11 @@ class KCCADivision(models.Model):
                  'kpi_ids')
     def _compute_counts(self):
         for record in self:
-            # Direct programmes via intermediary flag
+            # Devolved programmes via intermediary flag
             direct_rels = record.division_programme_rel_ids.filtered(lambda r: r.is_direct)
             direct_programmes = direct_rels.mapped('programme_id')
             record.programme_count = len(direct_programmes)
-            # KPIs attached to direct programmes contribute to division KPI pool
+            # KPIs attached to devolved programmes contribute to division KPI pool
             all_indicators = direct_programmes.mapped('performance_indicator_ids')
             record.performance_indicator_count = len(all_indicators)
             record.division_kpi_count = len(record.kpi_ids)
@@ -269,7 +269,7 @@ class KCCADivision(models.Model):
                 record.overall_performance = 0.0
     
     def action_view_programmes(self):
-        """Open division-programme relationships filtered to direct programmes"""
+        """Open division-programme relationships filtered to devolved programmes"""
         self.ensure_one()
         # Try standard action; fallback to a safe act_window if not found
         action = None
@@ -278,7 +278,7 @@ class KCCADivision(models.Model):
         except Exception:
             action = {
                 'type': 'ir.actions.act_window',
-                'name': _('Direct Programmes'),
+                'name': _('Devolved Programmes'),
                 'res_model': 'division.programme.rel',
                 'view_mode': 'kanban,list,form,graph,pivot',
             }
@@ -292,7 +292,7 @@ class KCCADivision(models.Model):
             'search_default_group_by_programme': 1,
             'search_default_active': 1,
         })
-        action['name'] = _('Direct Programmes')
+        action['name'] = _('Devolved Programmes')
         return action
 
     def action_view_division_performance(self):

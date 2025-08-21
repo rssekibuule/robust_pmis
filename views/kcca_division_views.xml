@@ -56,8 +56,8 @@
                                             </small>
                                         </div>
                                         <div class="o_kanban_manage_button_section d-flex align-items-center gap-2">
-                                            <span class="badge rounded-pill text-bg-primary" title="Direct programmes">
-                                                <field name="programme_count"/> Direct
+                                            <span class="badge rounded-pill text-bg-primary" title="Devolved programmes">
+                                                <field name="programme_count"/> Devolved
                                             </span>
                                             <span class="badge rounded-pill text-bg-info" title="Division-owned KPIs">
                                                 <field name="division_kpi_count"/> KPIs
@@ -117,7 +117,7 @@
                                     </div>
                                     <div class="o_kanban_record_bottom d-flex justify-content-end gap-2 mt-2">
                                         <button type="object" name="action_view_programmes" class="btn btn-xs btn-secondary">
-                                            <span class="fa fa-tasks"/> Direct
+                                            <span class="fa fa-tasks"/> Devolved
                                         </button>
                                         <button type="object" name="action_view_implementing_programmes" class="btn btn-xs btn-primary">
                                             <span class="fa fa-briefcase"/> Implementing
@@ -130,7 +130,7 @@
                             </div>
                         </t>
                     </templates>
-                    <field name="programme_count" string="Direct Programmes"/>
+                    <field name="programme_count" string="Devolved Programmes"/>
                 </kanban>
             </field>
         </record>
@@ -146,7 +146,7 @@
                     <field name="code"/>
                     <field name="directorate_id"/>
                     <field name="head_id"/>
-                    <field name="programme_count" string="Direct Programmes"/>
+                    <field name="programme_count" string="Devolved Programmes"/>
                     <field name="overall_performance" widget="progressbar"/>
                     <field name="email"/>
                     <field name="phone"/>
@@ -169,7 +169,7 @@
                         <div class="oe_button_box" name="button_box">
                             <button name="action_view_programmes" type="object"
                                     class="oe_stat_button" icon="fa-tasks">
-                                <field name="programme_count" widget="statinfo" string="Direct Programmes"/>
+                                <field name="programme_count" widget="statinfo" string="Devolved Programmes"/>
                             </button>
                 <button name="action_view_implementing_programmes" type="object"
                     class="oe_stat_button" icon="fa-briefcase" modifiers="{'invisible': [('implementing_programme_count', '=', 0)]}">
@@ -227,7 +227,7 @@
                                 <field name="description" widget="html"/>
                             </page>
 
-                            <page string="Direct Programmes">
+                            <page string="Devolved Programmes">
                                 <field name="programme_ids">
                                     <list editable="bottom">
                                         <field name="name"/>

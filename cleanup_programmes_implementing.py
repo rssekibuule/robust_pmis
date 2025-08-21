@@ -2,7 +2,7 @@
 One-time maintenance script:
 - Keep only the specified 16 programmes in the 'implementing' category for all directorates
 - Remove division relationships for all other programmes (for all divisions)
-- Ensure DEMO programmes appear only under 'Direct Programmes' (no implementing directorates, relations marked is_direct)
+- Ensure DEMO programmes appear only under 'Devolved Programmes' (no implementing directorates, relations marked is_direct)
 
 Usage (from repo root or odoo root):
   odoo-bin shell -d robust_pmis -c ~/.odoorc -q -c "exec(open('addons/robust_pmis/cleanup_programmes_implementing.py').read(), {'env': env})"
@@ -65,7 +65,7 @@ def run(env):
     else:
         print("No division relations to remove for non-allowed programmes.")
 
-    # 3) Ensure DEMO programmes only appear under 'Direct Programmes'
+    # 3) Ensure DEMO programmes only appear under 'Devolved Programmes'
     demo_prog_domain = [('name', 'ilike', 'DEMO')]  # matches 'DEMO – ...'
     demo_programmes = Programme.search(demo_prog_domain)
     if demo_programmes:

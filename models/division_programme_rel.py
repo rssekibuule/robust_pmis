@@ -44,10 +44,10 @@ class DivisionProgrammeRel(models.Model):
 
     # Relationship semantics: mark whether this programme is directly owned by the division
     is_direct = fields.Boolean(
-        string='Direct Programme',
+        string='Devolved Programme',
         default=False,
         index=True,
-        help='Check if this programme is directly owned by the division (not just implementing).'
+        help='Check if this programme is devolved/owned by the division (not just implementing).'
     )
 
     # Implementation details
@@ -251,9 +251,10 @@ class DivisionProgrammeRel(models.Model):
         for record in self:
             if record.allocated_budget and record.allocated_budget > 0:
                 pct = (record.utilized_budget or 0.0) / record.allocated_budget * 100.0
-                record.budget_utilization_raw = max(0.0, pct)
-                # Cap to 100 for scoring
-                record.budget_utilization = min(record.budget_utilization_raw, 100.0)
+                # Guard against extreme values and negatives
+                pct = max(0.0, min(100.0, pct))
+                record.budget_utilization_raw = pct
+                record.budget_utilization = pct
             else:
                 record.budget_utilization_raw = 0.0
                 record.budget_utilization = 0.0
@@ -266,9 +267,9 @@ class DivisionProgrammeRel(models.Model):
             actual = record.actual_beneficiaries or 0
             if target > 0:
                 pct = (float(actual) / float(target)) * 100.0
-                record.beneficiary_achievement_raw = max(0.0, pct)
-                # Cap to 100 for scoring
-                record.beneficiary_achievement = min(record.beneficiary_achievement_raw, 100.0)
+                pct = max(0.0, min(100.0, pct))
+                record.beneficiary_achievement_raw = pct
+                record.beneficiary_achievement = pct
             else:
                 record.beneficiary_achievement_raw = 0.0
                 record.beneficiary_achievement = 0.0
@@ -281,10 +282,10 @@ class DivisionProgrammeRel(models.Model):
             actual = record.actual_beneficiaries or 0
             if target > 0:
                 pct = (float(actual) / float(target)) * 100.0
-                record.completion_pct_raw = max(0.0, pct)
-                # Cap to 100 for scoring
-                record.completion_percentage = min(record.completion_pct_raw, 100.0)
-                record.completion_over_pct = max(0.0, record.completion_pct_raw - 100.0)
+                raw = max(0.0, pct)
+                record.completion_pct_raw = raw
+                record.completion_percentage = min(raw, 100.0)
+                record.completion_over_pct = max(0.0, raw - 100.0)
             else:
                 record.completion_pct_raw = 0.0
                 record.completion_over_pct = 0.0

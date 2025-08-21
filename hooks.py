@@ -125,12 +125,12 @@ def post_init_hook(env):
     except Exception as e:
         print(f"[post_init] Legacy view normalization failed: {e}")
 
-    # Initialize direct programme flags on relationships based on existing ownership
+    # Initialize devolved programme flags on relationships based on existing ownership
     try:
         updated = env['division.programme.rel'].mark_direct_programme_flags()
-        print(f"[post_init] Direct programme flags initialized on {updated} relationship(s)")
+        print(f"[post_init] Devolved programme flags initialized on {updated} relationship(s)")
     except Exception as e:
-        print(f"[post_init] Direct programme flag init failed: {e}")
+        print(f"[post_init] Devolved programme flag init failed: {e}")
 
     # Ensure each division implements all programmes (target coverage: 16 programmes)
     try:
