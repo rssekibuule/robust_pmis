@@ -13,8 +13,9 @@
         <delete model="ir.ui.menu" search="[('name', 'ilike', 'strategic performance dashboard')]"/>
         <delete model="ir.ui.menu" search="[('name', 'ilike', 'kcca dashboard')]"/>
 
-        <!-- Remove any web app references -->
-        <delete model="ir.actions.client" search="[('tag', 'ilike', 'dashboard')]"/>
+    <!-- Remove any legacy dashboard client actions, but explicitly KEEP our new dashboards -->
+    <!-- Exclude both 'unified_kpi_dashboard' (All KPIs hub) and 'kpi_linkage_dashboard' from deletion -->
+    <delete model="ir.actions.client" search="[('tag', 'ilike', 'dashboard'), ('tag', 'not in', ['unified_kpi_dashboard','kpi_linkage_dashboard'])]"/>
 
         <!-- Removed invalid clear_caches function calls causing errors -->
 

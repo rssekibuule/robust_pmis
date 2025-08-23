@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'KCCA Performance Management Information System',
-    'version': '18.0.1.0.11',
+    'version': '18.0.1.0.20',
     'category': 'Human Resources/Performance',
     'summary': 'Comprehensive Performance Management System for KCCA',
     'description': """
@@ -40,7 +40,8 @@ Hierarchical Structure:
     ],
     'data': [
         # Security
-        'security/kcca_pmis_security.xml',
+    'security/kcca_pmis_security.xml',
+    'security/kpi_unified_security.xml',
         # Note: ir.model.access.csv will be added after models are loaded
 
         # Data
@@ -91,7 +92,9 @@ Hierarchical Structure:
         'views/intervention_views.xml',
         'views/output_views.xml',
         'views/piap_action_views.xml',
-        'views/performance_indicator_views.xml',
+    'views/performance_indicator_views.xml',
+    # Unified KPIs (read-only SQL view)
+    'views/kpi_unified_views.xml',
         'views/programme_directorate_rel_views.xml',
         'views/master_table_dashboard.xml',
 
@@ -152,8 +155,8 @@ Hierarchical Structure:
         'views/programme_directorate_rel_menus.xml',
         'views/division_performance_menus.xml',
         'views/directorate_performance_menus.xml',
-        # Security (loaded after models)
-        'security/ir.model.access.csv',
+    # Security (loaded after models)
+    'security/ir.model.access.csv',
         # Dashboard data - commented out due to method signature issues
         # 'data/performance_dashboard_data.xml',
     ],
@@ -178,6 +181,10 @@ Hierarchical Structure:
             # KPI Linkage Dashboard client action
             'robust_pmis/static/src/js/kpi_linkage_dashboard.js',
             'robust_pmis/static/src/xml/kpi_linkage_dashboard.xml',
+            # Unified KPI Dashboard template (ensure loaded in backend too)
+            'robust_pmis/static/src/xml/unified_kpi_dashboard.xml',
+            # Unified KPI Dashboard client action
+            'robust_pmis/static/src/js/unified_kpi_dashboard.js',
 
         ],
         'web.assets_frontend': [
@@ -186,6 +193,7 @@ Hierarchical Structure:
         # Ensure QWeb templates are always picked up by the client
         'web.assets_qweb': [
             'robust_pmis/static/src/xml/kpi_linkage_dashboard.xml',
+            'robust_pmis/static/src/xml/unified_kpi_dashboard.xml',
         ],
     },
     'images': ['static/description/banner.png'],

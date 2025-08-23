@@ -113,12 +113,73 @@
             <field name="name">performance.indicator.search</field>
             <field name="model">performance.indicator</field>
             <field name="arch" type="xml">
-                <search string="Performance Indicators">
-                    <!-- Search Fields -->
-                    <field name="name" string="Indicator Name" filter_domain="[('name', 'ilike', self)]"/>
-                    <field name="outcome_id" string="Intermediate Outcome"/>
-                    <field name="responsible_user_id" string="Responsible User"/>
-                    <field name="measurement_unit" string="Unit"/>
+        <search string="Performance Indicators">
+            <!-- Search Fields -->
+            <field name="name" string="Indicator Name" filter_domain="[('name', 'ilike', self)]"/>
+            <field name="outcome_id" string="Intermediate Outcome"/>
+            <field name="responsible_user_id" string="Responsible User"/>
+            <field name="measurement_unit" string="Unit"/>
+
+            <!-- Financial Year Filters (moved to top) -->
+            <separator string="Financial Year"/>
+            <filter string="FY 2024/25" name="fy_2024_25"
+            domain="['&amp;', ('start_date','&lt;=','2025-06-30'), '|', ('end_date','=',False), ('end_date','>=','2024-07-01')]"/>
+            <filter string="FY 2025/26" name="fy_2025_26"
+            domain="['&amp;', ('start_date','&lt;=','2026-06-30'), '|', ('end_date','=',False), ('end_date','>=','2025-07-01')]"/>
+            <filter string="FY 2026/27" name="fy_2026_27"
+            domain="['&amp;', ('start_date','&lt;=','2027-06-30'), '|', ('end_date','=',False), ('end_date','>=','2026-07-01')]"/>
+            <filter string="FY 2027/28" name="fy_2027_28"
+            domain="['&amp;', ('start_date','&lt;=','2028-06-30'), '|', ('end_date','=',False), ('end_date','>=','2027-07-01')]"/>
+            <filter string="FY 2028/29" name="fy_2028_29"
+            domain="['&amp;', ('start_date','&lt;=','2029-06-30'), '|', ('end_date','=',False), ('end_date','>=','2028-07-01')]"/>
+
+            <!-- Quarter Filters per FY (Uganda FY: Jul 1 – Jun 30) -->
+            <separator string="Quarters"/>
+            <!-- FY 2024/25 Quarters -->
+            <filter string="FY 2024/25 Q1" name="fy_2024_25_q1"
+                domain="['&amp;', ('start_date','&lt;=','2024-09-30'), '|', ('end_date','=',False), ('end_date','>=','2024-07-01')]"/>
+            <filter string="FY 2024/25 Q2" name="fy_2024_25_q2"
+                domain="['&amp;', ('start_date','&lt;=','2024-12-31'), '|', ('end_date','=',False), ('end_date','>=','2024-10-01')]"/>
+            <filter string="FY 2024/25 Q3" name="fy_2024_25_q3"
+                domain="['&amp;', ('start_date','&lt;=','2025-03-31'), '|', ('end_date','=',False), ('end_date','>=','2025-01-01')]"/>
+            <filter string="FY 2024/25 Q4" name="fy_2024_25_q4"
+                domain="['&amp;', ('start_date','&lt;=','2025-06-30'), '|', ('end_date','=',False), ('end_date','>=','2025-04-01')]"/>
+            <!-- FY 2025/26 Quarters -->
+            <filter string="FY 2025/26 Q1" name="fy_2025_26_q1"
+                domain="['&amp;', ('start_date','&lt;=','2025-09-30'), '|', ('end_date','=',False), ('end_date','>=','2025-07-01')]"/>
+            <filter string="FY 2025/26 Q2" name="fy_2025_26_q2"
+                domain="['&amp;', ('start_date','&lt;=','2025-12-31'), '|', ('end_date','=',False), ('end_date','>=','2025-10-01')]"/>
+            <filter string="FY 2025/26 Q3" name="fy_2025_26_q3"
+                domain="['&amp;', ('start_date','&lt;=','2026-03-31'), '|', ('end_date','=',False), ('end_date','>=','2026-01-01')]"/>
+            <filter string="FY 2025/26 Q4" name="fy_2025_26_q4"
+                domain="['&amp;', ('start_date','&lt;=','2026-06-30'), '|', ('end_date','=',False), ('end_date','>=','2026-04-01')]"/>
+            <!-- FY 2026/27 Quarters -->
+            <filter string="FY 2026/27 Q1" name="fy_2026_27_q1"
+                domain="['&amp;', ('start_date','&lt;=','2026-09-30'), '|', ('end_date','=',False), ('end_date','>=','2026-07-01')]"/>
+            <filter string="FY 2026/27 Q2" name="fy_2026_27_q2"
+                domain="['&amp;', ('start_date','&lt;=','2026-12-31'), '|', ('end_date','=',False), ('end_date','>=','2026-10-01')]"/>
+            <filter string="FY 2026/27 Q3" name="fy_2026_27_q3"
+                domain="['&amp;', ('start_date','&lt;=','2027-03-31'), '|', ('end_date','=',False), ('end_date','>=','2027-01-01')]"/>
+            <filter string="FY 2026/27 Q4" name="fy_2026_27_q4"
+                domain="['&amp;', ('start_date','&lt;=','2027-06-30'), '|', ('end_date','=',False), ('end_date','>=','2027-04-01')]"/>
+            <!-- FY 2027/28 Quarters -->
+            <filter string="FY 2027/28 Q1" name="fy_2027_28_q1"
+                domain="['&amp;', ('start_date','&lt;=','2027-09-30'), '|', ('end_date','=',False), ('end_date','>=','2027-07-01')]"/>
+            <filter string="FY 2027/28 Q2" name="fy_2027_28_q2"
+                domain="['&amp;', ('start_date','&lt;=','2027-12-31'), '|', ('end_date','=',False), ('end_date','>=','2027-10-01')]"/>
+            <filter string="FY 2027/28 Q3" name="fy_2027_28_q3"
+                domain="['&amp;', ('start_date','&lt;=','2028-03-31'), '|', ('end_date','=',False), ('end_date','>=','2028-01-01')]"/>
+            <filter string="FY 2027/28 Q4" name="fy_2027_28_q4"
+                domain="['&amp;', ('start_date','&lt;=','2028-06-30'), '|', ('end_date','=',False), ('end_date','>=','2028-04-01')]"/>
+            <!-- FY 2028/29 Quarters -->
+            <filter string="FY 2028/29 Q1" name="fy_2028_29_q1"
+                domain="['&amp;', ('start_date','&lt;=','2028-09-30'), '|', ('end_date','=',False), ('end_date','>=','2028-07-01')]"/>
+            <filter string="FY 2028/29 Q2" name="fy_2028_29_q2"
+                domain="['&amp;', ('start_date','&lt;=','2028-12-31'), '|', ('end_date','=',False), ('end_date','>=','2028-10-01')]"/>
+            <filter string="FY 2028/29 Q3" name="fy_2028_29_q3"
+                domain="['&amp;', ('start_date','&lt;=','2029-03-31'), '|', ('end_date','=',False), ('end_date','>=','2029-01-01')]"/>
+            <filter string="FY 2028/29 Q4" name="fy_2028_29_q4"
+                domain="['&amp;', ('start_date','&lt;=','2029-06-30'), '|', ('end_date','=',False), ('end_date','>=','2029-04-01')]"/>
 
                     <!-- Filters -->
                     <separator/>
@@ -144,15 +205,17 @@
                     <filter string="Increasing Indicators" name="increasing" domain="[('indicator_type', '=', 'increasing')]"/>
                     <filter string="Decreasing Indicators" name="decreasing" domain="[('indicator_type', '=', 'decreasing')]"/>
 
-                    <separator/>
-                    <filter string="My Indicators" name="my_indicators"
-                            domain="[('responsible_user_id', '=', uid)]"/>
+            <separator/>
+            <filter string="My Indicators" name="my_indicators"
+                domain="[('responsible_user_id', '=', uid)]"/>
 
 
                         <!-- Context-aware Directorate Filter (from Dashboard) -->
                         <separator/>
                         <filter string="Directorate (Dashboard)" name="by_directorate"
                                 domain="[('parent_programme_id.implementing_directorate_ids', 'in', context.get('directorate_id'))]"/>
+
+            <!-- Financial Year & Quarter filters moved to top above -->
 
                     <!-- Group By Options -->
                     <group expand="0" string="Group By">

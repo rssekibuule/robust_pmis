@@ -42,6 +42,11 @@ export class PerformanceDashboardController extends FormController {
 
         // Wait for DOM to be ready and attach resize observer for stable charts
         setTimeout(() => {
+            // Ensure Performance dropdown defaults to 'All'
+            try {
+                const perfEl = document.getElementById('filter-performance');
+                if (perfEl) perfEl.value = 'all';
+            } catch (e) { /* ignore */ }
             this.loadDashboardData();
             this.enhanceVisuals();
             this.loadPeriodOptions();
@@ -469,12 +474,12 @@ export class PerformanceDashboardController extends FormController {
     // Refresh button removed with summary banner
 
         // Card click handlers with real navigation
-        document.querySelectorAll('.metric-card, .quick-link').forEach(card => {
+    document.querySelectorAll('.metric-card, .quick-link').forEach(card => {
             card.addEventListener('click', async (e) => {
                 const xmlid = e.currentTarget.dataset.actionXmlid;
                 if (!xmlid) return;
-                // Always use modern hash navigation to avoid legacy /odoo/action-* route
-                const safeUrl = `/web#action=${xmlid}&view_type=kanban`;
+        // Use modern hash navigation and let the action decide the default view
+        const safeUrl = `/web#action=${xmlid}`;
                 window.open(safeUrl, '_self');
             });
             // Basic keyboard accessibility

@@ -31,3 +31,4 @@ from . import performance_dashboard
 
 from . import legacy_cleanup
 from . import settings
+from . import kpi_unified

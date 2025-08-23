@@ -83,10 +83,10 @@ class UnifiedKPIDashboard extends Component {
     }
 
     async openAllKPIs() {
-        // Open a unified view or action
+        // Reload the unified KPI dashboard (acts as the "all" hub)
         await this.action.doAction({
             type: 'ir.actions.client',
-            tag: 'unified_kpi_list',
+            tag: 'unified_kpi_dashboard',
         });
     }
 

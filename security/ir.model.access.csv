@@ -154,4 +154,5 @@ access_strategic_programme_report_wizard_user,strategic.programme.report.wizard 
 access_strategic_programme_report_wizard_officer,strategic.programme.report.wizard officer,model_strategic_programme_report_wizard,group_kcca_pmis_officer,1,1,1,0
 access_strategic_programme_report_wizard_manager,strategic.programme.report.wizard manager,model_strategic_programme_report_wizard,group_kcca_pmis_manager,1,1,1,0
 access_strategic_programme_report_wizard_admin,strategic.programme.report.wizard admin,model_strategic_programme_report_wizard,group_kcca_pmis_admin,1,1,1,1
+access_kpi_unified_user,kpi.unified user,model_kpi_unified,base.group_user,1,0,0,0
 

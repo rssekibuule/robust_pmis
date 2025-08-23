@@ -72,7 +72,7 @@
 
               <!-- Quick Actions (clean, clickable buttons) -->
               <div class="quick-actions">
-                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_strategic_kpi_with_programmes">
+                <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_kpi_unified">
                   <span class="qi-icon">📈</span><span class="qi-label">All KPIs</span>
                 </div>
                 <div class="quick-link" tabindex="0" data-action-xmlid="robust_pmis.action_programme_objective_indicators">
@@ -96,7 +96,7 @@
               <div class="executive-scorecards">
                 <div class="gauge-card" tabindex="0">
                   <div class="gauge-header">
-                    <span class="gauge-title">All KPIs Achievements</span>
+                    <span class="gauge-title">Overall Performance</span>
                     <span class="gauge-sub">Avg of all KPIs</span>
                   </div>
                   <div class="gauge-canvas"><canvas id="gaugeOverall"></canvas></div>

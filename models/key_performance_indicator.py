@@ -215,7 +215,7 @@ class KeyPerformanceIndicator(models.Model):
             if record.kpi_type == 'increasing':
                 # Higher is better
                 if record.target_value > 0:
-                    record.achievement_percentage = min(100.0, (record.current_value / record.target_value) * 100)
+                    record.achievement_percentage = (record.current_value / record.target_value) * 100
                 else:
                     record.achievement_percentage = 0.0
             elif record.kpi_type == 'decreasing':
@@ -227,7 +227,7 @@ class KeyPerformanceIndicator(models.Model):
                     improvement = record.baseline_value - record.current_value
                     target_improvement = record.baseline_value - record.target_value
                     if target_improvement > 0:
-                        record.achievement_percentage = min(100.0, (improvement / target_improvement) * 100)
+                        record.achievement_percentage = (improvement / target_improvement) * 100
                     else:
                         record.achievement_percentage = 0.0
                 else:
@@ -236,9 +236,16 @@ class KeyPerformanceIndicator(models.Model):
                 # Target value (exact match is best)
                 if record.target_value > 0:
                     deviation = abs(record.current_value - record.target_value)
-                    record.achievement_percentage = max(0.0, 100.0 - (deviation / record.target_value) * 100)
+                    record.achievement_percentage = 100.0 - (deviation / record.target_value) * 100
                 else:
                     record.achievement_percentage = 0.0
+
+            # Clamp to [0, 100] to avoid negative or >100 values
+            try:
+                v = float(record.achievement_percentage or 0.0)
+            except Exception:
+                v = 0.0
+            record.achievement_percentage = 0.0 if v < 0.0 else (100.0 if v > 100.0 else v)
     
     @api.depends('achievement_percentage')
     def _compute_status(self):

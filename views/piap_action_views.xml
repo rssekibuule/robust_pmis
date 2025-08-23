@@ -108,12 +108,73 @@
             <field name="name">piap.action.search</field>
             <field name="model">piap.action</field>
             <field name="arch" type="xml">
-                <search string="Search PIAP Actions">
-                    <field name="name" string="PIAP Action"/>
-                    <field name="output_id"/>
-                    <field name="intervention_id"/>
-                    <field name="programme_id"/>
-                    <field name="responsible_user_id"/>
+        <search string="Search PIAP Actions">
+            <field name="name" string="PIAP Action"/>
+            <field name="output_id"/>
+            <field name="intervention_id"/>
+            <field name="programme_id"/>
+            <field name="responsible_user_id"/>
+
+            <!-- Financial Year Filters (moved to top) -->
+            <separator string="Financial Year"/>
+            <filter string="FY 2024/25" name="fy_2024_25"
+            domain="['&amp;', ('start_date','&lt;=','2025-06-30'), '|', ('end_date','=',False), ('end_date','>=','2024-07-01')]"/>
+            <filter string="FY 2025/26" name="fy_2025_26"
+            domain="['&amp;', ('start_date','&lt;=','2026-06-30'), '|', ('end_date','=',False), ('end_date','>=','2025-07-01')]"/>
+            <filter string="FY 2026/27" name="fy_2026_27"
+            domain="['&amp;', ('start_date','&lt;=','2027-06-30'), '|', ('end_date','=',False), ('end_date','>=','2026-07-01')]"/>
+            <filter string="FY 2027/28" name="fy_2027_28"
+            domain="['&amp;', ('start_date','&lt;=','2028-06-30'), '|', ('end_date','=',False), ('end_date','>=','2027-07-01')]"/>
+            <filter string="FY 2028/29" name="fy_2028_29"
+            domain="['&amp;', ('start_date','&lt;=','2029-06-30'), '|', ('end_date','=',False), ('end_date','>=','2028-07-01')]"/>
+
+            <!-- Quarters per FY (Uganda FY) -->
+            <separator string="Quarters"/>
+            <!-- 2024/25 -->
+            <filter string="FY 2024/25 Q1" name="fy_2024_25_q1"
+                domain="['&amp;', ('start_date','&lt;=','2024-09-30'), '|', ('end_date','=',False), ('end_date','>=','2024-07-01')]"/>
+            <filter string="FY 2024/25 Q2" name="fy_2024_25_q2"
+                domain="['&amp;', ('start_date','&lt;=','2024-12-31'), '|', ('end_date','=',False), ('end_date','>=','2024-10-01')]"/>
+            <filter string="FY 2024/25 Q3" name="fy_2024_25_q3"
+                domain="['&amp;', ('start_date','&lt;=','2025-03-31'), '|', ('end_date','=',False), ('end_date','>=','2025-01-01')]"/>
+            <filter string="FY 2024/25 Q4" name="fy_2024_25_q4"
+                domain="['&amp;', ('start_date','&lt;=','2025-06-30'), '|', ('end_date','=',False), ('end_date','>=','2025-04-01')]"/>
+            <!-- 2025/26 -->
+            <filter string="FY 2025/26 Q1" name="fy_2025_26_q1"
+                domain="['&amp;', ('start_date','&lt;=','2025-09-30'), '|', ('end_date','=',False), ('end_date','>=','2025-07-01')]"/>
+            <filter string="FY 2025/26 Q2" name="fy_2025_26_q2"
+                domain="['&amp;', ('start_date','&lt;=','2025-12-31'), '|', ('end_date','=',False), ('end_date','>=','2025-10-01')]"/>
+            <filter string="FY 2025/26 Q3" name="fy_2025_26_q3"
+                domain="['&amp;', ('start_date','&lt;=','2026-03-31'), '|', ('end_date','=',False), ('end_date','>=','2026-01-01')]"/>
+            <filter string="FY 2025/26 Q4" name="fy_2025_26_q4"
+                domain="['&amp;', ('start_date','&lt;=','2026-06-30'), '|', ('end_date','=',False), ('end_date','>=','2026-04-01')]"/>
+            <!-- 2026/27 -->
+            <filter string="FY 2026/27 Q1" name="fy_2026_27_q1"
+                domain="['&amp;', ('start_date','&lt;=','2026-09-30'), '|', ('end_date','=',False), ('end_date','>=','2026-07-01')]"/>
+            <filter string="FY 2026/27 Q2" name="fy_2026_27_q2"
+                domain="['&amp;', ('start_date','&lt;=','2026-12-31'), '|', ('end_date','=',False), ('end_date','>=','2026-10-01')]"/>
+            <filter string="FY 2026/27 Q3" name="fy_2026_27_q3"
+                domain="['&amp;', ('start_date','&lt;=','2027-03-31'), '|', ('end_date','=',False), ('end_date','>=','2027-01-01')]"/>
+            <filter string="FY 2026/27 Q4" name="fy_2026_27_q4"
+                domain="['&amp;', ('start_date','&lt;=','2027-06-30'), '|', ('end_date','=',False), ('end_date','>=','2027-04-01')]"/>
+            <!-- 2027/28 -->
+            <filter string="FY 2027/28 Q1" name="fy_2027_28_q1"
+                domain="['&amp;', ('start_date','&lt;=','2027-09-30'), '|', ('end_date','=',False), ('end_date','>=','2027-07-01')]"/>
+            <filter string="FY 2027/28 Q2" name="fy_2027_28_q2"
+                domain="['&amp;', ('start_date','&lt;=','2027-12-31'), '|', ('end_date','=',False), ('end_date','>=','2027-10-01')]"/>
+            <filter string="FY 2027/28 Q3" name="fy_2027_28_q3"
+                domain="['&amp;', ('start_date','&lt;=','2028-03-31'), '|', ('end_date','=',False), ('end_date','>=','2028-01-01')]"/>
+            <filter string="FY 2027/28 Q4" name="fy_2027_28_q4"
+                domain="['&amp;', ('start_date','&lt;=','2028-06-30'), '|', ('end_date','=',False), ('end_date','>=','2028-04-01')]"/>
+            <!-- 2028/29 -->
+            <filter string="FY 2028/29 Q1" name="fy_2028_29_q1"
+                domain="['&amp;', ('start_date','&lt;=','2028-09-30'), '|', ('end_date','=',False), ('end_date','>=','2028-07-01')]"/>
+            <filter string="FY 2028/29 Q2" name="fy_2028_29_q2"
+                domain="['&amp;', ('start_date','&lt;=','2028-12-31'), '|', ('end_date','=',False), ('end_date','>=','2028-10-01')]"/>
+            <filter string="FY 2028/29 Q3" name="fy_2028_29_q3"
+                domain="['&amp;', ('start_date','&lt;=','2029-03-31'), '|', ('end_date','=',False), ('end_date','>=','2029-01-01')]"/>
+            <filter string="FY 2028/29 Q4" name="fy_2028_29_q4"
+                domain="['&amp;', ('start_date','&lt;=','2029-06-30'), '|', ('end_date','=',False), ('end_date','>=','2029-04-01')]"/>
                     <filter string="Active" name="active" domain="[('active', '=', True)]"/>
                     <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
                     <separator/>
